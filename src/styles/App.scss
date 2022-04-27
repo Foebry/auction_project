@@ -51,6 +51,7 @@ body {
             &:hover{
                 background-color: $mediumblue;
                 transform: scale(1.05);
+                cursor: pointer;
             }
             &:active{
                 background-color: $mediumblue;
