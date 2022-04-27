@@ -1,5 +1,12 @@
+// Reset css
 @import "./reset.scss";
+
+// Variables
 @import "./var.scss" ;
+
+// Components css
+@import "./Header.scss" ;
+
 
 body {
     background-color: $lightblue;
@@ -16,46 +23,5 @@ body {
         margin: 0 auto;
         max-width: 1000px;
         width: 98%;
-    }
-}
-
-.header{
-    background-color: $darkblue;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    &__items{
-        display: flex;
-        justify-content: space-between;
-        &__text{
-            color: $white;
-            font-size: 40px;
-            & span{
-                font-weight: bold;
-                color: $lightblue
-            }
-        }
-        &__links{
-            display: flex;
-            width: 400px;
-            justify-content: flex-end;
-            align-items: center;
-            & .link{
-                font-size: 20px;
-                text-decoration: none;
-                color: $white;
-                margin-left: 30px;
-                &:hover{
-                    color: $lightblue;
-                }
-            }
-            & p{
-                color: $white;
-                font-size: 20px;
-            }
-            & span{
-                color: $lightblue
-            }
-        }
     }
 }
