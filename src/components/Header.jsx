@@ -12,29 +12,27 @@ const Header = () => {
         </h1>
         <div className="header__items__links">
           {!loggedIn && (
-            <Link className="link" to={"#"}>
-              Login
-            </Link>
-          )}
-          {!loggedIn && (
-            <Link className="link" to={"#"}>
-              Register
-            </Link>
-          )}
-          {loggedIn && (
-            <p>
-              Welcome <span>NAME</span>
-            </p>
+            <>
+              <Link className="link" to={"#"}>
+                Login
+              </Link>
+              <Link className="link" to={"#"}>
+                Register
+              </Link>
+            </>
           )}
           {loggedIn && (
-            <Link className="link" to={"#"}>
-              My Products
-            </Link>
-          )}
-          {loggedIn && (
-            <Link className="link" to={"#"}>
-              Logout
-            </Link>
+            <>
+              <p>
+                Welcome <span>NAME</span>
+              </p>
+              <Link className="link" to={"#"}>
+                My Products
+              </Link>
+              <Link className="link" to={"#"}>
+                Logout
+              </Link>
+            </>
           )}
         </div>
       </div>
