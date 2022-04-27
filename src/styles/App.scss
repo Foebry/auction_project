@@ -29,3 +29,33 @@ body {
         }
     }
 }
+
+.categories {
+    background-color: $darkblue;
+    &__buttons{
+        display: flex;
+        justify-content: space-around;
+        &__btn{
+            background-color: $mediumdarkblue;
+            height: 75px;
+            width: 75px;
+            margin: 20px 0px;
+            outline: none;
+            border: none;
+            color: $white;
+            border-radius: 3px;
+            &__icon{
+                height: 50%;
+                width: 80%;
+            }
+            &:hover{
+                background-color: $mediumblue;
+                transform: scale(1.05);
+                cursor: pointer;
+            }
+            &:active{
+                background-color: $mediumblue;
+            }
+        }
+    }
+}

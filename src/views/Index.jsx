@@ -1,7 +1,12 @@
-import React from 'react';
+import React from "react";
+import Categories from "../components/Categories";
 
 const Index = () => {
-  return <div>Index</div>;
+  return (
+    <>
+      <Categories />
+    </>
+  );
 };
 
 export default Index;
