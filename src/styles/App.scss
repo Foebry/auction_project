@@ -1,0 +1,31 @@
+@import "./reset.scss";
+@import "./var.scss" ;
+
+body {
+    background-color: $lightblue;
+}
+
+.container{
+    max-width: 100vw;
+    &__medium{
+        margin: 0 auto;
+        max-width: 1500px;
+        width: 98%;
+    }
+    &__small{
+        margin: 0 auto;
+        max-width: 1000px;
+        width: 98%;
+    }
+}
+
+.header{
+    background-color: $darkblue;
+    &__items{
+        display: flex;
+        justify-content: space-between;
+        &__text{
+            color: $white;
+        }
+    }
+}
