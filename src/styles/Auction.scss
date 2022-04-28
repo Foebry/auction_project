@@ -1,0 +1,78 @@
+.article {
+    display: flex;
+    //gap: 30px;
+    margin: 0 auto;
+    width: 90%;
+    height: 275px;
+    background-color: $white;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px 2px $lightmediumblue;
+    &__imgholder {
+        width: 375px;
+        height: 275px;
+        background-color: grey;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        &__img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+    }
+    &__content {
+        display: flex;
+        margin: 0 auto;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        &__title {
+            width: 100%;
+            text-align: center;
+            font-size: 30px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        &__highest {
+            align-self: center;
+            height: 30px;
+            width: 60%;
+            margin-bottom: 30px;
+        }
+        &__bid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 25px;
+            width: 100%;
+            margin-bottom: 30px;
+            &__btn {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                height: 40px;
+                width: 90px;
+                color: $white;
+                background-color: $mediumblue;
+                outline: none;
+                border: none;
+                border-radius: 5px;
+                padding: 10px;
+                &__icon {
+                    font-size: 25px;
+                }
+                &__text {
+                    font-size: 20px;
+                }
+                &:hover {
+                    font-weight: bold;
+                    background-color: $lightmediumblue;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
