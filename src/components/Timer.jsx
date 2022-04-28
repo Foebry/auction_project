@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-const Timer = () => {
-    const [time, setTime] = useState(20);
+const Timer = ({ rest }) => {
+    const [time, setTime] = useState(rest - Date.now());
 
     let h = Math.floor(time / 3600);
     let m = Math.floor((time % 3600) / 60);
