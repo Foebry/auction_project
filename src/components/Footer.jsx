@@ -1,10 +1,10 @@
 const Footer = () => {
-    let year = new Date().getFullYear();
-
     return (
         <footer className="footer container">
             <div className="footer__items container__medium">
-                <p className="footer__items__text">© {year}</p>
+                <p className="footer__items__text">
+                    © {new Date().getFullYear()}
+                </p>
                 <div className="footer__items__people">
                     <p className="footer__items__text">Sander Fabry</p>
                     <p className="footer__items__text">Tim Vercammen</p>
