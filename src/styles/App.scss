@@ -1,5 +1,12 @@
+// Reset css
 @import "./reset.scss";
+
+// Variables
 @import "./var.scss" ;
+
+// Components css
+@import "./Header.scss" ;
+
 
 body {
     background-color: $lightblue;
@@ -19,37 +26,29 @@ body {
     }
 }
 
-.header{
-    background-color: $darkblue;
-    &__items{
-        display: flex;
-        justify-content: space-between;
-        &__text{
-            color: $white;
-        }
-    }
-}
-
 .categories {
-    background-color: $darkblue;
+    background-color: $white;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
     &__buttons{
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-around;
         &__btn{
-            background-color: $mediumdarkblue;
-            height: 75px;
-            width: 75px;
-            margin: 20px 0px;
+            background-color: $white;
+            height: 60px;
+            width: 100px;
+            margin: 5px 0px;
             outline: none;
             border: none;
-            color: $white;
-            border-radius: 3px;
+            color: $mediumblue;
             &__icon{
                 height: 50%;
                 width: 80%;
             }
             &:hover{
-                background-color: $mediumblue;
+               font-weight: bold;
+                color: $darkblue;
                 transform: scale(1.05);
                 cursor: pointer;
             }

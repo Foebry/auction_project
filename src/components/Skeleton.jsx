@@ -7,7 +7,6 @@ const Skeleton = ({ children }) => {
   return (
     <>
       <Header />
-      <Navbar />
       {children}
       <Footer />
     </>
