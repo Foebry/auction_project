@@ -1,4 +1,4 @@
-export const currentAutcions = [
+export const currentAuctions = [
 {
     id:1,
     name: "Sofa",

@@ -1,39 +1,39 @@
-.header{
+.header {
     background-color: $darkblue;
-    height: 100px;
+    height: 75px;
     display: flex;
     align-items: center;
-    &__items{
+    &__items {
         display: flex;
         justify-content: space-between;
-        &__text{
+        &__text {
             color: $white;
             font-size: 40px;
-            & span{
+            & span {
                 font-weight: bold;
-                color: $lightblue
+                color: $lightblue;
             }
         }
-        &__links{
+        &__links {
             display: flex;
             width: 400px;
             justify-content: center;
             align-items: center;
             gap: 30px;
-            & .link{
+            & .link {
                 font-size: 20px;
                 text-decoration: none;
                 color: $white;
-                &:hover{
+                &:hover {
                     color: $lightblue;
                 }
             }
-            & p{
+            & p {
                 color: $white;
                 font-size: 20px;
             }
-            & span{
-                color: $lightblue
+            & span {
+                color: $lightblue;
             }
         }
     }
