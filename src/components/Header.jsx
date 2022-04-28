@@ -5,7 +5,6 @@ import { AppContext } from "../context/AppContext";
 const Header = () => {
     const [loggedIn, setLoggedIn] = useState(true);
     const { userId, setUserId } = useContext(AppContext);
-
     return (
         <header className="header container">
             <div className="header__items container__medium">
@@ -15,7 +14,11 @@ const Header = () => {
                 <div className="header__items__links">
                     {!loggedIn && (
                         <>
-                            <Link className="link" to={"#"}>
+                            <Link
+                                className="link"
+                                to={"#"}
+                                onClick={() => setLoggedIn(52)}
+                            >
                                 Login
                             </Link>
                             <Link className="link" to={"#"}>
@@ -31,7 +34,11 @@ const Header = () => {
                             <Link className="link" to={"#"}>
                                 My Products
                             </Link>
-                            <Link className="link" to={"#"}>
+                            <Link
+                                className="link"
+                                to={"#"}
+                                onClick={() => setLoggedIn(undefined)}
+                            >
                                 Logout
                             </Link>
                         </>
