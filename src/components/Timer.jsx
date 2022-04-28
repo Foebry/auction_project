@@ -26,7 +26,7 @@ const Timer = ({ rest }) => {
     if (s < 10) s = "0" + s;
 
     return (
-        <div>
+        <div className="timer">
             {h}:{m}:{s}
         </div>
     );
