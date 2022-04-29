@@ -8,9 +8,11 @@ const Index = () => {
     return (
         <>
             <Categories />
-            {currentAutcions.map((auction) => (
-                <Auction key={auction.id} {...auction} />
-            ))}
+            <div className="container__small">
+                {currentAutcions.map((auction) => (
+                    <Auction key={auction.id} {...auction} />
+                ))}
+            </div>
         </>
     );
 };
