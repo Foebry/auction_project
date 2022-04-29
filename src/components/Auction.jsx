@@ -15,16 +15,36 @@ const Auction = ({ id, name, expiration, highest_bid, image }) => {
                     ></img>
                 </div>
                 <div className="article__content">
-                    <div className="article__content__title">
-                        <h2>{name}</h2>
+                    <div className="article__heading">
+                        <div className="article__heading__content">
+                            <div className="article__content__title">
+                                <h2>{name}</h2>
+                            </div>
+                            <div className="article__content__desc">
+                                <p>
+                                    <span>
+                                        Lorem ipsum dolor sit amet, consectetur
+                                        adipisicing elit. Quis earum laudantium
+                                        et nihil Lorem ipsum dolor sit amet,
+                                        consectetur adipisicing elit. Quis earum
+                                        laudantium et nihil Lorem ipsum dolor
+                                        sit amet, consectetur adipisicing elit.
+                                        Quis earum laudantium et nihil
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <Timer rest={expiration} />
                     </div>
-                    <Timer rest={expiration} />
+
                     <div className="article__content__bid">
-                        <p>{highest_bid}</p>
+                        <div className="article__content__highest">
+                            <p>€ {highest_bid}</p>
+                        </div>
                         <button className="article__content__bid__btn">
                             <RiCoinLine className="article__content__bid__btn__icon" />
                             <p className="article__content__bid__btn__text">
-                                Bet
+                                Bid
                             </p>
                         </button>
                     </div>
