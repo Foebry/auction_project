@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 const Timer = ({ rest }) => {
     const [time, setTime] = useState(rest - Date.now());
 
-    let h = Math.floor(time / 3600);
-    let m = Math.floor((time % 3600) / 60);
-    let s = Math.floor((time % 3600) % 60);
+    // let h = Math.floor(time / 360000);
+    // let m = Math.floor((time % 360000) / 6000);
+    // let s = Math.floor((time % 360000) % 6000);
 
     useEffect(() => {
         const timerId = setInterval(() => {
-            setTime((prevCounter) => prevCounter - 1);
+            setTime((prevCounter) => -Date.now());
         }, 1000);
 
         if (h == 0 && m == 0 && s == 0) {
