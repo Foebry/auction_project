@@ -1,7 +1,6 @@
 import React from "react";
 import Timer from "./Timer.jsx";
 import { RiCoinLine } from "react-icons/ri";
-import { currentAutcions } from "../mocks/auctions.js";
 
 const Auction = ({ id, name, expiration, highest_bid, image }) => {
     return (
