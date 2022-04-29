@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import Auction from "../components/Auction";
 import Categories from "../components/Categories";
+import { currentAuctions } from "../mocks/auctions.js";
 
 const Index = () => {
     const [activeFilter, setActiveFilter] = useState([]);
@@ -16,10 +18,14 @@ const Index = () => {
             setActiveFilter([...filter, id]);
         }
     };
-
     return (
         <>
             <Categories onClick={handleFilterClick} />
+            <div className="container__small">
+                {currentAuctions.map((auction) => (
+                    <Auction key={auction.id} {...auction} />
+                ))}
+            </div>
         </>
     );
 };
