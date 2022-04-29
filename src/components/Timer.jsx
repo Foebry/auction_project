@@ -7,9 +7,9 @@ const Timer = () => {
     let now = Date.now();
     console.log(now);
 
-    let h = Math.floor(time / 3600);
-    let m = Math.floor((time % 3600) / 60);
-    let s = Math.floor((time % 3600) % 60);
+    let h = Math.floor(time / 360000);
+    let m = Math.floor((time % 360000) / 6000);
+    let s = Math.floor((time % 360000) % 6000);
 
     useEffect(() => {
         const timerId = setInterval(() => {

@@ -2,11 +2,11 @@
     background-color: $white;
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
-    &__buttons{
+    &__buttons {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
-        &__btn{
+        &__btn {
             background-color: $white;
             height: 60px;
             width: 100px;
@@ -14,17 +14,17 @@
             outline: none;
             border: none;
             color: $mediumblue;
-            &__icon{
+            &__icon {
                 height: 50%;
                 width: 80%;
             }
-            &:hover{
-               font-weight: bold;
+            &:hover {
+                font-weight: bold;
                 color: $darkblue;
                 transform: scale(1.05);
                 cursor: pointer;
             }
-            &:active{
+            &:active {
                 background-color: $mediumblue;
             }
         }
