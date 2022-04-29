@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import moment from "moment";
 
-const Timer = () => {
+const Timer = ({ rest }) => {
     const currentDate = moment().add(1, "hour");
-    const future = moment("2022-04-29 12:19:00");
+    const future = moment(rest);
     const timeLeft = moment(future.diff(currentDate)).format("HH:mm:ss");
+    // console.log(expiration);
 
     const [time, setTime] = useState(timeLeft);
 
