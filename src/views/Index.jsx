@@ -1,16 +1,28 @@
-import React from "react";
+import { useState } from "react";
 import Auction from "../components/Auction";
 import Categories from "../components/Categories";
-import Login from "../components/Login";
-import Timer from "../components/Timer";
-import { currentAutcions } from "../mocks/auctions.js";
+import { currentAuctions } from "../mocks/auctions.js";
 
 const Index = () => {
+    const [activeFilter, setActiveFilter] = useState([]);
+
+    const handleFilterClick = (e) => {
+        const id = e.target.id;
+        const classList = e.target.classList;
+
+        classList.toggle("categories__buttons__btn--active");
+
+        if (activeFilter.includes(id)) {
+            setActiveFilter(filter.filter((item) => item != id));
+        } else {
+            setActiveFilter([...filter, id]);
+        }
+    };
     return (
         <>
-            <Categories />
+            <Categories onClick={handleFilterClick} />
             <div className="container__small">
-                {currentAutcions.map((auction) => (
+                {currentAuctions.map((auction) => (
                     <Auction key={auction.id} {...auction} />
                 ))}
             </div>

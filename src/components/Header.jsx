@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
+import { Routes } from "../types/RouteTypes";
 
 const Header = () => {
-    const [loggedIn, setLoggedIn] = useState(true);
     const { userId, setUserId } = useContext(AppContext);
+
     return (
         <header className="header container">
             <div className="header__items container__medium">
@@ -12,21 +13,21 @@ const Header = () => {
                     <span>OneClick</span> Pirate
                 </h1>
                 <div className="header__items__links">
-                    {!loggedIn && (
+                    {!userId && (
                         <>
                             <Link
                                 className="link"
-                                to={"LOGIN"}
-                                onClick={() => setLoggedIn(52)}
+                                to={Routes.LOGIN}
+                                onClick={() => setUserId(52)}
                             >
                                 Login
                             </Link>
-                            <Link className="link" to={"REGISTER"}>
+                            <Link className="link" to={Routes.REGISTER}>
                                 Register
                             </Link>
                         </>
                     )}
-                    {loggedIn && (
+                    {userId && (
                         <>
                             <p>
                                 Welcome <span>NAME</span>
@@ -37,7 +38,7 @@ const Header = () => {
                             <Link
                                 className="link"
                                 to={"#"}
-                                onClick={() => setLoggedIn(undefined)}
+                                onClick={() => setUserId(undefined)}
                             >
                                 Logout
                             </Link>
