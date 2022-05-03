@@ -53,7 +53,7 @@ const Register = () => {
                 </div>
                 <button className="form__btn">Sign Up</button>
                 <p className="form__goto">
-                    Already have an account? Go to <a href="/register">Login</a>
+                    Already have an account? Go to <a href="/login">Login</a>
                 </p>
             </form>
         </>

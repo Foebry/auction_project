@@ -7,7 +7,7 @@
     width: 50%;
     background-color: $white;
     margin-top: 100px;
-    margin-bottom: 205px;
+    margin-bottom: 100px; // voorlopig om de footer wat naar beneden te duwen...
 
     border-radius: 10px;
     box-shadow: 1px 1px 2px 2px $lightmediumblue;
@@ -64,6 +64,7 @@
     }
     &__goto {
         margin: 0 auto;
+        color: $mediumblue;
         & a {
             text-decoration: none;
         }
