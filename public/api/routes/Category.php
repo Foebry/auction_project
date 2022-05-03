@@ -8,6 +8,6 @@
         print("POST category logic");
     }
 
-    function patchCategory() {
-        print("PATCH category logic");
+    function updateCategory() {
+        print("PUT category logic");
     }
