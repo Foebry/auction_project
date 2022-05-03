@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 #misc
-mocks/auctions.js
+auctions.js
