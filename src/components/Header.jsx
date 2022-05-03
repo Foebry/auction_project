@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 
 const Header = () => {
-    const [loggedIn, setLoggedIn] = useState(true);
     const { userId, setUserId } = useContext(AppContext);
+
     return (
         <header className="header container">
             <div className="header__items container__medium">
@@ -12,12 +12,12 @@ const Header = () => {
                     <span>OneClick</span> Pirate
                 </h1>
                 <div className="header__items__links">
-                    {!loggedIn && (
+                    {!userId && (
                         <>
                             <Link
                                 className="link"
                                 to={"#"}
-                                onClick={() => setLoggedIn(52)}
+                                onClick={() => setUserId(52)}
                             >
                                 Login
                             </Link>
@@ -26,7 +26,7 @@ const Header = () => {
                             </Link>
                         </>
                     )}
-                    {loggedIn && (
+                    {userId && (
                         <>
                             <p>
                                 Welcome <span>NAME</span>
@@ -37,7 +37,7 @@ const Header = () => {
                             <Link
                                 className="link"
                                 to={"#"}
-                                onClick={() => setLoggedIn(undefined)}
+                                onClick={() => setUserId(undefined)}
                             >
                                 Logout
                             </Link>
