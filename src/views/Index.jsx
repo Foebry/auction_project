@@ -1,6 +1,7 @@
 import React from "react";
 import Auction from "../components/Auction";
 import Categories from "../components/Categories";
+import Login from "../components/Login";
 import Timer from "../components/Timer";
 import { currentAutcions } from "../mocks/auctions.js";
 

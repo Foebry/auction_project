@@ -16,12 +16,12 @@ const Header = () => {
                         <>
                             <Link
                                 className="link"
-                                to={"#"}
+                                to={"/login"}
                                 onClick={() => setLoggedIn(52)}
                             >
                                 Login
                             </Link>
-                            <Link className="link" to={"#"}>
+                            <Link className="link" to={"./Register.jsx"}>
                                 Register
                             </Link>
                         </>

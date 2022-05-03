@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 const Timer = ({ rest }) => {
     const [time, setTime] = useState(rest - Date.now());
 
-    // let h = Math.floor(time / 360000);
-    // let m = Math.floor((time % 360000) / 6000);
-    // let s = Math.floor((time % 360000) % 6000);
+    let h = Math.floor(time / 360000);
+    let m = Math.floor((time % 360000) / 6000);
+    let s = Math.floor((time % 360000) % 6000);
 
     useEffect(() => {
         const timerId = setInterval(() => {
