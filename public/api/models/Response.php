@@ -1,5 +1,5 @@
 <?php
-
+// print($_SERVER["REQUEST_URI"]);
 class Response
 {
     function __construct()

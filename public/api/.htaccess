@@ -1,7 +1,7 @@
 # Turn rewriting on
 Options +FollowSymLinks
 RewriteEngine On
-#Access-Control-Allow-Origin: localhost:3000
+
 # Basic Authentication mogelijk maken
 RewriteCond %{HTTP:Authorization} ^(.+)$
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -20,5 +20,3 @@ RewriteCond %{QUERY_STRING} !.*no_re_dir.*$ [NC]
 
 # Redirect everything else to index.php
 RewriteRule .* index.php [L]
-
-Options -Indexes
