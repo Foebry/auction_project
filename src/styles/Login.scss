@@ -15,15 +15,31 @@
         margin: 0 auto;
         margin-top: 60px;
         font-size: 40px;
+        color: $mediumdarkblue;
     }
     &__input {
         display: flex;
         flex-direction: column;
         margin: 0 auto;
-        gap: 30px;
+        gap: 20px;
+        &__icon {
+            color: $mediumdarkblue;
+            font-size: 20px;
+            margin-right: 10px;
+        }
+        &__icon2 {
+            color: transparent;
+            font-size: 20px;
+            margin-right: 10px;
+        }
         &__inputfield {
             font-size: 20px;
+            width: 250px;
+            border: none;
+            outline: none;
+            border-bottom: 1px solid $lightmediumblue;
             font-family: initial;
+            color: $mediumdarkblue;
         }
         ::placeholder {
             color: $lightgrey;
@@ -38,7 +54,7 @@
         font-family: initial;
         outline: none;
         border: none;
-        border-radius: 5px;
+        border-radius: 15px;
         padding: 10px;
         &:hover {
             font-weight: bold;

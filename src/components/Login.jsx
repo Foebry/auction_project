@@ -1,4 +1,5 @@
 import React from "react";
+import { MdLockOutline, MdOutlineAlternateEmail } from "react-icons/md";
 
 const Login = () => {
     return (
@@ -6,19 +7,26 @@ const Login = () => {
             <form className="form">
                 <h1 className="form__title">Login</h1>
                 <div className="form__input">
-                    <input
-                        className="form__input__inputfield"
-                        type="email"
-                        placeholder="Enter email"
-                        name="email"
-                        required
-                    />
-                    <input
-                        className="form__input__inputfield"
-                        type="password"
-                        name="pwd"
-                        placeholder="Enter password"
-                    />
+                    <div>
+                        <MdOutlineAlternateEmail className="form__input__icon" />
+                        <input
+                            className="form__input__inputfield"
+                            type="email"
+                            placeholder="Enter email"
+                            name="email"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <MdLockOutline className="form__input__icon" />
+                        <input
+                            className="form__input__inputfield"
+                            type="password"
+                            name="pwd"
+                            placeholder="Enter password"
+                            required
+                        />
+                    </div>
                 </div>
                 <button className="form__btn">Login</button>
                 <p className="form__goto">
