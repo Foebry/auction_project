@@ -3,6 +3,8 @@
 $method = $_SERVER["REQUEST_METHOD"];
 $uri = $_SERVER["REQUEST_URI"];
 $route = explode("/", $uri)[2];
+$id = explode("/", $uri)[3];
+$payload = file_get_contents("php://input");
 
 $responseHandler = new ResponseHandler();
 
@@ -12,10 +14,10 @@ switch ($route) {
     * GET, POST
     */
     case "auctions":
-        if ($uri === "/api/$route") {
+        if ( $uri === "/api/$route" ) {
 
-            if ($method === "GET") getAuctions();
-            elseif ($method === "POST") postAuction($payload);
+            if ( $method === "GET" ) getAuctions();
+            elseif ( $method === "POST" ) postAuction( $payload );
             else $responseHandler->notAllowed();
 
         }
@@ -28,17 +30,18 @@ switch ($route) {
         * /api/auction/{id}
         * GET
         */
-        if ($uri === "|api/$route/[0-9]*$|") {
-            if ($method === "GET") getAuctionDetail($id);
+        if ( preg_match("|api/$route/[0-9]+$|", $uri) ) {
+
+            if ( $method === "GET" ) getAuctionDetail($id);
             else $responseHandler->notAllowed();
         }
         /*
         * /api/auction/{id}/biddings
         * GET
         */
-        elseif ($uri === "|api/$route/[0-9]*/biddings$|"){
+        elseif ( preg_match("|api/$route/[0-9]+/biddings$|", $uri) ){
 
-            if ($method === "GET") getAuctionBiddings($id);
+            if ( $method === "GET" ) getAuctionBiddings($id);
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();
@@ -48,10 +51,10 @@ switch ($route) {
         * /api/articles
         * GET, POST
         */
-        if ($uri === "/api/$route") {
+        if ( $uri === "/api/$route" ) {
             
-            if ($method === "GET") getArticles();
-            elseif ($method === "POST") postArticle($payload);
+            if ( $method === "GET" ) getArticles();
+            elseif ( $method === "POST" ) postArticle($payload);
             else $responseHandler->notAllowed();
         }
 
@@ -64,11 +67,11 @@ switch ($route) {
         * /api/article/{id}
         * GET, PUT, PATCH
         */
-        if($uri === "|api/$route/[0-9]*$|"){
+        if( preg_match("|api/$route/[0-9]+$|", $uri) ){
 
-            if ($method === "GET") getArticleDetail($id);
-            elseif ($method === "PUT") updateArticle($payload);
-            elseif ($method === "PATCH") patchArticle($id, $payload);
+            if ( $method === "GET" ) getArticleDetail($id);
+            elseif ( $method === "PUT" ) updateArticle($payload);
+            elseif ( $method === "PATCH" ) patchArticle($id, $payload);
 
             else $responseHandler->notAllowed();
         }
@@ -81,9 +84,9 @@ switch ($route) {
         * /api/biddings
         * GET
         */
-        if ($uri === "/api/$route") {
+        if ( $uri === "/api/$route" ) {
 
-            if ($method === "GET") getBiddings();
+            if ( $method === "GET" ) getBiddings();
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();
@@ -95,10 +98,10 @@ switch ($route) {
         * /api/categories
         * GET, POST
         */
-        if ($uri === "/api/$route") {
+        if ( $uri === "/api/$route" ) {
             
-            if ($method === "GET") getCategories();
-            elseif($method === "POST") postCategory($payload);
+            if ( $method === "GET" ) getCategories();
+            elseif( $method === "POST" ) postCategory($payload);
 
             else $responseHandler->notAllowed();
         }
@@ -109,11 +112,12 @@ switch ($route) {
     case "category":
         /*
         * /api/category/{id}
-        * PUT
+        * GET, PUT
         */
-        if($uri === "|api/$route/[0-9]*$|"){
+        if( preg_match("|api/$route/[0-9]+$|", $uri) ){
             
-            if ($method === "PATCH") updateCategory($payload);
+            if ( $method === "GET" ) getCategory($id);
+            elseif ( $method === "PATCH" ) updateCategory($payload);
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();
@@ -125,11 +129,11 @@ switch ($route) {
         * /api/user/{id}
         * GET, PATCH, PUT
         */
-        if (preg_match("|api/$route/[0-9]*$|", $uri)){
+        if ( preg_match("|api/$route/[0-9]+$|", $uri) ){
 
-            if ($method === "GET") getUserDetail($id);
-            elseif($method === "PATCH") patchUser($id, $payload);
-            elseif ($method === "PUT") updateUser($payload);
+            if ( $method === "GET" ) getUserDetail($id);
+            elseif( $method === "PATCH" ) patchUser($id, $payload);
+            elseif ( $method === "PUT" ) updateUser($payload);
 
             else $responseHandler->notAllowed();
         }

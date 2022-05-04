@@ -10,11 +10,13 @@ function postAuction() {
     print("POST auction logic");
 }
 
-function getAuctionDetail() {
+function getAuctionDetail( $id ) {
 
-    print("GET auctionDetail logic");
+    print("GET auctionDetail logic for id $id");
+    exit();
 }
 
 function getAuctionBiddings() {
     print("GET auction biddings logic");
+    exit();
 }
