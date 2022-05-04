@@ -2,23 +2,28 @@ import React from "react";
 import Timer from "./Timer";
 import { RiCoinLine } from "react-icons/ri";
 import { auctionDetail } from "../mocks/auctionDetail.js";
+import { useLocation } from "react-router-dom";
 
 const AuctionDetail = ({ expiration, id, name, image, biddings }) => {
+    const location = useLocation();
+
+    const { state } = location;
+    console.log(state);
     return (
         <>
             <article className="articleDetail">
                 <div className="articleDetail__imgholder">
                     <img
                         className="articleDetail__imgholder__img"
-                        src="src/images/mixer.jpg"
+                        src={auctionDetail.image}
                         alt="#"
                     ></img>
                     <div className="articleDetail__imgholder__title">
-                        <h2>artikel: {name}</h2>
+                        <h2>artikel: {auctionDetail.name}</h2>
                     </div>
                 </div>
                 <div className="articleDetail__content">
-                    <Timer rest={expiration} />
+                    <Timer rest={state.expiration} />
                     <div className="articleDetail__content__bid">
                         <p className="articleDetail__content__bid__fasttext">
                             Bet fast:
@@ -56,15 +61,17 @@ const AuctionDetail = ({ expiration, id, name, image, biddings }) => {
                             Highests bids:
                         </p>
                         <div className="articleDetail__content__bid__highest">
-                            {/* {biddings.length > 0 ? (
+                            {auctionDetail.biddings.length > 0 ? (
                                 <ul>
-                                    {biddings.map((bid) => (
-                                        <li key={bid.id}>{bid.name} : {bid.bid} €</li>
+                                    {auctionDetail.biddings.map((bid) => (
+                                        <li key={bid.id}>
+                                            {bid.user.name} : {bid.bid} €
+                                        </li>
                                     ))}
                                 </ul>
                             ) : (
                                 <p>No biddings yet</p>
-                            )} */}
+                            )}
                         </div>
                     </div>
                 </div>

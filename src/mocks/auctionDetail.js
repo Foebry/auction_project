@@ -1,7 +1,7 @@
 export const auctionDetail = {
     id: 4,
     name: "Playstation5",
-    image: "src/images/mixer.jpg",
+    image: "src/images/playstation.jpg",
     biddings: [
         {
             id: 1,
