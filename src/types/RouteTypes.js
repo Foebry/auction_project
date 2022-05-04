@@ -1,4 +1,5 @@
 export const Routes = {
     INDEX: "/",
-    CONTACT: "/contact"
-}
+    CONTACT: "/contact",
+    AUCTION_DETAIL: "/detail",
+};

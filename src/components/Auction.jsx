@@ -20,7 +20,7 @@ const Auction = ({ id, name, expiration, highest_bid, image }) => {
                     <Timer rest={expiration} />
                     <div className="article__content__bid">
                         <p>{highest_bid}</p>
-                        <button className="article__content__bid__btn">
+                        <button key={id} className="article__content__bid__btn">
                             <RiCoinLine className="article__content__bid__btn__icon" />
                             <p className="article__content__bid__btn__text">
                                 Bet
