@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
+import { Routes } from "../types/RouteTypes";
 
 const Header = () => {
     const { userId, setUserId } = useContext(AppContext);
@@ -16,12 +17,12 @@ const Header = () => {
                         <>
                             <Link
                                 className="link"
-                                to={"#"}
+                                to={Routes.LOGIN}
                                 onClick={() => setUserId(52)}
                             >
                                 Login
                             </Link>
-                            <Link className="link" to={"#"}>
+                            <Link className="link" to={Routes.REGISTER}>
                                 Register
                             </Link>
                         </>
