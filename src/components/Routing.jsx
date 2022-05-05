@@ -13,6 +13,7 @@ const Routing = () => {
                 exact
                 path={views.AUCTION_DETAIL}
                 element={<AuctionDetail />}
+
             />
             <Route exact path={views.LOGIN} element={<Login />} />
             <Route exact path={views.REGISTER} element={<Register />} />

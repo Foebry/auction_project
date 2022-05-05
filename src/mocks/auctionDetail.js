@@ -44,4 +44,8 @@ export const auctionDetail = {
             timestamp: 1651654787000,
         },
     ],
+
 };
+
+
+
