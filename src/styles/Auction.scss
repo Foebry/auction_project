@@ -32,6 +32,11 @@
             text-align: center;
             font-size: 30px;
         }
+        &__highest {
+            align-self: center;
+            height: 30px;
+            width: 60%;
+        }
         &__bid {
             display: flex;
             justify-content: space-evenly;
