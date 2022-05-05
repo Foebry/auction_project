@@ -1,10 +1,17 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import Auction from "../components/Auction";
 import Categories from "../components/Categories";
 import { currentAuctions } from "../mocks/auctions.js";
+import axios from 'axios';
 
 const Index = () => {
     const [activeFilter, setActiveFilter] = useState([]);
+
+    useEffect(()=>{
+        (async ()=>{
+            const data = await axios("http://localhost:8000/api/auctions");
+        })();
+    },[])
 
     const handleFilterClick = (e) => {
         const id = e.target.id;
