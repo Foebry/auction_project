@@ -1,0 +1,12 @@
+export const AUCTIONS = "http://localhost:8000/api/auctions";
+export const AUCTION = "http://localhost:8000/api/auction/:id";
+export const AUCTION_BIDDINGS = "http://localhost:8000/api/auction/:id/biddings";
+export const ARTICLES = "http://localhost:8000/api/articles";
+export const ARTICLE = "http://localhost:8000/api/article/:id";
+export const BIDDINGS = "http://localhost:8000/api/biddings";
+export const CATEGORIES = "http://localhost:8000/api/categories";
+export const CATEGORY = "http://localhost:8000/api/category/:id";
+export const USER = "http://localhost:8000/api/user/:id";
+export const USER_ARTICLES = "http://localhost:8000/api/user/:id/articles";
+export const REGISTER = "http://localhost:8000/api/register";
+export const LOGIN = "http://localhost:800/api/login"; 
