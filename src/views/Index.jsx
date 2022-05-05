@@ -10,6 +10,7 @@ const Index = () => {
     useEffect(()=>{
         (async ()=>{
             const data = await axios("http://localhost:8000/api/auctions");
+            console.log(data);
         })();
     },[])
 

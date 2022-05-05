@@ -8,7 +8,7 @@ class DbManager {
 
   private function connectDB() {
     try {
-      $db = new PDO('mysql:host=fs_sander;dbname=fs_sander', 'fs_sander', 'Y8SkDIvlwM8Y');
+      $db = new PDO('mysql:host=185.115.218.166;dbname=fs_sander', 'fs_sander', 'Y8SkDIvlwM8Y');
       print 'Connection made';
       return $db;
     } catch (PDOException $error) {
@@ -23,6 +23,5 @@ class DbManager {
 
     return $result->rowCount() > 0 ? $result->fetchAll(PDO::FETCH_ASSOC) : 'No result';
   }
-
 
 }
