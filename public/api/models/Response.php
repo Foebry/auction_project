@@ -1,14 +1,15 @@
 <?php
 
-class Response
-{
-    function __construct()
-    {
+namespace models;
+
+class Response {
+
+    function __construct() {
     }
 
 
-  /**
-   * @todo Create response class
-   */
+    /**
+     * @todo Create response class
+     */
 
 }
