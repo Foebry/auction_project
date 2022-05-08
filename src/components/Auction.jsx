@@ -1,8 +1,11 @@
 import React from "react";
+import { Routes } from "../types/RouteTypes";
+import { useNavigate } from "react-router-dom";
 import Timer from "./Timer.jsx";
 import { RiCoinLine } from "react-icons/ri";
 
 const Auction = ({ id, name, expiration, highest_bid, image }) => {
+    const navigate = useNavigate();
     return (
         <>
             <article className="article">
@@ -20,7 +23,14 @@ const Auction = ({ id, name, expiration, highest_bid, image }) => {
                     <Timer rest={expiration} />
                     <div className="article__content__bid">
                         <p>{highest_bid}</p>
-                        <button className="article__content__bid__btn">
+                        <button
+                            onClick={() =>
+                                navigate(Routes.AUCTION_DETAIL, {
+                                    state: { auction_id: id, expiration },
+                                })
+                            }
+                            className="article__content__bid__btn"
+                        >
                             <RiCoinLine className="article__content__bid__btn__icon" />
                             <p className="article__content__bid__btn__text">
                                 Bet
