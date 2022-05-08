@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { MdLockOutline, MdOutlineAlternateEmail } from "react-icons/md";
+import { Routes } from "../types/RouteTypes";
 
 const Login = () => {
     return (
         <>
-            <form className="form">
+            <form className="form" onSubmit={(e) => e.preventDefault()}>
                 <h1 className="form__title">Login</h1>
                 <div className="form__input">
                     <div>
@@ -30,7 +32,8 @@ const Login = () => {
                 </div>
                 <button className="form__btn">Login</button>
                 <p className="form__goto">
-                    Don't have an account yet? <a href="/register">Register</a>
+                    Don't have an account yet?{" "}
+                    <Link to={Routes.REGISTER}>Register</Link>
                 </p>
             </form>
         </>
