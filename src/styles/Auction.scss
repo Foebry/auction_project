@@ -7,6 +7,16 @@
     margin-bottom: 20px;
     border-radius: 10px;
     box-shadow: 1px 1px 2px 2px $lightmediumblue;
+    &__heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+        &__content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
     &__imgholder {
         width: 375px;
         height: 275px;
@@ -23,25 +33,30 @@
         }
     }
     &__content {
+        width: calc(100% - 375px);
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        padding: 30px 0;
+        justify-content: space-around;
+        padding: 30px 20px;
         &__title {
-            text-align: center;
-            font-size: 30px;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 20px;
+        }
+        &__desc {
+            font-size: 15px;
         }
         &__highest {
-            align-self: center;
-            height: 30px;
-            width: 60%;
+            width: 100%;
+            font-size: 40px;
+            color: $darkblue;
+            font-weight: bold;
+            text-align: end;
         }
         &__bid {
             display: flex;
-            justify-content: space-evenly;
             align-items: center;
-            height: 25px;
+            gap: 20px;
             width: 100%;
             &__btn {
                 display: flex;
@@ -63,8 +78,7 @@
                     font-size: 20px;
                 }
                 &:hover {
-                    font-weight: bold;
-                    background-color: $lightmediumblue;
+                    background-color: $lightblue;
                     cursor: pointer;
                 }
             }
