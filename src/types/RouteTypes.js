@@ -1,4 +1,6 @@
 export const Routes = {
     INDEX: "/",
-    CONTACT: "/contact"
-}
+    CONTACT: "/contact",
+    LOGIN: "/login",
+    REGISTER: "/register",
+};
