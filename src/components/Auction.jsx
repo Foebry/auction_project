@@ -29,7 +29,6 @@ const Auction = ({ id, name, expiration, highest_bid, image }) => {
                                     state: { auction_id: id, expiration },
                                 })
                             }
-                            key={id}
                             className="article__content__bid__btn"
                         >
                             <RiCoinLine className="article__content__bid__btn__icon" />

@@ -7,11 +7,7 @@ const Routing = () => {
     return (
         <Routes>
             <Route path={views.INDEX} element={<Index />} />
-            <Route
-                exact
-                path={views.AUCTION_DETAIL}
-                element={<AuctionDetail />}
-            />
+            <Route path={views.AUCTION_DETAIL} element={<AuctionDetail />} />
         </Routes>
     );
 };

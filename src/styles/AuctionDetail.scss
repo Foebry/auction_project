@@ -59,6 +59,7 @@
                     outline: none;
                     border: none;
                     border-radius: 5px;
+                    cursor: pointer;
                 }
             }
             &__input {
@@ -75,7 +76,6 @@
                     justify-content: space-evenly;
                     height: 30px;
                     width: 60px;
-                    margin-bottom: 30px;
                     color: $white;
                     background-color: $mediumblue;
                     outline: none;

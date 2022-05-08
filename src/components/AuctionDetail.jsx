@@ -4,11 +4,10 @@ import { RiCoinLine } from "react-icons/ri";
 import { auctionDetail } from "../mocks/auctionDetail.js";
 import { useLocation } from "react-router-dom";
 
-const AuctionDetail = ({ expiration, id, name, image, biddings }) => {
+const AuctionDetail = () => {
     const location = useLocation();
 
     const { state } = location;
-    console.log(state);
     return (
         <>
             <article className="articleDetail">
