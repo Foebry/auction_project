@@ -4,7 +4,9 @@ namespace models;
 
 class Response {
 
-    function __construct() {
+    function __construct($response) {
+
+        print( json_encode($response) );
     }
 
 
