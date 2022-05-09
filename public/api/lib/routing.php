@@ -3,10 +3,11 @@
 $method = $_SERVER["REQUEST_METHOD"];
 $uri = $_SERVER["REQUEST_URI"];
 $route = explode("/", $uri)[2];
-$id = explode("/", $uri)[3];
 $payload = file_get_contents("php://input");
 
-$responseHandler = new ResponseHandler();
+$container = $_SESSION["container"];
+$responseHandler = $container->getResponseHandler();
+$dbm = $container->getDbManager();
 
 switch ($route) {
     /*
@@ -16,8 +17,8 @@ switch ($route) {
     case "auctions":
         if ( $uri === "/api/$route" ) {
 
-            if ( $method === "GET" ) getAuctions();
-            elseif ( $method === "POST" ) postAuction( $payload );
+            if ( $method === "GET" ) getAuctions( $dbm );
+            elseif ( $method === "POST" ) postAuction( $dbm, $payload );
             else $responseHandler->notAllowed();
 
         }
@@ -32,7 +33,9 @@ switch ($route) {
         */
         if ( preg_match("|api/$route/[0-9]+$|", $uri) ) {
 
-            if ( $method === "GET" ) getAuctionDetail($id);
+            $id = explode("/", $uri)[3];
+
+            if ( $method === "GET" ) getAuctionDetail( $dbm, $id );
             else $responseHandler->notAllowed();
         }
         /*
@@ -40,6 +43,8 @@ switch ($route) {
         * GET
         */
         elseif ( preg_match("|api/$route/[0-9]+/biddings$|", $uri) ){
+            
+            $id = explode("/", $uri)[3];
 
             if ( $method === "GET" ) getAuctionBiddings($id);
             else $responseHandler->notAllowed();
@@ -68,6 +73,8 @@ switch ($route) {
         * GET, PUT, PATCH
         */
         if( preg_match("|api/$route/[0-9]+$|", $uri) ){
+
+            $id = explode("/", $uri)[3];
 
             if ( $method === "GET" ) getArticleDetail($id);
             elseif ( $method === "PUT" ) updateArticle($payload);
@@ -115,6 +122,8 @@ switch ($route) {
         * GET, PUT
         */
         if( preg_match("|api/$route/[0-9]+$|", $uri) ){
+
+            $id = explode("/", $uri)[3];
             
             if ( $method === "GET" ) getCategory($id);
             elseif ( $method === "PATCH" ) updateCategory($payload);
@@ -131,6 +140,8 @@ switch ($route) {
         */
         if ( preg_match("|api/$route/[0-9]+$|", $uri) ){
 
+            $id = explode("/", $uri)[3];
+
             if ( $method === "GET" ) getUserDetail($id);
             elseif( $method === "PATCH" ) patchUser($id, $payload);
             elseif ( $method === "PUT" ) updateUser($payload);
@@ -142,6 +153,8 @@ switch ($route) {
         * GET
         */
         elseif (preg_match("|api/$route/[0-9]*/articles$|", $uri)){
+            
+            $id = explode("/", $uri)[3];
 
             if ($method === "GET") getUserArticles($id);
             else $responseHandler->notAllowed();
@@ -171,7 +184,7 @@ switch ($route) {
         */
         if ($uri === "/api/$route") {
             
-            if ($method === "POST") handleRegister($payload);
+            if ($method === "POST") handleRegister( $container, $payload );
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();

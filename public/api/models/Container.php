@@ -2,6 +2,14 @@
 
 namespace models;
 
+use ArticleHandler;
+use AuctionHandler;
+use BiddingHandler;
+use CategoryHandler;
+use ResponseHandler;
+use UserHandler;
+use DbManager;
+
 class Container {
 
     private $articleHandler;
@@ -19,7 +27,6 @@ class Container {
     private $dbManager;
 
     function __construct() {
-        print("created new container");
         $this->articleHandler = NULL;
         $this->auctionHandler = NULL;
         $this->biddingHandler = NULL;
@@ -73,7 +80,7 @@ class Container {
 
     function getDbManager(): DbManager {
         if ($this->dbManager === NULL) {
-            $this->dbManager = new DbManager();
+            $this->dbManager = new DbManager($this->getResponseHandler());
         }
         return $this->dbManager;
     }
