@@ -4,4 +4,5 @@ export const Routes = {
     AUCTION_DETAIL: "/detail",
     LOGIN: "/login",
     REGISTER: "/register",
+    DETAIL_MODAL: "/",
 };
