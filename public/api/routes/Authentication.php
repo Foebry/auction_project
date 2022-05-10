@@ -1,15 +1,16 @@
 <?php
 
 use models\Response;
+use models\Container;
 
 /**
  * handleAuthentication
  *
- * @param  \models\Container $container
+ * @param  Container $container
  * @param  string $payload
- * @return \models\Response
+ * @return Response
  */
-function handleAuthentication(\models\Container $container, string $payload): Response {
+function handleAuthentication(Container $container, string $payload): Response {
     $payload = json_decode($payload, true);
 
     // check if required fields are sent
