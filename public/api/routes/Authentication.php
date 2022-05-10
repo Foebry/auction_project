@@ -25,7 +25,7 @@ function handleAuthentication(\models\Container $container, string $payload): Re
     if ( !password_verify(($payload["usr_password"]), $user->getUsrPassword()) ){
         $container->getResponseHandler()->unprocessableEntity("Invalid password");
     }
-    // $container->getDbManager()->closeConnection();
+    $container->getDbManager()->closeConnection();
 
     return new Response(["usr_id"=>$user->getUsrId(), "usr_name"=>$user->getUsrName()]);
 

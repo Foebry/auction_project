@@ -5,7 +5,6 @@ $uri = $_SERVER["REQUEST_URI"];
 $route = explode("/", $uri)[2];
 $payload = file_get_contents("php://input");
 
-
 $container = $_SESSION["container"];
 $responseHandler = $container->getResponseHandler();
 $dbm = $container->getDbManager();
