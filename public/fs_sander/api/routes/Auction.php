@@ -1,12 +1,25 @@
 <?php
 
+use services\DbManager;
+use models\Response;
 
-function getAuctions()
+function getAuctions( DbManager $dbm ): Response
 {
-    print("GET auctions logic");
-  /**
-   * @todo Create Select Auction
-   */
+	$now = new DateTime("now");
+	$now = $now->getTimestamp()*1000;
+	
+	$data = $dbm->getSQL(
+		"SELECT 
+			auc_id id, art_name name, auc_expiration expiration, 
+			(select max(bid_price) from gw_bidding where bid_auc_id = auc_id) as highest_bid, art_img image
+		FROM gw_auction JOIN gw_article
+			on auc_art_id = art_id
+		WHERE auc_expiration > $now"
+	);
+
+	$dbm->closeConnection();
+
+	return new Response($data);
 }
 
 function postAuction() {

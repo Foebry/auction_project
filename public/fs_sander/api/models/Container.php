@@ -8,7 +8,7 @@ use BiddingHandler;
 use CategoryHandler;
 use ResponseHandler;
 use UserHandler;
-use DbManager;
+use \services\DbManager;
 
 class Container {
 
