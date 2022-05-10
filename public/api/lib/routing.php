@@ -3,10 +3,12 @@
 $method = $_SERVER["REQUEST_METHOD"];
 $uri = $_SERVER["REQUEST_URI"];
 $route = explode("/", $uri)[2];
-$id = explode("/", $uri)[3];
 $payload = file_get_contents("php://input");
 
-$responseHandler = new ResponseHandler();
+
+$container = $_SESSION["container"];
+$responseHandler = $container->getResponseHandler();
+$dbm = $container->getDbManager();
 
 switch ($route) {
     /*
@@ -157,7 +159,7 @@ switch ($route) {
         */
         if ($uri === "/api/$route") {
             
-            if ($method === "POST") handleAuthentication($payload);
+            if ($method === "POST") handleAuthentication($container, $payload);
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();
