@@ -1,7 +1,7 @@
 <?php
 
 $method = $_SERVER["REQUEST_METHOD"];
-$uri = $_SERVER["REQUEST_URI"];
+$uri = explode("fs_sander", $_SERVER["REQUEST_URI"])[1];
 $route = explode("/", $uri)[2];
 $payload = file_get_contents("php://input");
 
