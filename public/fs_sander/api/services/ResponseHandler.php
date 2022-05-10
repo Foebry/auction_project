@@ -25,7 +25,7 @@
             exit();
         }
 
-        function internalServerError($msg="Internal Server Error ENCOUNTERED") {
+        function internalServerError($msg="Internal Server Error") {
             header("HTTP/1.1 500 $msg");
             exit();
         }
