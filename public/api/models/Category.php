@@ -35,7 +35,9 @@ class Category {
      * @param string $cat_name
      */
     public function setCatName($cat_name) {
-        $this->cat_name = $cat_name;
+        if(is_string($cat_name)){
+            $this->cat_name = $cat_name;
+        }
     }
 
 }
