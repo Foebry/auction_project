@@ -43,7 +43,9 @@ class Bidding {
      * @param int $bid_user_id
      */
     public function setBidUserId($bid_user_id) {
-        $this->bid_user_id = $bid_user_id;
+        if (is_numeric($bid_user_id)){
+            $this->bid_user_id = $bid_user_id;
+        }
     }
 
     /**
@@ -57,7 +59,9 @@ class Bidding {
      * @param int $bid_auc_id
      */
     public function setBidAucId($bid_auc_id) {
-        $this->bid_auc_id = $bid_auc_id;
+        if (is_numeric($bid_auc_id)){
+            $this->bid_auc_id = $bid_auc_id;
+        }
     }
 
     /**
@@ -68,10 +72,11 @@ class Bidding {
     }
 
     /**
-     * @param double $bid_price
+     * @param float $bid_price
      */
     public function setBidPrice($bid_price) {
-        $this->bid_price = $bid_price;
+        if(is_float($bid_price)){
+            $this->bid_price = $bid_price;
+        }
     }
-
 }
