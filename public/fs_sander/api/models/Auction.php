@@ -3,6 +3,7 @@
 namespace models;
 
 use DateTime;
+use \services\DbManager;
 
 class Auction {
 
@@ -56,6 +57,40 @@ class Auction {
      */
     public function setAucExpiration($auc_expiration) {
         $this->auc_expiration = $auc_expiration;
+    }
+
+    /**
+     * getHighestBidValue
+     *
+     * @param  DbManager $dbm
+     * @return int
+     */
+    public function getHighestBidValue(DbManager $dbm): int {
+
+        $auction_id = $this->getAucId();
+        $highest_bid = $dbm->getSQL("SELECT bid_price from gw_bidding where bid_auc_id = $auction_id order by bid_price desc limit 1")[0]["bid_price"];
+
+        return $highest_bid;
+    }
+
+    /**
+     * validateBidTiming
+     *
+     * @param  Auction $auction
+     * @param  Container $container
+     * @return void
+     */
+    public static function validateBidTiming(Auction $auction, Container $container): void{
+
+        $now = new DateTime("now");
+        $currentTimestamp = $now->getTimestamp()*1000;
+
+        $auction_expired = $currentTimestamp > $auction->getAucExpiration();
+        // $auction_not_started = $currentTimestamp < $auction->getAucStart();
+
+        if ($auction_expired /*or $auction_not_started */)
+            $container->getResponseHandler()->unprocessableEntity("You cannot bid on this auction at this time");
+
     }
 
 }
