@@ -4,7 +4,7 @@ use models\Article;
 use models\Container;
 
     class ArticleHandler {
-        
+
         public function getById(int $art_id, Container $container): Article {
 
             $data = $container->getDbManager()->getSQL("
@@ -28,3 +28,4 @@ use models\Container;
             return $article;
         }
     }
+
