@@ -35,7 +35,7 @@ switch ($route) {
 
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getAuctionDetail( $dbm, $id );
+            if ( $method === "GET" ) getAuctionDetail( $container, $id );
             else $responseHandler->notAllowed();
         }
         /*
