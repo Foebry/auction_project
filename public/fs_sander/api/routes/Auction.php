@@ -1,21 +1,53 @@
 <?php
 
-use \models\Response;
-use \models\Container;
+use models\Container;
+use services\DbManager;
+use models\Response;
+use models\Auction;
 
-function getAuctions()
+function getAuctions( DbManager $dbm ): Response
 {
-    print("GET auctions logic");
-  /**
-   * @todo Create Select Auction
-   */
+	$now = new DateTime("now");
+	$now = $now->getTimestamp()*1000;
+	
+	$data = $dbm->getSQL(
+		"SELECT 
+			auc_id id, art_name name, auc_expiration expiration, 
+			(select max(bid_price) from gw_bidding where bid_auc_id = auc_id) as highest_bid, art_img image
+		FROM gw_auction JOIN gw_article
+			on auc_art_id = art_id
+		WHERE auc_expiration > $now"
+	);
+
+	$dbm->closeConnection();
+
+	return new Response($data);
 }
 
-function postAuction() {
-    print("POST auction logic");
-  /**
-   * @todo Create Insert Auction
-   */
+function postAuction(Container $container, string $payload) {
+
+	$payload = json_decode($payload, true);
+
+	checkPayloadPOST(["auc_art_id", "auc_expiration"], $payload, $container);
+	$article = $container->getArticleHandler()->getById($payload["auc_art_id"], $container);
+
+	$auction = new Auction(null, $article->getArtId(), $payload["auc_expiration"]);
+
+	$auction_id = $container->getDbManager()->insertSQL(
+		sprintf(
+			"INSERT into gw_auction(auc_art_id, auc_expiration) values(%d, %d)",
+			$article->getArtCatId(),
+			$payload["auc_expiration"]
+		)
+	);
+	$container->getDbManager()->closeConnection();
+
+	return new Response([
+		"auc_id" => $auction_id,
+		"auc_art_id"=>$auction->getAucArtId(),
+		"auc_expiration"=>$auction->getAucExpiration()
+	]);
+
 }
 
 /**

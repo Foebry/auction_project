@@ -18,7 +18,7 @@ switch ($route) {
         if ( $uri === "/api/$route" ) {
 
             if ( $method === "GET" ) getAuctions( $dbm );
-            elseif ( $method === "POST" ) postAuction( $dbm, $payload );
+            elseif ( $method === "POST" ) postAuction( $container, $payload );
             else $responseHandler->notAllowed();
 
         }
