@@ -46,7 +46,7 @@ switch ($route) {
             
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getAuctionBiddings($id);
+            if ( $method === "GET" ) getAuctionBiddings($container, $id);
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();

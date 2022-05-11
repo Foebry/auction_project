@@ -21,8 +21,8 @@ function postAuction() {
 /**
  * getAuctionDetail
  *
- * @param  mixed $container
- * @param  mixed $id
+ * @param  Container $container
+ * @param  int $id
  * @return Response
  */
 function getAuctionDetail( Container $container, int $id ): Response {
@@ -56,10 +56,20 @@ function getAuctionDetail( Container $container, int $id ): Response {
 	return new Response($data);
 }
 
-function getAuctionBiddings() {
-    print("GET auction biddings logic");
-  /**
-   * @todo Create Select AuctionBidding
-   */
-    exit();
+/**
+ * getAuctionBiddings
+ *
+ * @param  Container $container
+ * @param  int $auction_id
+ * @return Response
+ */
+function getAuctionBiddings(Container $container, int $auction_id): Response {
+
+	$dbm = $container->getDbManager();
+
+	$biddings = $dbm->getSQL("SELECT * from gw_bidding where bid_auc_id = $auction_id");
+
+	$dbm->closeConnection();
+
+	return new Response($biddings);
 }
