@@ -1,7 +1,9 @@
 <?php
 
+use models\Container;
 use services\DbManager;
 use models\Response;
+use models\Auction;
 
 function getAuctions( DbManager $dbm ): Response
 {
@@ -22,11 +24,30 @@ function getAuctions( DbManager $dbm ): Response
 	return new Response($data);
 }
 
-function postAuction() {
-    print("POST auction logic");
-  /**
-   * @todo Create Insert Auction
-   */
+function postAuction(Container $container, string $payload) {
+
+	$payload = json_decode($payload, true);
+
+	checkPayloadPOST(["auc_art_id", "auc_expiration"], $payload, $container);
+	$article = $container->getArticleHandler()->getById($payload["auc_art_id"], $container);
+
+	$auction = new Auction(null, $article->getArtId(), $payload["auc_expiration"]);
+
+	$auction_id = $container->getDbManager()->insertSQL(
+		sprintf(
+			"INSERT into gw_auction(auc_art_id, auc_expiration) values(%d, %d)",
+			$article->getArtCatId(),
+			$payload["auc_expiration"]
+		)
+	);
+	$container->getDbManager()->closeConnection();
+
+	return new Response([
+		"auc_id" => $auction_id,
+		"auc_art_id"=>$auction->getAucArtId(),
+		"auc_expiration"=>$auction->getAucExpiration()
+	]);
+
 }
 
 function getAuctionDetail( $id ) {
