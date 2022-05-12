@@ -170,7 +170,7 @@ switch ($route) {
         */
         if ($uri === "/api/$route") {
             
-            if ($method === "POST") handleAuthentication($container, $payload);
+            if ($method === "GET") handleAuthentication($container, $payload);
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();
