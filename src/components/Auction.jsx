@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import { useContext } from "react";
 import { Routes } from "../types/RouteTypes";
 import Detailmodal from "./modals/Detailmodal";
 import BaseModal from "./modals/baseModal";
 import { useNavigate } from "react-router-dom";
 import Timer from "./Timer.jsx";
 import { RiCoinLine } from "react-icons/ri";
+import { AppContext } from "../context/AppContext";
 
 const Auction = ({ id, name, expiration, highest_bid, image }) => {
-    //const navigate = useNavigate();
-    const [openDetail, setOpenDetail] = useState(false);
+    const { setModal } = useContext(AppContext);
+
     return (
         <>
             <article className="article">
@@ -28,7 +29,7 @@ const Auction = ({ id, name, expiration, highest_bid, image }) => {
                         <p>{highest_bid}</p>
                         <button
                             onClick={() => {
-                                setOpenDetail(true);
+                                setModal(id);
                             }}
                             className="article__content__bid__btn"
                         >
@@ -37,9 +38,6 @@ const Auction = ({ id, name, expiration, highest_bid, image }) => {
                                 Bet
                             </p>
                         </button>
-                        {openDetail && (
-                            <Detailmodal closeDetail={setOpenDetail} />
-                        )}
                     </div>
                 </div>
             </article>

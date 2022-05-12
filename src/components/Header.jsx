@@ -6,9 +6,7 @@ import LoginModal from "./modals/LoginModal";
 import RegisterModal from "./modals/RegisterModal";
 
 const Header = () => {
-    const { userId, setUserId } = useContext(AppContext);
-    const [openLogin, setOpenLogin] = useState(false);
-    const [openRegister, setOpenRegister] = useState(false);
+    const { userId, setUserId, setModal } = useContext(AppContext);
 
     return (
         <header className="header container">
@@ -22,25 +20,17 @@ const Header = () => {
                             <Link
                                 className="link"
                                 to={Routes.LOGIN}
-                                onClick={() => setOpenLogin(true)}
+                                onClick={() => setModal("login")}
                             >
                                 Login
                             </Link>
-                            {openLogin && (
-                                <LoginModal closeLogin={setOpenLogin} />
-                            )}
                             <Link
                                 className="link"
                                 to={Routes.REGISTER}
-                                onClick={() => setOpenRegister(true)}
+                                onClick={() => setModal("register")}
                             >
                                 Register
                             </Link>
-                            {openRegister && (
-                                <RegisterModal
-                                    closeRegister={setOpenRegister}
-                                />
-                            )}
                         </>
                     )}
                     {userId && (

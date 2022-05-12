@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../../context/AppContext";
 import Detailmodal from "./Detailmodal";
 
-const BaseModal = ({ openDetail, closeDetail }) => {
+const BaseModal = ({ children }) => {
+    const { onClose } = useContext(AppContext);
+
     return (
-        <div className="modalBackground">
-            <div className="modalBackground__modalContainer">
-                <div className="modalBackground__modalContainer__closeBtn">
-                    <button onClick={() => closeDetail(false)}>X</button>
-                </div>
-                <Detailmodal />
+        <div className="modal">
+            <div className="modal__closeBtn">
+                <button onClick={onClose}>X</button>
             </div>
+            {children}
         </div>
     );
 };
