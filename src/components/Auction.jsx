@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Routes } from "../types/RouteTypes";
-import Detailmodal from "./Detailmodal";
+import Detailmodal from "./modals/Detailmodal";
+import BaseModal from "./modals/baseModal";
 import { useNavigate } from "react-router-dom";
 import Timer from "./Timer.jsx";
 import { RiCoinLine } from "react-icons/ri";

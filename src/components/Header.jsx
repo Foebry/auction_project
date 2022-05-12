@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { Routes } from "../types/RouteTypes";
+import LoginModal from "./modals/LoginModal";
+import RegisterModal from "./modals/RegisterModal";
 
 const Header = () => {
     const { userId, setUserId } = useContext(AppContext);
+    const [openLogin, setOpenLogin] = useState(false);
+    const [openRegister, setOpenRegister] = useState(false);
 
     return (
         <header className="header container">
@@ -18,13 +22,25 @@ const Header = () => {
                             <Link
                                 className="link"
                                 to={Routes.LOGIN}
-                                onClick={() => setUserId(52)}
+                                onClick={() => setOpenLogin(true)}
                             >
                                 Login
                             </Link>
-                            <Link className="link" to={Routes.REGISTER}>
+                            {openLogin && (
+                                <LoginModal closeLogin={setOpenLogin} />
+                            )}
+                            <Link
+                                className="link"
+                                to={Routes.REGISTER}
+                                onClick={() => setOpenRegister(true)}
+                            >
                                 Register
                             </Link>
+                            {openRegister && (
+                                <RegisterModal
+                                    closeRegister={setOpenRegister}
+                                />
+                            )}
                         </>
                     )}
                     {userId && (

@@ -1,8 +1,8 @@
 import React from "react";
-import Timer from "./Timer";
+import Timer from "../Timer";
 import { RiCoinLine } from "react-icons/ri";
 import { useLocation } from "react-router-dom";
-import { auctionDetail } from "../mocks/auctionDetail.js";
+import { auctionDetail } from "../../mocks/auctionDetail.js";
 
 const Detailmodal = ({ closeDetail }) => {
     const { state } = location;

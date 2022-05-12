@@ -1,0 +1,99 @@
+.modalBackground {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.9;
+    background-color: $greytransparent;
+    display: flex;
+    &__modalContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        margin: 0 auto;
+        margin-top: 150px;
+        background-color: $white;
+        width: 400px;
+        height: 500px;
+        border-radius: 10px;
+        box-shadow: 1px 1px 2px 2px $lightmediumblue;
+        opacity: 1;
+        &__closeBtn {
+            display: flex;
+            justify-content: flex-end;
+            & button {
+                background-color: transparent;
+                border: none;
+                font-size: 25px;
+                cursor: pointer;
+                margin: 5px;
+            }
+        }
+        &__title {
+            margin: 0 auto;
+            margin-top: 60px;
+            font-size: 40px;
+            color: $mediumdarkblue;
+        }
+
+        &__input {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            margin: 0 auto;
+            gap: 20px;
+            &__item {
+                width: 80%;
+                margin: 0 auto;
+                &__icon {
+                    color: $mediumdarkblue;
+                    font-size: 20px;
+                    margin-right: 10px;
+                }
+                &__icon2 {
+                    color: transparent;
+                    background-color: transparent;
+                    font-size: 20px;
+                    margin-right: 10px;
+                }
+                &__inputfield {
+                    font-size: 20px;
+                    width: 250px;
+                    border: none;
+                    outline: none;
+                    border-bottom: 1px solid $lightmediumblue;
+                    font-family: initial;
+                    color: $mediumdarkblue;
+                }
+                ::placeholder {
+                    color: $lightgrey;
+                }
+            }
+        }
+        &__btn {
+            margin: 0 auto;
+            width: 150px;
+            height: 40px;
+            color: $white;
+            background-color: $mediumblue;
+            font-family: initial;
+            outline: none;
+            border: none;
+            border-radius: 15px;
+            padding: 10px;
+            &:hover {
+                font-weight: bold;
+                background-color: $lightmediumblue;
+                cursor: pointer;
+            }
+        }
+        & p {
+            margin: 0 auto;
+            color: $lightmediumblue;
+            & a {
+                text-decoration: none;
+            }
+        }
+    }
+}
