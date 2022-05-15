@@ -1,11 +1,10 @@
 import React from "react";
 import Timer from "../Timer";
 import { RiCoinLine } from "react-icons/ri";
-import { useLocation } from "react-router-dom";
 import { auctionDetail } from "../../mocks/auctionDetail.js";
 import BaseModal from "./baseModal";
 
-const Detailblury__modal = () => {
+const Detailblury__modal = ({ expiration }) => {
     const { state } = location;
 
     return (
@@ -13,6 +12,7 @@ const Detailblury__modal = () => {
             <div className="modal__title">
                 <h2>{auctionDetail.name}</h2>{" "}
             </div>
+            <Timer rest={expiration} />
             <div className="modal__bidding">
                 <p className="modal__bidding__text">Bet fast:</p>
                 <div className="modal__bidding__fast">

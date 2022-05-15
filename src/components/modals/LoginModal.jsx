@@ -31,7 +31,7 @@ const Loginblury__modal = () => {
                 </div>
             </div>
             <button className="modal__btn">Login</button>
-            <p>
+            <p className="modal__link">
                 Don't have an account yet?{" "}
                 <Link to={Routes.REGISTER}>Register</Link>
             </p>

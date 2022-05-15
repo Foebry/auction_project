@@ -3,6 +3,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    justify-content: space-between;
     width: 400px;
     height: 500px;
     left: 50%;
@@ -11,17 +12,17 @@
     border-radius: 10px;
     box-shadow: 1px 1px 2px 2px $lightmediumblue;
     background-color: $white;
-    padding-top: 20px;
     z-index: 100;
     &__closeBtn {
         display: flex;
         justify-content: flex-end;
+        height: 20px;
+        margin: 5px;
         & button {
             background-color: transparent;
             border: none;
             font-size: 25px;
             cursor: pointer;
-            margin: 5px;
         }
     }
 }

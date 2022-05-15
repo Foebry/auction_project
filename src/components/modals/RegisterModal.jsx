@@ -44,7 +44,7 @@ const Registerblury__modal = () => {
                     />
                 </div>
                 <div className="modal__input__item">
-                    <MdLockOutline className="blury__modal__input__item__icon" />
+                    <MdLockOutline className="modal__input__item__icon" />
                     <input
                         className="modal__input__item__inputfield"
                         type="password"
@@ -55,7 +55,7 @@ const Registerblury__modal = () => {
                 </div>
             </div>
             <button className="modal__btn">Login</button>
-            <p>
+            <p className="modal__link">
                 Already have an account? Go to{" "}
                 <Link to={Routes.LOGIN}>Login</Link>
             </p>
