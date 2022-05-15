@@ -1,5 +1,10 @@
 <?php
 
+namespace services;
+
+use PDO;
+use PDOException;
+
 class DbManager {
   private $connection;
   private $responseHandler;

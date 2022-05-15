@@ -3,6 +3,7 @@
 use models\Container;
 
 require_once "access_control.php";
+require_once "validation.php";
 //services
 require_once "services/ArticleHandler.php";
 require_once "services/AuctionHandler.php";

@@ -1,7 +1,7 @@
 <?php
 
 $method = $_SERVER["REQUEST_METHOD"];
-$uri = $_SERVER["REQUEST_URI"];
+$uri = explode("fs_sander", $_SERVER["REQUEST_URI"])[1];
 $route = explode("/", $uri)[2];
 $payload = file_get_contents("php://input");
 
@@ -18,7 +18,7 @@ switch ($route) {
         if ( $uri === "/api/$route" ) {
 
             if ( $method === "GET" ) getAuctions( $dbm );
-            elseif ( $method === "POST" ) postAuction( $dbm, $payload );
+            elseif ( $method === "POST" ) postAuction( $container, $payload );
             else $responseHandler->notAllowed();
 
         }
@@ -35,7 +35,7 @@ switch ($route) {
 
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getAuctionDetail( $dbm, $id );
+            if ( $method === "GET" ) getAuctionDetail( $container, $id );
             else $responseHandler->notAllowed();
         }
         /*
@@ -46,7 +46,7 @@ switch ($route) {
             
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getAuctionBiddings($id);
+            if ( $method === "GET" ) getAuctionBiddings($container, $id);
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();
