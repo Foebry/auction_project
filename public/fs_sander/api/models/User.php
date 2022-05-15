@@ -43,7 +43,9 @@ class User {
      * @param string $usr_name
      */
     public function setUsrName($usr_name) {
-        $this->usr_name = $usr_name;
+        if (is_string($usr_name)){
+            $this->usr_name = $usr_name;
+        }
     }
 
     /**
@@ -57,7 +59,9 @@ class User {
      * @param string $usr_email
      */
     public function setUsrEmail($usr_email) {
-        $this->usr_email = $usr_email;
+        if (preg_match('/.+\@.+\..+', $usr_email)){
+            $this->usr_email = $usr_email;
+        }
     }
 
     /**

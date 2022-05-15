@@ -41,7 +41,9 @@ class Auction {
      * @param int $auc_art_id
      */
     public function setAucArtId($auc_art_id) {
-        $this->auc_art_id = $auc_art_id;
+        if (is_numeric($auc_art_id)) {
+            $this->auc_art_id = $auc_art_id;
+        }
     }
 
     /**
@@ -55,7 +57,8 @@ class Auction {
      * @param DateTime $auc_expiration
      */
     public function setAucExpiration($auc_expiration) {
-        $this->auc_expiration = $auc_expiration;
+        if (is_numeric($auc_expiration)) {
+            $this->auc_expiration = $auc_expiration;
+        }
     }
-
 }
