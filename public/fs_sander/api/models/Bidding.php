@@ -2,15 +2,18 @@
 
 namespace models;
 
-class Bidding {
+use BaseModel;
+use \DateTime;
 
-    private $bid_id;
+class Bidding extends BaseModel {
 
-    private $bid_user_id;
+    protected $bid_id;
 
-    private $bid_auc_id;
+    protected $bid_user_id;
 
-    private $bid_price;
+    protected $bid_auc_id;
+
+    protected $bid_price;
 
     /**
      * @param $bid_id
@@ -30,6 +33,10 @@ class Bidding {
      */
     public function getBidId() {
         return $this->bid_id;
+    }
+
+    public function setBidId($bid_id) {
+        $this->bid_id = $bid_id;
     }
 
     /**
@@ -79,4 +86,56 @@ class Bidding {
             $this->bid_price = $bid_price;
         }
     }
+
+
+    public static function create(array $payload, Container $container) {
+
+        $bidding = new Bidding(
+            null,
+            $payload["bid_usr_id"],
+            $payload["bid_auc_id"],
+            $payload["bid_price"]
+        );
+
+        Bidding::validateBidPrice($payload, $container);
+
+        $now = new DateTime();
+        $currentTimestamp = $now->getTimestamp()*1000;
+
+        $bidding_id = $container->getDbManager()->insertSQL(
+            sprintf(
+                "INSERT into gw_bidding (bid_usr_id, bid_auc_id, bid_price, bid_time) values(%d, %d, %d, %d)",
+                $bidding->getBidUserId(),
+                $bidding->getBidAucId(),
+                $bidding->getBidPrice(),
+                $currentTimestamp
+            )
+        );
+
+        $bidding->setBidId($bidding_id);
+
+        return $bidding;
+    }
+
+    /**
+     * validateBidPrice
+     *
+     * @param  array $payload
+     * @param  Container $container
+     * @return void
+     */
+    private static function validateBidPrice(array $payload, Container $container): void {
+
+        $auction = $container->getAuctionHandler()->getById($payload["bid_auc_id"], $container);
+        $dbm = $container->getDbManager();
+
+        // valideer of bid hoger is dan hoogste bid op auction
+        if ($payload["bid_price"] <= $auction->getHighestBidValue($dbm)){
+            $dbm->closeConnection();
+            $container->getResponseHandler()->badRequest("Bid too low");
+        }
+    }
+
 }
+
+

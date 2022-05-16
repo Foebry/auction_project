@@ -28,4 +28,25 @@ use models\Container;
             $dbm->closeConnection();
             $container->getResponseHandler()->unprocessableEntity("Unknown email adress");
         }
+
+        /**
+         * getUserById
+         *
+         * @param  mixed $user_id
+         * @param  mixed $container
+         * @return User
+         */
+        public function getUserById( int $user_id, Container $container ): User {
+
+            $userData = $container->getDbManager()->getSQL("SELECT * from gw_user where usr_id = $user_id")[0];
+
+            if (!$userData) $container->getResponseHandler()->badRequest();
+
+            return new User(
+                $userData["usr_id"],
+                $userData["usr_name"],
+                $userData["usr_email"],
+                $userData["usr_password"]
+            );
+        }
     }

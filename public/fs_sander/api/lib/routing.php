@@ -94,6 +94,7 @@ switch ($route) {
         if ( $uri === "/api/$route" ) {
 
             if ( $method === "GET" ) getBiddings();
+            elseif ( $method === "POST" ) postBidding($container, $payload);
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();
