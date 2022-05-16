@@ -30,7 +30,6 @@ const Index = () => {
             {modal == "register" && <RegisterModal />}
 
             {typeof modal == "number" && <DetailModal />}
-            <ReduxTest></ReduxTest>
             <Categories onClick={handleFilterClick} />
             <div className="container__small">
                 {currentAuctions.map((auction) => (
