@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { Routes } from "../types/RouteTypes";
+import LoginModal from "./modals/LoginModal";
+import RegisterModal from "./modals/RegisterModal";
 
 const Header = () => {
-    const { userId, setUserId } = useContext(AppContext);
+    const { userId, setUserId, setModal } = useContext(AppContext);
 
     return (
         <header className="header container">
@@ -18,11 +20,15 @@ const Header = () => {
                             <Link
                                 className="link"
                                 to={Routes.LOGIN}
-                                onClick={() => setUserId(52)}
+                                onClick={() => setModal("login")}
                             >
                                 Login
                             </Link>
-                            <Link className="link" to={Routes.REGISTER}>
+                            <Link
+                                className="link"
+                                to={Routes.REGISTER}
+                                onClick={() => setModal("register")}
+                            >
                                 Register
                             </Link>
                         </>

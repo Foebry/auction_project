@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Auction from "../components/Auction";
 import Categories from "../components/Categories";
+import { AppContext } from "../context/AppContext";
 import { currentAuctions } from "../mocks/auctions.js";
+import LoginModal from "../components/modals/LoginModal";
+import RegisterModal from "../components/modals/RegisterModal";
+import DetailModal from "../components/modals/DetailModal";
 
 const Index = () => {
     const [activeFilter, setActiveFilter] = useState([]);
+    const { modal } = useContext(AppContext);
 
     const handleFilterClick = (e) => {
         const id = e.target.id;
@@ -20,6 +25,11 @@ const Index = () => {
     };
     return (
         <>
+            {modal == "login" && <LoginModal />}
+            {modal == "register" && <RegisterModal />}
+
+            {typeof modal == "number" && <DetailModal />}
+
             <Categories onClick={handleFilterClick} />
             <div className="container__small">
                 {currentAuctions.map((auction) => (

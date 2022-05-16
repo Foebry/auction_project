@@ -59,7 +59,11 @@
                     outline: none;
                     border: none;
                     border-radius: 5px;
-                    cursor: pointer;
+                    &:hover {
+                        font-weight: bold;
+                        background-color: $lightmediumblue;
+                        cursor: pointer;
+                    }
                 }
             }
             &__input {
