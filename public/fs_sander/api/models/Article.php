@@ -43,7 +43,9 @@ class Article {
      * @param string $art_name
      */
     public function setArtName($art_name) {
-        $this->art_name = $art_name;
+        if (is_string($art_name)) {
+            $this->art_name = $art_name;
+        }
     }
 
     /**
@@ -57,7 +59,9 @@ class Article {
      * @param string $art_img
      */
     public function setArtImg($art_img) {
-        $this->art_img = $art_img;
+        if (preg_match('/^[^?]*\.(jpg|jpeg|gif|png)$', $art_img)){
+            $this->art_img = $art_img;
+        }
     }
 
     /**
@@ -71,7 +75,9 @@ class Article {
      * @param int $art_cat_id
      */
     public function setArtCatId($art_cat_id) {
-        $this->art_cat_id = $art_cat_id;
+        if (is_numeric($art_cat_id)) {
+            $this->art_cat_id = $art_cat_id;
+        }
     }
 
 }

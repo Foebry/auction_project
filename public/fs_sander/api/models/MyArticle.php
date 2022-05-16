@@ -39,7 +39,9 @@ class MyArticle {
      * @param int $my_id
      */
     public function setMyId($my_id) {
-        $this->my_id = $my_id;
+        if(is_numeric($my_id)){
+            $this->my_id = $my_id;
+        }
     }
 
     /**
@@ -53,7 +55,9 @@ class MyArticle {
      * @param int $my_usr_id
      */
     public function setMyUsrId($my_usr_id) {
-        $this->my_usr_id = $my_usr_id;
+        if(is_numeric($my_usr_id)){
+            $this->my_usr_id = $my_usr_id;
+        }
     }
 
 }

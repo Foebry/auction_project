@@ -15,11 +15,18 @@ use models\Container;
         public function getUserByEmail( string $email, Container $container ): User{
             $dbm = $container->getDbManager();
 
-            $userData = $dbm->getSQL("SELECT * from gw_user where usr_email = '$email'")[0];
+            $userData = $dbm->getSQL("SELECT * from gw_user where usr_email = '$email'");
 
-            if (!$userData) $container->getResponseHandler()->unprocessableEntity("Invalid email adress");
-
-            return new User($userData["usr_id"], $userData["usr_name"], $userData["usr_email"], $userData["usr_password"]);
+            if ($userData)
+                return new User(
+                    $userData[0]["usr_id"],
+                    $userData[0]["usr_name"],
+                    $userData[0]["usr_email"],
+                    $userData[0]["usr_password"]
+                );
+            
+            $dbm->closeConnection();
+            $container->getResponseHandler()->unprocessableEntity("Unknown email adress");
         }
 
         /**
