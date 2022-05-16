@@ -59,8 +59,13 @@
         margin: 0 auto;
         color: $lightmediumblue;
         margin-bottom: 75px;
-        & a {
-            text-decoration: none;
+        &__btnTo {
+            border: none;
+            color: $darkblue;
+            &:hover {
+                font-weight: bold;
+                cursor: pointer;
+            }
         }
     }
 }

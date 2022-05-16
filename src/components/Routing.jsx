@@ -3,8 +3,6 @@ import { Routes as views } from "../types/RouteTypes";
 import Index from "../views/Index";
 import AuctionDetail from "./AuctionDetail";
 import Detailmodal from "./modals/Detailmodal";
-import Login from "./Login";
-import Register from "./Register";
 import LoginModal from "./modals/LoginModal";
 import RegisterModal from "./modals/RegisterModal";
 

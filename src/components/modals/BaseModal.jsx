@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
-import Detailmodal from "./Detailmodal";
 
 const BaseModal = ({ children }) => {
     const { onClose } = useContext(AppContext);

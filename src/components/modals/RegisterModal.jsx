@@ -1,14 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { useContext } from "react";
 import {
     MdLockOutline,
     MdOutlineAlternateEmail,
     MdPersonOutline,
 } from "react-icons/md";
-import { Routes } from "../../types/RouteTypes";
 import BaseModal from "./baseModal";
+import { AppContext } from "../../context/AppContext";
 
 const Registerblury__modal = () => {
+    const { setModal } = useContext(AppContext);
+
     return (
         <BaseModal>
             <h1 className="modal__title">Register</h1>
@@ -54,10 +55,17 @@ const Registerblury__modal = () => {
                     />
                 </div>
             </div>
-            <button className="modal__btn">Login</button>
+            <button className="modal__btn">Register</button>
             <p className="modal__link">
                 Already have an account? Go to{" "}
-                <Link to={Routes.LOGIN}>Login</Link>
+                <button
+                    className="modal__link__btnTo"
+                    onClick={() => {
+                        setModal("login");
+                    }}
+                >
+                    Login
+                </button>
             </p>
         </BaseModal>
     );

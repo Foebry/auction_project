@@ -5,8 +5,6 @@ import { auctionDetail } from "../../mocks/auctionDetail.js";
 import BaseModal from "./baseModal";
 
 const Detailblury__modal = ({ expiration }) => {
-    const { state } = location;
-
     return (
         <BaseModal>
             <div className="modal__title">
