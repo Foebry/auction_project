@@ -12,6 +12,7 @@ use models\Container;
  */
 function handleAuthentication(Container $container, string $payload): Response {
     $payload = json_decode($payload, true);
+    $dbm = $container->getDbManager();
 
     // check if required fields are sent
     if (
@@ -24,9 +25,10 @@ function handleAuthentication(Container $container, string $payload): Response {
     $user = $container->getUserHandler()->getUserByEmail($payload["usr_email"], $container);
 
     if ( !password_verify(($payload["usr_password"]), $user->getUsrPassword()) ){
+        $dbm->closeConnection();
         $container->getResponseHandler()->unprocessableEntity("Invalid password");
     }
-    $container->getDbManager()->closeConnection();
+    $dbm->closeConnection();
 
     return new Response(["usr_id"=>$user->getUsrId(), "usr_name"=>$user->getUsrName()]);
 
