@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const authenticationAPI = createApi({
     reducerPath: "authenticationState",
@@ -6,7 +6,7 @@ const authenticationAPI = createApi({
         baseUrl: "https://www.wdev2.be/fs_sander/api",
     }),
     endpoints: (builder) => ({
-        postLogin: builder.query({
+        postLogin: builder.mutation({
             query: (usr_email, usr_password) => ({
                 url: "/login",
                 method: "POST",
@@ -16,7 +16,7 @@ const authenticationAPI = createApi({
                 },
             }),
         }),
-        postRegister: builder.query({
+        postRegister: builder.mutation({
             query: (usr_name, usr_lastname, usr_email, usr_password) => ({
                 url: "/register",
                 method: "POST",
@@ -32,5 +32,5 @@ const authenticationAPI = createApi({
 });
 
 export default authenticationAPI;
-export const { getPostLoginMutation, getPostRegisterMutation } =
+export const { usePostLoginMutation, usePostRegisterMutation } =
     authenticationAPI;
