@@ -5,12 +5,6 @@ import { AppContext } from "../context/AppContext";
 
 const Auction = ({ id, name, expiration, highest_bid, image }) => {
     const { setModal } = useContext(AppContext);
-    // const { data, isError, isLoading } = useGetAuctionByIdQuery(undefined, {
-    //     pollingInterval: 0,
-    //     refetchOnFocus: true,
-    //     refetchOnReconnect: true,
-    // });
-    //console.log("auction data:", data);
 
     return (
         <article className="article">

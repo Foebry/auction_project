@@ -8,6 +8,9 @@ import {
 import { Routes } from "../types/RouteTypes";
 
 const Register = () => {
+    const location = useLocation();
+
+    const { state } = location;
     return (
         <>
             <form className="form" onSubmit={(e) => e.preventDefault()}>
