@@ -1,14 +1,23 @@
-import React from "react";
 import Timer from "../Timer";
 import { RiCoinLine } from "react-icons/ri";
 import { auctionDetail } from "../../mocks/auctionDetail.js";
 import BaseModal from "./baseModal";
+import { useContext } from "react";
+import { AppContext } from "../../context/AppContext";
+import { useGetAuctionByIdQuery } from "../../data/auctionAPI.js";
 
 const Detailblury__modal = ({ expiration }) => {
+    const { modal } = useContext(AppContext);
+    const { data, isError, isLoading } = useGetAuctionByIdQuery(modal, {
+        pollingInterval: 0,
+        refetchOnFocus: true,
+        refetchOnReconnect: true,
+    });
+    console.log("detail:", data);
     return (
         <BaseModal>
             <div className="modal__title">
-                <h2>{auctionDetail.name}</h2>{" "}
+                {data && data.name && <h2>{data.name}</h2>}{" "}
             </div>
             <Timer rest={expiration} />
             <div className="modal__bidding">

@@ -5,20 +5,30 @@ import { AppContext } from "../context/AppContext";
 
 const Auction = ({ id, name, expiration, highest_bid, image }) => {
     const { setModal } = useContext(AppContext);
+    // const { data, isError, isLoading } = useGetAuctionByIdQuery(undefined, {
+    //     pollingInterval: 0,
+    //     refetchOnFocus: true,
+    //     refetchOnReconnect: true,
+    // });
+    //console.log("auction data:", data);
 
     return (
         <article className="article">
             <div className="article__imgholder">
-                <img
-                    className="article__imgholder__img"
-                    src={image}
-                    alt="#"
-                ></img>
+                {(image && (
+                    <img
+                        className="article__imgholder__img"
+                        src={image}
+                        alt="#"
+                    ></img>
+                )) || <p>no image</p>}
             </div>
             <div className="article__content">
-                <div className="article__content__title">
-                    <h2>{name}</h2>
-                </div>
+                {name && (
+                    <div className="article__content__title">
+                        <h2>{name}</h2>
+                    </div>
+                )}
                 <Timer rest={expiration} />
                 <div className="article__content__bid">
                     <p>{highest_bid}</p>
