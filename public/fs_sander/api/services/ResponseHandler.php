@@ -10,6 +10,11 @@
             exit();
         }
 
+        function unauthorized($msg="Unauthorized"){
+            header("HTTP/1.1 403 $msg");
+            exit();
+        }
+
         function invalidRoute() {
             header('HTTP/1.1 404 Not Found');
             exit();
