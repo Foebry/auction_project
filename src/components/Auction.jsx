@@ -15,14 +15,18 @@ const Auction = ({ id, name, expiration, highest_bid, image }) => {
                         src={image}
                         alt="#"
                     ></img>
-                )) || <p>no image</p>}
+                )) || (
+                    <img
+                        className="article__imgholder__img"
+                        src="../src/images/default.jpg"
+                        alt="default image"
+                    ></img>
+                )}
             </div>
             <div className="article__content">
-                {name && (
-                    <div className="article__content__title">
-                        <h2>{name}</h2>
-                    </div>
-                )}
+                <div className="article__content__title">
+                    <h2>{name}</h2>
+                </div>
                 <Timer rest={expiration} />
                 <div className="article__content__bid">
                     <p>{highest_bid}</p>
