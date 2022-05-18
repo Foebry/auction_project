@@ -70,7 +70,7 @@ function getAuctionDetail( Container $container, int $id ): Response {
 	// key bid_usr_id verwijderen
 	foreach($biddings as &$bidding) {
 		$user_id = $bidding["bid_usr_id"];
-		$bidding["user"] = $dbm->getSQL("SELECT usr_name name, usr_lastname lastname from gw_user where usr_id = $user_id");
+		$bidding["user"] = $dbm->getSQL("SELECT usr_name name, usr_lastname lastname from gw_user where usr_id = $user_id")[0];
 		unset($bidding["bid_usr_id"]);
 	}
 
