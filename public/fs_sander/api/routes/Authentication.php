@@ -2,6 +2,7 @@
 
 use models\Response;
 use models\Container;
+use models\User;
 
 /**
  * handleAuthentication
@@ -28,8 +29,30 @@ function handleAuthentication(Container $container, string $payload): Response {
         $dbm->closeConnection();
         $container->getResponseHandler()->unprocessableEntity("Invalid password");
     }
+    $jwt = generateJWT($user, $payload["usr_password"]);
+
     $dbm->closeConnection();
 
-    return new Response(["usr_id"=>$user->getUsrId(), "usr_name"=>$user->getUsrName()]);
+    return new Response(["usr_name"=>$user->getUsrName(), "token"=>$jwt]);
 
+}
+
+
+function generateJWT(User $user): string {
+
+    //first section of token contains the algorithm used to hash the signature
+    $header = base64_encode(json_encode(["token"=>"jwt", "alg"=>"sha256"]));
+
+    //second section of token contains the user_information + token expiration
+    $payload = base64_encode(json_encode([
+        "usr_email"=>$user->getUsrEmail(),
+        "isAdmin"=>$user->isAdmin(),
+        "exp"=> strtotime("now + 1 hour")
+    ]));
+
+    //third and final section of the token is the signature.
+    //signature is a hashed value (hashed with a secret only known to server) of encoded headerString and payloadString combined with a "."
+    $signature = hash_hmac("sha256", "BOO", "$header.$payload");
+
+    return "$header.$payload.$signature";
 }

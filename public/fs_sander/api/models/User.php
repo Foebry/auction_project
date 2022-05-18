@@ -18,11 +18,12 @@ class User {
      * @param $usr_email
      * @param $usr_password
      */
-    public function __construct($usr_id, $usr_name, $usr_email, $usr_password) {
+    public function __construct($usr_id, $usr_name, $usr_email, $usr_password, $usr_isAdmin) {
         $this->usr_id = $usr_id;
         $this->usr_name = $usr_name;
         $this->usr_email = $usr_email;
         $this->usr_password = $usr_password;
+        $this->usr_isAdmin = $usr_isAdmin;
     }
 
     /**
@@ -77,5 +78,13 @@ class User {
     public function setUsrPassword($usr_password) {
         $this->usr_password = $usr_password;
     }
+
+    /**
+     * 
+     */
+    public function IsAdmin(){
+        return $this->usr_isAdmin;
+    }
+
 
 }
