@@ -2,11 +2,10 @@ import { useState, useContext } from "react";
 import Auction from "../components/Auction";
 import Categories from "../components/Categories";
 import { AppContext } from "../context/AppContext";
-import { currentAuctions } from "../mocks/auctions.js";
 import LoginModal from "../components/modals/LoginModal";
 import RegisterModal from "../components/modals/RegisterModal";
 import DetailModal from "../components/modals/DetailModal";
-import ReduxTest from "../components/ReduxTest";
+import { useGetAuctionsQuery } from "../data/auctionAPI";
 
 const Index = () => {
     const [activeFilter, setActiveFilter] = useState([]);
@@ -24,6 +23,11 @@ const Index = () => {
             setActiveFilter([...filter, id]);
         }
     };
+    const { data, isError, isLoading } = useGetAuctionsQuery(undefined, {
+        pollingInterval: 0,
+        refetchOnFocus: true,
+        refetchOnReconnect: true,
+    });
     return (
         <>
             {modal == "login" && <LoginModal />}
@@ -32,9 +36,15 @@ const Index = () => {
             {typeof modal == "number" && <DetailModal />}
             <Categories onClick={handleFilterClick} />
             <div className="container__small">
-                {currentAuctions.map((auction) => (
-                    <Auction key={auction.id} {...auction} />
-                ))}
+                {isLoading && <p>loading...</p>}
+                {isError && <p>error...</p>}
+                {data && (
+                    <ul>
+                        {data.map((auction) => (
+                            <Auction key={auction.id} {...auction} />
+                        ))}
+                    </ul>
+                )}
             </div>
         </>
     );

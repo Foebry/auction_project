@@ -9,11 +9,19 @@ const Auction = ({ id, name, expiration, highest_bid, image }) => {
     return (
         <article className="article">
             <div className="article__imgholder">
-                <img
-                    className="article__imgholder__img"
-                    src={image}
-                    alt="#"
-                ></img>
+                {(image && (
+                    <img
+                        className="article__imgholder__img"
+                        src={image}
+                        alt="#"
+                    ></img>
+                )) || (
+                    <img
+                        className="article__imgholder__img"
+                        src="../src/images/default.jpg"
+                        alt="default image"
+                    ></img>
+                )}
             </div>
             <div className="article__content">
                 <div className="article__content__title">
