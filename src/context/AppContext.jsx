@@ -6,7 +6,6 @@ const AppProvider = ({ children }) => {
     const [userId, setUserId] = useState();
     const [modal, setModal] = useState(null);
     const onClose = () => setModal(null);
-
     return (
         <AppContext.Provider
             value={{
