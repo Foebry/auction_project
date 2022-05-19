@@ -7,7 +7,7 @@ const authenticationAPI = createApi({
     }),
     endpoints: (builder) => ({
         postLogin: builder.mutation({
-            query: (usr_email, usr_password) => ({
+            query: ({ usr_email, usr_password }) => ({
                 url: "/login",
                 method: "POST",
                 body: {
@@ -17,7 +17,7 @@ const authenticationAPI = createApi({
             }),
         }),
         postRegister: builder.mutation({
-            query: (usr_name, usr_lastname, usr_email, usr_password) => ({
+            query: ({ usr_name, usr_lastname, usr_email, usr_password }) => ({
                 url: "/register",
                 method: "POST",
                 body: {
