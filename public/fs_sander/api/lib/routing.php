@@ -17,8 +17,8 @@ switch ($route) {
     case "auctions":
         if ( $uri === "/api/$route" ) {
 
-            if ( $method === "GET" ) getAuctions( $dbm );
-            elseif ( $method === "POST" ) postAuction( $container, $payload );
+            if ( $method === "GET" ) getAuctions( $dbm ) ;
+            elseif ( $method === "POST" ) postAuction( $container, $payload, AdminRoute($container) );
             else $responseHandler->notAllowed();
 
         }
@@ -35,7 +35,7 @@ switch ($route) {
 
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getAuctionDetail( $container, $id );
+            if ( $method === "GET" ) getAuctionDetail( $container, $id, ProtectedRoute($container) );
             else $responseHandler->notAllowed();
         }
         /*
@@ -46,7 +46,7 @@ switch ($route) {
             
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getAuctionBiddings($container, $id);
+            if ( $method === "GET" ) getAuctionBiddings($container, $id, ProtectedRoute($container));
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();
@@ -58,8 +58,8 @@ switch ($route) {
         */
         if ( $uri === "/api/$route" ) {
             
-            if ( $method === "GET" ) getArticles();
-            elseif ( $method === "POST" ) postArticle($payload);
+            if ( $method === "GET" ) getArticles(AdminRoute($container));
+            elseif ( $method === "POST" ) postArticle($payload, AdminRoute($container));
             else $responseHandler->notAllowed();
         }
 
@@ -76,9 +76,9 @@ switch ($route) {
 
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getArticleDetail($id);
-            elseif ( $method === "PUT" ) updateArticle($payload);
-            elseif ( $method === "PATCH" ) patchArticle($id, $payload);
+            if ( $method === "GET" ) getArticleDetail($id, AdminRoute($container));
+            elseif ( $method === "PUT" ) updateArticle($payload, AdminRoute($container));
+            elseif ( $method === "PATCH" ) patchArticle($id, $payload, AdminRoute($container));
 
             else $responseHandler->notAllowed();
         }
@@ -93,8 +93,8 @@ switch ($route) {
         */
         if ( $uri === "/api/$route" ) {
 
-            if ( $method === "GET" ) getBiddings();
-            elseif ( $method === "POST" ) postBidding($container, $payload);
+            if ( $method === "GET" ) getBiddings(AdminRoute($container));
+            elseif ( $method === "POST" ) postBidding($container, $payload, ProtectedRoute($container));
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();
@@ -108,8 +108,8 @@ switch ($route) {
         */
         if ( $uri === "/api/$route" ) {
             
-            if ( $method === "GET" ) getCategories();
-            elseif( $method === "POST" ) postCategory($payload);
+            if ( $method === "GET" ) getCategories(AdminRoute($container));
+            elseif( $method === "POST" ) postCategory($payload, AdminRoute($container));
 
             else $responseHandler->notAllowed();
         }
@@ -126,8 +126,8 @@ switch ($route) {
 
             $id = explode("/", $uri)[3];
             
-            if ( $method === "GET" ) getCategory($id);
-            elseif ( $method === "PATCH" ) updateCategory($payload);
+            if ( $method === "GET" ) getCategory($id, AdminRoute($container));
+            elseif ( $method === "PATCH" ) updateCategory($payload, AdminRoute($container));
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();
@@ -143,9 +143,9 @@ switch ($route) {
 
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getUserDetail($id);
-            elseif( $method === "PATCH" ) patchUser($id, $payload);
-            elseif ( $method === "PUT" ) updateUser($payload);
+            if ( $method === "GET" ) getUserDetail($id, ProtectedRoute($container));
+            elseif( $method === "PATCH" ) patchUser($id, $payload, ProtectedRoute($container));
+            elseif ( $method === "PUT" ) updateUser($payload, ProtectedRoute($container));
 
             else $responseHandler->notAllowed();
         }
@@ -157,7 +157,7 @@ switch ($route) {
             
             $id = explode("/", $uri)[3];
 
-            if ($method === "GET") getUserArticles($id);
+            if ($method === "GET") getUserArticles($id, ProtectedRoute($container));
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();

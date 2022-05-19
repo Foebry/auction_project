@@ -22,7 +22,8 @@ use models\Container;
                     $userData[0]["usr_id"],
                     $userData[0]["usr_name"],
                     $userData[0]["usr_email"],
-                    $userData[0]["usr_password"]
+                    $userData[0]["usr_password"],
+                    $userData[0]["usr_is_admin"],
                 );
             
             $dbm->closeConnection();
@@ -38,15 +39,16 @@ use models\Container;
          */
         public function getUserById( int $user_id, Container $container ): User {
 
-            $userData = $container->getDbManager()->getSQL("SELECT * from gw_user where usr_id = $user_id")[0];
+            $userData = $container->getDbManager()->getSQL("SELECT * from gw_user where usr_id = $user_id");
 
             if (!$userData) $container->getResponseHandler()->badRequest();
 
             return new User(
-                $userData["usr_id"],
-                $userData["usr_name"],
-                $userData["usr_email"],
-                $userData["usr_password"]
+                $userData[0]["usr_id"],
+                $userData[0]["usr_name"],
+                $userData[0]["usr_email"],
+                $userData[0]["usr_password"],
+                $userData[0]["usr_is_admin"],
             );
         }
     }
