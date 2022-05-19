@@ -40,18 +40,9 @@ const Index = () => {
                 {isError && <p>error...</p>}
                 {data && (
                     <ul>
-                        {data.map(
-                            ({ id, name, expiration, highest_bid, image }) => (
-                                <Auction
-                                    key={id}
-                                    id={id}
-                                    name={name}
-                                    expiration={expiration}
-                                    highest_bid={highest_bid}
-                                    image={image}
-                                />
-                            )
-                        )}
+                        {data.map((auction) => (
+                            <Auction key={auction.id} {...auction} />
+                        ))}
                     </ul>
                 )}
             </div>

@@ -5,19 +5,16 @@ import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { useGetAuctionByIdQuery } from "../../data/auctionAPI.js";
 
-const Detailblury__modal = ({ expiration }) => {
+const Detailblury__modal = () => {
     const { modal } = useContext(AppContext);
     const { data, isError, isLoading } = useGetAuctionByIdQuery(modal, {
         pollingInterval: 0,
         refetchOnFocus: true,
         refetchOnReconnect: true,
     });
-    console.log("detail:", data);
     return (
         <BaseModal>
-            <div className="modal__title">
-                {data && data.name && <h2>{data.name}</h2>}{" "}
-            </div>
+            <div className="modal__title">{data && <h2>{data.name}</h2>} </div>
             <Timer rest={data && data.expiration} />
             <div className="modal__bidding">
                 <p className="modal__bidding__text">Bet fast:</p>
