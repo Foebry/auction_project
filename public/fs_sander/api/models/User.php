@@ -18,7 +18,7 @@ class User {
      * @param $usr_email
      * @param $usr_password
      */
-    public function __construct($usr_id, $usr_name, $usr_email, $usr_password, $usr_isAdmin) {
+    public function __construct($usr_id, $usr_name, $usr_email, $usr_password, $usr_isAdmin=false) {
         $this->usr_id = $usr_id;
         $this->usr_name = $usr_name;
         $this->usr_email = $usr_email;
