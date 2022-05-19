@@ -9,7 +9,7 @@ const Loginblury__modal = () => {
     return (
         <BaseModal>
             <h1 className="modal__title">Login</h1>
-            <div className="modal__input">
+            <form className="modal__input">
                 <div className="modal__input__item">
                     <MdOutlineAlternateEmail className="modal__input__item__icon" />
                     <input
@@ -30,7 +30,7 @@ const Loginblury__modal = () => {
                         required
                     />
                 </div>
-            </div>
+            </form>
             <button className="modal__btn">Login</button>
             <p className="modal__link">
                 Don't have an account yet?{" "}

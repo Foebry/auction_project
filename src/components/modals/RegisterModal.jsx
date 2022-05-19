@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
     MdLockOutline,
     MdOutlineAlternateEmail,
@@ -9,18 +9,34 @@ import { AppContext } from "../../context/AppContext";
 
 const Registerblury__modal = () => {
     const { setModal } = useContext(AppContext);
+    const [inputs, setInputs] = useState({});
+
+    const handleInputChange = (e) => {
+        setInputs({
+            ...inputs,
+            [e.target.name]: e.target.value,
+        });
+    };
+    //console.log("inputs:", inputs);
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        //console.log("inputs:", inputs);
+    };
 
     return (
         <BaseModal>
             <h1 className="modal__title">Register</h1>
-            <div className="modal__input">
+            <form className="modal__input" onSubmit={submitHandler}>
                 <div className="modal__input__item">
                     <MdPersonOutline className="modal__input__item__icon" />
                     <input
                         className="modal__input__item__inputfield"
                         type="text"
+                        value={inputs.firstName}
                         placeholder="Enter first name"
-                        name="firstname"
+                        name="firstName"
+                        onChange={handleInputChange}
                         required
                     />
                 </div>
@@ -29,8 +45,10 @@ const Registerblury__modal = () => {
                     <input
                         className="modal__input__item__inputfield"
                         type="text"
+                        value={inputs.lastName}
                         placeholder="Enter name"
-                        name="name"
+                        name="lastName"
+                        onChange={handleInputChange}
                         required
                     />
                 </div>
@@ -39,8 +57,10 @@ const Registerblury__modal = () => {
                     <input
                         className="modal__input__item__inputfield"
                         type="email"
+                        value={inputs.email}
                         placeholder="Enter email"
                         name="email"
+                        onChange={handleInputChange}
                         required
                     />
                 </div>
@@ -49,13 +69,17 @@ const Registerblury__modal = () => {
                     <input
                         className="modal__input__item__inputfield"
                         type="password"
-                        name="pwd"
+                        value={inputs.password}
+                        name="password"
                         placeholder="Enter password"
+                        onChange={handleInputChange}
                         required
                     />
                 </div>
-            </div>
-            <button className="modal__btn">Register</button>
+                <button type="submit" className="modal__btn">
+                    Register
+                </button>
+            </form>
             <p className="modal__link">
                 Already have an account? Go to{" "}
                 <button
