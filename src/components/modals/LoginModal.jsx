@@ -1,22 +1,49 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MdLockOutline, MdOutlineAlternateEmail } from "react-icons/md";
 import BaseModal from "./baseModal";
 import { AppContext } from "../../context/AppContext";
+import { usePostLoginMutation } from "../../data/authenticationAPI";
 
 const Loginblury__modal = () => {
-    const { setModal } = useContext(AppContext);
+    const { setModal, setActiveUser } = useContext(AppContext);
+    const [inputs, setInputs] = useState({});
+    const [login] = usePostLoginMutation();
 
+    const handleInputChange = (e) => {
+        setInputs({
+            ...inputs,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    async function submitHandler(e) {
+        e.preventDefault();
+
+        const usr_email = inputs.email;
+        const usr_password = inputs.password;
+        const { data, error } = await login({
+            usr_email,
+            usr_password,
+        });
+        if (data) {
+            setActiveUser(data);
+            setInputs({});
+            setModal(null);
+        }
+    }
     return (
         <BaseModal>
             <h1 className="modal__title">Login</h1>
-            <form className="modal__input">
+            <form onSubmit={submitHandler} className="modal__input">
                 <div className="modal__input__item">
                     <MdOutlineAlternateEmail className="modal__input__item__icon" />
                     <input
                         className="modal__input__item__inputfield"
                         type="email"
+                        value={inputs.email}
                         placeholder="Enter email"
                         name="email"
+                        onChange={handleInputChange}
                         required
                     />
                 </div>
@@ -25,13 +52,15 @@ const Loginblury__modal = () => {
                     <input
                         className="modal__input__item__inputfield"
                         type="password"
-                        name="pwd"
+                        value={inputs.password}
+                        name="password"
                         placeholder="Enter password"
+                        onChange={handleInputChange}
                         required
                     />
                 </div>
+                <button className="modal__btn">Login</button>
             </form>
-            <button className="modal__btn">Login</button>
             <p className="modal__link">
                 Don't have an account yet?{" "}
                 <button
@@ -46,5 +75,4 @@ const Loginblury__modal = () => {
         </BaseModal>
     );
 };
-
 export default Loginblury__modal;

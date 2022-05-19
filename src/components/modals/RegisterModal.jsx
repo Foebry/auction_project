@@ -6,10 +6,12 @@ import {
 } from "react-icons/md";
 import BaseModal from "./baseModal";
 import { AppContext } from "../../context/AppContext";
+import { usePostRegisterMutation } from "../../data/authenticationAPI";
 
 const Registerblury__modal = () => {
-    const { setModal } = useContext(AppContext);
+    const { setModal, setActiveUser } = useContext(AppContext);
     const [inputs, setInputs] = useState({});
+    const [register] = usePostRegisterMutation();
 
     const handleInputChange = (e) => {
         setInputs({
@@ -17,12 +19,26 @@ const Registerblury__modal = () => {
             [e.target.name]: e.target.value,
         });
     };
-    //console.log("inputs:", inputs);
 
-    const submitHandler = (e) => {
+    async function submitHandler(e) {
         e.preventDefault();
-        //console.log("inputs:", inputs);
-    };
+
+        const usr_name = inputs.firstName;
+        const usr_lastname = inputs.lastName;
+        const usr_email = inputs.email;
+        const usr_password = inputs.password;
+        const { data, error } = await register({
+            usr_name,
+            usr_lastname,
+            usr_email,
+            usr_password,
+        });
+        if (data) {
+            setActiveUser(data);
+            setInputs({});
+            setModal(null);
+        }
+    }
 
     return (
         <BaseModal>
@@ -76,9 +92,7 @@ const Registerblury__modal = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="modal__btn">
-                    Register
-                </button>
+                <button className="modal__btn">Register</button>
             </form>
             <p className="modal__link">
                 Already have an account? Go to{" "}
