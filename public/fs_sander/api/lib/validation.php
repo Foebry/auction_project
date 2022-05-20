@@ -1,7 +1,7 @@
 <?php
 
 use models\Container;
-    
+
     /**
      * checkPayloadPOST
      *
@@ -20,13 +20,19 @@ use models\Container;
         }
     }
 
+    /**
+     * validateJWT
+     *
+     * @param  Container $container
+     * @return array
+     */
     function validateJWT(Container $container):array {
 
-        //check if a HTTP_BEARER was sent
-        if ( !isset( $_SERVER["HTTP_BEARER"] ) )
+        //check if a __refresh_token__ cookie was sent
+        if ( !isset($_COOKIE["__refresh_token__"]) )
             $container->getResponseHandler()->unauthorized("no token present");
         
-        $token = $_SERVER["HTTP_BEARER"];
+        $token = $_COOKIE["__refresh_token__"];
 
         //check if token has correct structure
         if ( count( explode( ".", $token ) ) != 3 )
@@ -44,16 +50,30 @@ use models\Container;
         return json_decode(base64_decode($payload), true);
     }
 
-    function AdminRoute(Container $container) {
+    /**
+     * AdminRoute
+     *
+     * @param  Container $container
+     * @return void
+     */
+    function AdminRoute(Container $container): void {
         $user_info = validateJWT($container);
 
         // check if user is admin
         if ( $user_info["isAdmin"] !== true )
             $container->getResponseHandler()->unauthorized();
+
+        refreshToken($user_info, 60);
     }
 
-    function ProtectedRoute(Container $container) {
+    /**
+     * ProtectedRoute
+     *
+     * @param  Container $container
+     * @return void
+     */
+    function ProtectedRoute(Container $container): void {
 
-        validateJWT($container);
+        $user_info = validateJWT($container);
+        refreshToken($user_info);
     }
-    
