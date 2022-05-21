@@ -109,7 +109,7 @@ switch ($route) {
         if ( $uri === "/api/$route" ) {
             
             if ( $method === "GET" ) getCategories($container, AdminRoute($container));
-            elseif( $method === "POST" ) postCategory($payload, AdminRoute($container));
+            elseif( $method === "POST" ) postCategory($payload, $container, AdminRoute($container));
 
             else $responseHandler->notAllowed();
         }
