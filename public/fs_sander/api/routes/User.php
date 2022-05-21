@@ -125,13 +125,21 @@ use models\Container;
 
     function getUserAuctions(int $usr_id, Container $container): Response {
 
-        $container->getUserHandler()->getUserById($usr_id, $container);
+        $user = $container->getUserHandler()->getUserById($usr_id, $container);
 
-        $auctions_won = fetchAuctionsWonByUser($usr_id, $container);
+        $auctions = fetchAuctionsWonByUser($usr_id, $container);
+
+        $data = [
+            "user"=>[
+                "id"=>$usr_id,
+                "name"=>$user->getUsrName(),
+                "biddings"=> $auctions
+            ],
+        ];
 
         $container->getDbManager()->closeConnection();
 
-        return new Response($auctions_won, 200);
+        return new Response($data, 200);
     }
 
     function getUserBiddingsSelf( Container $container, array $user_data): Response {
@@ -143,4 +151,23 @@ use models\Container;
         $container->getDbManager()->closeConnection();
 
         return new Response($user_biddings, 200);
+    }
+
+    function getUserBiddings( int $usr_id, Container $container ): Response {
+
+        $user = $container->getUserHandler()->getUserById($usr_id, $container);
+
+        $biddings = fetchBiddingsByUser($usr_id, $container);
+
+        $data = [
+            "user"=>[
+                "id"=>$usr_id,
+                "name"=>$user->getUsrName(),
+                "biddings"=> $biddings
+            ],
+        ];
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($data, 200);
     }

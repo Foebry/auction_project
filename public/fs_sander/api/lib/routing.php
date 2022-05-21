@@ -174,6 +174,12 @@ switch ($route) {
             if( $method === "GET" ) getUserBiddingsSelf( $container, ProtectedRoute( $container ) );
             else $responseHandler->notAllowed();
         }
+        elseif( preg_match("|api/$route/[0-9]+/biddings$|", $uri)){
+            $id = explode("/", $uri)[3];
+
+            if( $method === "GET" ) getUserBiddings( $id, $container, AdminRoute( $container ) );
+            else $responseHandler->notAllowed();
+        }
         else $responseHandler->invalidRoute();
 
         break;
