@@ -1,12 +1,16 @@
 <?php
 
-    function getArticles() {
-        print("GET articles logic");
+  use models\Container;
+  use models\Article;
+  use models\Response;
 
+    function getArticles(Container $container): Response {
 
-      /**
-       * @todo Create Select Article
-       */
+      $articles = $container->getDbManager()->getSQL("Select * from gw_article");
+
+      $container->getDbManager()->closeConnection();
+
+      return new Response($articles, 200);
     }
 
     function postArticle() {
