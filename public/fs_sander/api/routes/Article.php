@@ -37,11 +37,13 @@
       return new Response($article->asAssociativeArray(), 201);
     }
 
-    function getArticleDetail() {
-        print("GET article detail logic");
-      /**
-       * @todo Create Select ArticleDetail
-       */
+    function getArticleDetail( int $art_id, Container $container): Response {
+
+      $article = $container->getArticleHandler()->getArticleById($art_id, $container);
+
+      $container->getDbManager()->closeConnection();
+
+      return new Response($article->asAssociativeArray(), 200);
     }
 
     function updateArticle() {

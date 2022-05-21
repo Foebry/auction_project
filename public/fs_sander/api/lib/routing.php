@@ -76,7 +76,7 @@ switch ($route) {
 
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getArticleDetail($id, AdminRoute($container));
+            if ( $method === "GET" ) getArticleDetail($id, $container, AdminRoute($container));
             elseif ( $method === "PUT" ) updateArticle($payload, AdminRoute($container));
             elseif ( $method === "PATCH" ) patchArticle($id, $payload, AdminRoute($container));
 
