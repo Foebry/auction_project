@@ -128,6 +128,7 @@ switch ($route) {
             
             if ( $method === "GET" ) getCategory($id, $container, AdminRoute($container));
             elseif ( $method === "PATCH" ) updateCategory($id, $payload, $container, AdminRoute($container));
+            elseif( $method === "DELETE" ) deleteCategory($id, $container, AdminRoute($container) );
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();

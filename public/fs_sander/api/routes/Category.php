@@ -58,3 +58,14 @@ use models\Container;
 
         return new Response($category->asAssociativeArray(), 200);
     }
+
+    function deleteCategory(int $cat_id, Container $container): Response{
+
+        $container->getCategoryHandler()->getCategoryById($cat_id, $container);
+
+        $container->getDbManager()->getSQL("DELETE from gw_category where cat_id=$cat_id");
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response([], 204);
+    }
