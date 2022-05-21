@@ -163,11 +163,11 @@ switch ($route) {
         * /api/user/{id}/articles
         * GET
         */
-        elseif (preg_match("|api/$route/[0-9]*/articles$|", $uri)){
+        elseif (preg_match("|api/$route/[0-9]*/auctions$|", $uri)){
             
             $id = explode("/", $uri)[3];
 
-            if ($method === "GET") getUserArticles($id, ProtectedRoute($container));
+            if ($method === "GET") getUserAuctions($id, $container, AdminRoute($container));
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();
