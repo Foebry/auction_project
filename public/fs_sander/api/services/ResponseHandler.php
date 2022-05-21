@@ -5,8 +5,9 @@
 
         }
 
-        function badRequest($msg="Bad Request"){
-            header('HTTP/1.1 400 '.$msg);
+        function badRequest($msg=["message"=>"Bad Request"]){
+            print(json_encode($msg));
+            header('HTTP/1.1 400');
             exit();
         }
 

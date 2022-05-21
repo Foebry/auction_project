@@ -151,7 +151,7 @@ switch ($route) {
 
             if ( $method === "GET" ) getUserDetail($id, $container, AdminRoute($container));
             elseif( $method === "PATCH" ) updateUser($id, $payload, $container, AdminRoute($container));
-            elseif ( $method === "PUT" ) updateUser($payload, AdminRoute($container));
+            elseif ( $method === "DELETE" ) deleteUser($id, $container, AdminRoute($container));
 
             else $responseHandler->notAllowed();
         }

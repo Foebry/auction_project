@@ -101,6 +101,17 @@ use models\Container;
         return new Response($user->asAssociativeArray(), 200);
     }
 
+    function deleteUser(int $usr_id, Container $container): Response {
+
+        $container->getUserHandler()->getUserById($usr_id, $container);
+
+        $container->getDbManager()->getSQL("Delete from gw_user where usr_id = $usr_id");
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response([], 204);
+    }
+
     function getUserArticles($id) {
         print("GET user articles logic");
     }
