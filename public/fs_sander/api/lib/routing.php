@@ -139,13 +139,18 @@ switch ($route) {
         * /api/user/{id}
         * GET, PATCH, PUT
         */
-        if ( preg_match("|api/$route/[0-9]+$|", $uri) ){
+        if( $uri === "/api/$route" ){
+            if( $method === "GET" ) getUserDetailSelf( $container, ProtectedRoute( $container ) );
+            else $responseHandler->notAllowed();
+        }
+
+        elseif ( preg_match("|api/$route/[0-9]+$|", $uri) ){
 
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getUserDetail($id, ProtectedRoute($container));
-            elseif( $method === "PATCH" ) patchUser($id, $payload, ProtectedRoute($container));
-            elseif ( $method === "PUT" ) updateUser($payload, ProtectedRoute($container));
+            if ( $method === "GET" ) getUserDetail($id, AdminRoute($container));
+            elseif( $method === "PATCH" ) patchUser($id, $payload, AdminRoute($container));
+            elseif ( $method === "PUT" ) updateUser($payload, AdminRoute($container));
 
             else $responseHandler->notAllowed();
         }

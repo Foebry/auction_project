@@ -2,13 +2,14 @@
 
 use models\Response;
 use models\User;
+use models\Container;
 
     /**
-     * @param \models\Container $container
+     * @param Container $container
      * @param string $payload
      * @return Response
      */
-    function handleRegister( \models\Container $container, string $payload ):\models\Response {
+    function handleRegister( Container $container, string $payload ): Response {
         $dbm = $container->getDbManager();
         $payload = json_decode($payload, true);
         
@@ -49,6 +50,16 @@ use models\User;
         $dbm->closeConnection();
 
         return new Response(["usr_id"=>$id, "usr_name"=>$user->getUsrName()]);
+    }
+
+    function getUserDetailSelf( Container $container, array $user_data ): Response {
+
+        $email = $user_data["usr_email"];
+        $user = $container->getUserHandler()->getUserByEmail($email, $container);
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($user->asAssociativeArray(), 200);
     }
 
     function getUserDetail($id) {
