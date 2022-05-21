@@ -20,6 +20,27 @@ use models\Container;
         }
     }
 
+    function checkPayloadPATCH(array $fields, array $payload, Container $container): string {
+
+        $matching_fields = [];
+
+        foreach($payload as $key=>$value) {
+            if ( in_array($key, array_keys($fields)) ){
+                $matching_fields[$key] = $value;
+            }
+        }
+        if( $matching_fields === 0 ) $container->getResponseHandler()->badRequest();
+
+        $update = [];
+
+        foreach($matching_fields as $key=>$value) {
+            if ($key === "usr_password") $value = password_hash($value, 1);
+            $update[] = sprintf("$key='%s'", $value);
+        }
+
+        return implode(", ", $update);
+    }
+
     function validateJWT(Container $container):array {
 
         //check if a HTTP_BEARER was sent
@@ -54,6 +75,6 @@ use models\Container;
 
     function ProtectedRoute(Container $container) {
 
-        validateJWT($container);
+        return validateJWT($container);
     }
     

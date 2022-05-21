@@ -62,6 +62,22 @@ use models\Container;
         return new Response($user->asAssociativeArray(), 200);
     }
 
+    function PatchUserSelf( string $payload, Container $container, array $user_data ): Response {
+
+        $payload = json_decode($payload, true);
+
+        $payload = checkPayloadPATCH(["usr_name", "usr_lastname", "usr_email", "usr_password"], $payload, $container);
+
+        $usr_id = $container->getUserHandler()->getUserByEmail($user_data["usr_email"], $container)->getUsrId();
+
+        $container->getDbManager()->getSQL("UPDATE gw_user SET $payload where usr_id = $usr_id");
+        $user = $container->getUserHandler()->getUserById($usr_id, $container);
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($user->asAssociativeArray(), 200);
+    }
+
     function getUserDetail($id) {
         print("GET user detail logic");
     }

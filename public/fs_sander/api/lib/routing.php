@@ -141,6 +141,7 @@ switch ($route) {
         */
         if( $uri === "/api/$route" ){
             if( $method === "GET" ) getUserDetailSelf( $container, ProtectedRoute( $container ) );
+            if ($method === "PATCH" ) PatchUserSelf( $payload, $container, ProtectedRoute( $container ) );
             else $responseHandler->notAllowed();
         }
 
