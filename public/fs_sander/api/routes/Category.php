@@ -43,6 +43,18 @@ use models\Container;
         return new Response($category->asAssociativeArray(), 201);
     }
 
-    function updateCategory() {
-        print("PUT category logic");
+    function updateCategory( int $cat_id, string $payload, Container $container): Response {
+
+        $payload = json_decode($payload, true);
+
+        $update = checkPayloadPATCH(["cat_name"], $payload, $container);
+
+        $category = $container->getCategoryHandler()->getCategoryById($cat_id, $container);
+        $category->setCatName($payload["cat_name"]);
+
+        $container->getDbManager()->insertSQL("Update gw_category set $update where cat_id=$cat_id");
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($category->asAssociativeArray(), 200);
     }
