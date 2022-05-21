@@ -155,6 +155,10 @@ switch ($route) {
 
             else $responseHandler->notAllowed();
         }
+        elseif( $uri === "/api/$route/auctions"){
+            if( $method === "GET" ) getUserAuctionsSelf( $container, ProtectedRoute( $container ) );
+            else $container->notAllowed();
+        }
         /*
         * /api/user/{id}/articles
         * GET

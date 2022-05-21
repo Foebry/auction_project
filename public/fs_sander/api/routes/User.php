@@ -112,6 +112,29 @@ use models\Container;
         return new Response([], 204);
     }
 
-    function getUserArticles($id) {
-        print("GET user articles logic");
+    function getUserAuctionsSelf( Container $container, array $user_data ): Response {
+
+        $usr_id = $container->getUserHandler()->getUserByEmail( $user_data["usr_email"], $container )->getUsrId();
+
+        $auctions_won = [];
+        $data = $container->getDbManager()->getSQL("
+            select auc_id id, auc_start started, auc_expiration ended,
+            (select max(bid_price) from gw_bidding where bid_auc_id=id) price,
+            art_id, art_name, art_img from gw_auction gau
+            join gw_article gar on gau.auc_art_id = gar.art_id
+            where auc_usr_id = $usr_id");
+
+        foreach($data as $auction){
+            $auction["article"] = ["id"=>$auction["art_id"], "image"=>$auction["art_img"], "name"=>$auction["art_name"]];
+
+            unset($auction["art_id"]);
+            unset($auction["art_img"]);
+            unset($auction["art_name"]);
+
+            $auctions_won[] = $auction;
+        }
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($auctions_won, 200);
     }
