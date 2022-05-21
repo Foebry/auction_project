@@ -24,3 +24,36 @@
         return $auctions_won;
 
     }
+
+    function fetchBiddingsByUser( int $usr_id, Container $container ): array{
+
+        $user_biddings = [];
+
+        $data = $container->getDbManager()->getSQL(
+            "select bid_id id, max(bid_price) amount, bid_time time, bid_auc_id, art_name, art_id, art_img
+            from gw_bidding
+            join gw_auction ga on gw_bidding.bid_auc_id = ga.auc_id
+            join gw_article g on ga.auc_art_id = g.art_id
+            where bid_usr_id=28
+            group by bid_auc_id"
+        );
+
+        foreach ($data as $bidding) {
+
+            $bidding["auction"] = [
+                "id"=>$bidding["bid_auc_id"],
+                "article" => [
+                    "id"=>$bidding["art_id"],
+                    "name"=>$bidding["art_name"],
+                    "image"=>$bidding["art_img"]
+                ],
+            ];
+
+            unset($bidding["bid_auc_id"], $bidding["art_name"], $bidding["art_id"], $bidding["art_img"]);
+
+            $user_biddings[] = $bidding;
+        }
+
+
+        return $user_biddings;
+    }

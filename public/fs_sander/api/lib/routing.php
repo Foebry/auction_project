@@ -170,6 +170,10 @@ switch ($route) {
             if ($method === "GET") getUserAuctions($id, $container, AdminRoute($container));
             else $responseHandler->notAllowed();
         }
+        elseif( $uri === "/api/$route/biddings"){
+            if( $method === "GET" ) getUserBiddingsSelf( $container, ProtectedRoute( $container ) );
+            else $responseHandler->notAllowed();
+        }
         else $responseHandler->invalidRoute();
 
         break;

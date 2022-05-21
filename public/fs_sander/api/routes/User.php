@@ -133,3 +133,14 @@ use models\Container;
 
         return new Response($auctions_won, 200);
     }
+
+    function getUserBiddingsSelf( Container $container, array $user_data): Response {
+
+        $usr_id = $container->getUserHandler()->getUserByEmail( $user_data["usr_email"], $container )->getUsrId();
+
+        $user_biddings = fetchBiddingsByUser($usr_id, $container);
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($user_biddings, 200);
+    }
