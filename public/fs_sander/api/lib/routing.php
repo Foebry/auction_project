@@ -59,7 +59,7 @@ switch ($route) {
         if ( $uri === "/api/$route" ) {
             
             if ( $method === "GET" ) getArticles($container, AdminRoute($container));
-            elseif ( $method === "POST" ) postArticle($payload, AdminRoute($container));
+            elseif ( $method === "POST" ) postArticle($payload, $container, AdminRoute($container));
             else $responseHandler->notAllowed();
         }
 
