@@ -46,11 +46,20 @@
       return new Response($article->asAssociativeArray(), 200);
     }
 
-    function updateArticle() {
-        print("PUT article detail logic");
-      /**
-       * @todo Create Update Article
-       */
+    function updateArticle(int $art_id, string $payload, Container $container): Response {
+
+      $payload = json_decode($payload, true);
+
+      $update = checkPayloadPATCH(["art_name", "art_img", "cat_art_id"], $payload, $container);
+
+      $art_id = $container->getArticleHandler()->getArticleById($art_id, $container)->getArtId();
+
+      $container->getDbManager()->getSQL("UPDATE gw_article SET $update where art_id = $art_id");
+      $article = $container->getArticleHandler()->getArticleById($art_id, $container);
+
+      $container->getDbManager()->closeConnection();
+
+      return new Response($article->asAssociativeArray(), 200);
     }
 
     function patchArticle($articleId) {

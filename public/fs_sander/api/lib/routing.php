@@ -77,7 +77,7 @@ switch ($route) {
             $id = explode("/", $uri)[3];
 
             if ( $method === "GET" ) getArticleDetail($id, $container, AdminRoute($container));
-            elseif ( $method === "PUT" ) updateArticle($payload, AdminRoute($container));
+            elseif ( $method === "PATCH" ) updateArticle($id, $payload, $container, AdminRoute($container));
             elseif ( $method === "PATCH" ) patchArticle($id, $payload, AdminRoute($container));
 
             else $responseHandler->notAllowed();
