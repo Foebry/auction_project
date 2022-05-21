@@ -13,8 +13,13 @@ use models\Container;
         return new Response($data, 200);
     }
 
-    function getCategory($id) {
-        print("GET category logic or id $id");
+    function getCategory(int $cat_id, Container $container): Response {
+
+        $category = $container->getCategoryHandler()->getCategoryById($cat_id, $container);
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($category->asAssociativeArray(), 200);
     }
 
     function postCategory(string $payload, Container $container): Response {

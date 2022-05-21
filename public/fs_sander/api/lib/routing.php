@@ -126,7 +126,7 @@ switch ($route) {
 
             $id = explode("/", $uri)[3];
             
-            if ( $method === "GET" ) getCategory($id, AdminRoute($container));
+            if ( $method === "GET" ) getCategory($id, $container, AdminRoute($container));
             elseif ( $method === "PATCH" ) updateCategory($payload, AdminRoute($container));
             else $responseHandler->notAllowed();
         }
