@@ -56,3 +56,10 @@ function generateJWT(User $user): string {
 
     return "$header.$payload.$signature";
 }
+
+function handleLogout(): Response {
+
+    unset($_COOKIE["__refresh_token__"]);
+
+    return new Response([], 204);
+}

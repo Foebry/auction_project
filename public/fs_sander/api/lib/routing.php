@@ -192,7 +192,15 @@ switch ($route) {
 
         break;
 
+    case "logout":
+        if( $uri === "/api/$route"){
+            if( $method === "DELETE" ) handleLogout();
+            else $responseHandler->notAllowed();
+        }
+        else $responseHandler->invalidRoute();
+        break;
+
     default:
-    $responseHandler->invalidRoute();
+        $responseHandler->invalidRoute();
         break;
 }
