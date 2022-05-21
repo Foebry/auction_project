@@ -78,8 +78,13 @@ use models\Container;
         return new Response($user->asAssociativeArray(), 200);
     }
 
-    function getUserDetail($id) {
-        print("GET user detail logic");
+    function getUserDetail(int $id, Container $container): Response {
+
+        $user = $container->getUserHandler()->getUserById($id, $container);
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($user->asAssociativeArray(), 200);
     }
 
     function patchUser($id, $payload){

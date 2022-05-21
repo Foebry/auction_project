@@ -149,7 +149,7 @@ switch ($route) {
 
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getUserDetail($id, AdminRoute($container));
+            if ( $method === "GET" ) getUserDetail($id, $container, AdminRoute($container));
             elseif( $method === "PATCH" ) patchUser($id, $payload, AdminRoute($container));
             elseif ( $method === "PUT" ) updateUser($payload, AdminRoute($container));
 

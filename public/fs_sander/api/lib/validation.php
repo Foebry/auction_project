@@ -69,7 +69,7 @@ use models\Container;
         $user_info = validateJWT($container);
 
         // check if user is admin
-        if ( $user_info["isAdmin"] !== true )
+        if ( $user_info["isAdmin"] !== "1" )
             $container->getResponseHandler()->unauthorized();
     }
 
