@@ -78,7 +78,7 @@ switch ($route) {
 
             if ( $method === "GET" ) getArticleDetail($id, $container, AdminRoute($container));
             elseif ( $method === "PATCH" ) updateArticle($id, $payload, $container, AdminRoute($container));
-            elseif ( $method === "PATCH" ) patchArticle($id, $payload, AdminRoute($container));
+            elseif ( $method === "DELETE" ) deleteArticle($id, $container, AdminRoute($container));
 
             else $responseHandler->notAllowed();
         }

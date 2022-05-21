@@ -62,9 +62,12 @@
       return new Response($article->asAssociativeArray(), 200);
     }
 
-    function patchArticle($articleId) {
-        print("PATCH article detail logic");
-      /**
-       * @todo Create ??? ArticleDetail
-       */
+    function deleteArticle(int $art_id, Container $container): Response {
+
+      $container->getArticleHandler()->getArticleById($art_id, $container);
+
+      $container->getDbManager()->getSQL("DELETE from gw_article where art_id=$art_id");
+      $container->getDbManager()->closeConnection();
+
+      return new Response([], 204);
     }
