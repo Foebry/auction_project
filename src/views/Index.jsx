@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import Auction from "../components/Auction";
 import Categories from "../components/Categories";
 import { AppContext } from "../context/AppContext";

@@ -22,7 +22,7 @@ require_once "models/Category.php";
 require_once "models/Response.php";
 require_once "models/User.php";
 
-if ( !isset($_SESSION ) ) session_start();
+if ( !isset($_SESSION ) ) session_start(["cookie_samesite"=>"None", "cookie_secure"=>true]);
 // create Container id needed;
 if ( !isset( $_SESSION["container"] ) ) $_SESSION["container"] = new Container();
 

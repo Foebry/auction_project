@@ -50,8 +50,17 @@ use models\Container;
     function validateJWT(Container $container):array {
 
         //check if a __refresh_token__ cookie was sent
-        if ( !isset($_COOKIE["__refresh_token__"]) )
-            $container->getResponseHandler()->unauthorized("no token present");
+        print(json_encode($_COOKIE));
+        $container->getDbManager()->closeConnection();
+        exit();
+        if ( !isset($_COOKIE["__refresh_token__"]) ) {
+            if( !isset($_SESSION["expire"]) ) $container->getResponseHandler()->unauthorized("no token present");
+            
+            if( $_SESSION["expire"] > time() ) refreshToken([]);
+
+            else $container->getResponseHandler()->unauthorized("Session Expired");
+        }
+            
         
         $token = $_COOKIE["__refresh_token__"];
 

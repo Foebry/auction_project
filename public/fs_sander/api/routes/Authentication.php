@@ -37,7 +37,14 @@ function handleAuthentication(Container $container, string $payload): Response {
 
     $dbm->closeConnection();
 
-    return new Response(["usr_name"=>$user->getUsrName(), "usr_id"=>$user->getUsrId()]);
+    $csrf = hash_hmac("sha256", session_id(), "BOO");
+    $_SESSION["csrf"] = $csrf;
+    $_SESSION["expire"] = time() + 60 * 15;
+
+    // print(json_encode($_COOKIE));
+    // exit();
+
+    return new Response(["usr_name"=>$user->getUsrName(), "usr_id"=>$user->getUsrId(), "csrf"=>$csrf]);
 
 }
 
@@ -62,10 +69,12 @@ function refreshToken(array $user_data, int $minutes=15): void {
     $signature = hash_hmac("sha256", "BOO", "$header.$payload");
 
     $token = "$header.$payload.$signature";
-    $expireAt = time() + 60 * $minutes;
+    // $expireAt = time() + 60 * $minutes;
+    $expireAt = time()+60;
+    $options = ["expires"=>$expireAt, "secure"=>true, "httponly"=>true, "SameSite"=>"None"];
 
     //set HTTP_cookie for token
-    setcookie("__refresh_token__", $token, $expireAt, null, null, null, true);
+    setcookie("__refresh_token__", $token, $options);
 }
 
 function handleLogout(): Response {

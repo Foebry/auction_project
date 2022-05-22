@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const auctionAPI = createApi({
     reducerPath: "auctionState",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://www.wdev2.be/fs_sander/api",
+        baseUrl: "http://localhost:8000/fs_sander/api",
     }),
     endpoints: (builder) => ({
         getAuctions: builder.query({

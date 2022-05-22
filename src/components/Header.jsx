@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
+import React from "react";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
-import { Routes } from "../types/RouteTypes";
 
 const Header = () => {
     const { setModal } = useContext(AppContext);
@@ -9,7 +8,7 @@ const Header = () => {
 
     const logout = () => {
         localStorage.removeItem("usr_name");
-        reload();
+        window.location.reload();
     };
 
     return (
