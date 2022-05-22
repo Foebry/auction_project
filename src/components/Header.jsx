@@ -1,12 +1,16 @@
 import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { Routes } from "../types/RouteTypes";
-import LoginModal from "./modals/LoginModal";
-import RegisterModal from "./modals/RegisterModal";
 
 const Header = () => {
-    const { userId, setUserId, setModal } = useContext(AppContext);
+    const { setModal } = useContext(AppContext);
+    const usr_name = localStorage.getItem("usr_name");
+
+    const logout = () => {
+        localStorage.removeItem("usr_name");
+        reload();
+    };
 
     return (
         <header className="header container">
@@ -15,39 +19,32 @@ const Header = () => {
                     <span>OneClick</span> Pirate
                 </h1>
                 <div className="header__items__links">
-                    {!userId && (
+                    {!usr_name && (
                         <>
-                            <Link
-                                className="link"
-                                to={Routes.LOGIN}
+                            <button
+                                className="btn"
                                 onClick={() => setModal("login")}
                             >
                                 Login
-                            </Link>
-                            <Link
-                                className="link"
-                                to={Routes.REGISTER}
+                            </button>
+                            <button
+                                className="btn"
                                 onClick={() => setModal("register")}
                             >
                                 Register
-                            </Link>
+                            </button>
                         </>
                     )}
-                    {userId && (
+                    {usr_name && (
                         <>
                             <p>
-                                Welcome <span>NAME</span>
+                                Welcome{" "}
+                                <span>{localStorage.getItem("usr_name")}</span>
                             </p>
-                            <Link className="link" to={"#"}>
-                                My Products
-                            </Link>
-                            <Link
-                                className="link"
-                                to={"#"}
-                                onClick={() => setUserId(undefined)}
-                            >
+                            <button className="btn">My Products</button>
+                            <button className="btn" onClick={logout}>
                                 Logout
-                            </Link>
+                            </button>
                         </>
                     )}
                 </div>

@@ -1,23 +1,45 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MdLockOutline, MdOutlineAlternateEmail } from "react-icons/md";
 import BaseModal from "./baseModal";
 import { AppContext } from "../../context/AppContext";
+import { usePostLoginMutation } from "../../data/authenticationAPI";
 
 const Loginblury__modal = () => {
     const { setModal } = useContext(AppContext);
+    const [login] = usePostLoginMutation();
+
+    const [usr_email, setEmail] = useState("");
+    const [usr_password, setPassword] = useState("");
+
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        const { data, error } = await login({ usr_email, usr_password });
+
+        if (data) {
+            localStorage.setItem("usr_name", data.usr_name);
+            setEmail("");
+            setPassword("");
+            setModal(null);
+        }
+    };
+
+    const handleEmailChange = (e) => setEmail(e.target.value);
+    const handlePasswordChange = (e) => setPassword(e.target.value);
 
     return (
         <BaseModal>
             <h1 className="modal__title">Login</h1>
-            <div className="modal__input">
+            <form className="modal__input" onSubmit={onSubmit}>
                 <div className="modal__input__item">
                     <MdOutlineAlternateEmail className="modal__input__item__icon" />
                     <input
                         className="modal__input__item__inputfield"
                         type="email"
                         placeholder="Enter email"
-                        name="email"
+                        name="usr_email"
                         required
+                        value={usr_email}
+                        onChange={handleEmailChange}
                     />
                 </div>
                 <div className="modal__input__item">
@@ -25,13 +47,15 @@ const Loginblury__modal = () => {
                     <input
                         className="modal__input__item__inputfield"
                         type="password"
-                        name="pwd"
+                        name="usr_password"
                         placeholder="Enter password"
                         required
+                        value={usr_password}
+                        onChange={handlePasswordChange}
                     />
                 </div>
-            </div>
-            <button className="modal__btn">Login</button>
+                <button className="modal__btn">Login</button>
+            </form>
             <p className="modal__link">
                 Don't have an account yet?{" "}
                 <button

@@ -20,12 +20,15 @@
             justify-content: center;
             align-items: center;
             gap: 30px;
-            & .link {
+            & .btn {
                 font-size: 20px;
                 text-decoration: none;
                 color: $white;
+                background-color: transparent;
+                border: none;
                 &:hover {
                     color: $lightblue;
+                    cursor: pointer;
                 }
             }
             & p {
