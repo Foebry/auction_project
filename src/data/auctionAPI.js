@@ -17,7 +17,7 @@ const auctionAPI = createApi({
             query: (id) => `/auction/${id}/biddings`,
         }),
         postAuction: builder.mutation({
-            query: (auc_art_id, auc_expiration) => ({
+            query: ({ auc_art_id, auc_expiration }) => ({
                 url: `/auctions`,
                 method: "POST",
                 body: {
