@@ -29,7 +29,7 @@ function postAuction(Container $container, string $payload) {
 	$payload = json_decode($payload, true);
 
 	checkPayloadPOST(["auc_art_id", "auc_expiration"], $payload, $container);
-	$article = $container->getArticleHandler()->getById($payload["auc_art_id"], $container);
+	$article = $container->getArticleHandler()->getArticleById($payload["auc_art_id"], $container);
 
 	$auction = new Auction(null, $article->getArtId(), $payload["auc_expiration"]);
 
@@ -74,7 +74,7 @@ function getAuctionDetail( Container $container, int $id ): Response {
 		unset($bidding["bid_usr_id"]);
 	}
 
-	$article = $container->getArticleHandler()->getById($auction->getAucArtId(), $container);
+	$article = $container->getArticleHandler()->getArticleById($auction->getAucArtId(), $container);
 
 	$data = [
 		"id" => $auction->getAucId(),

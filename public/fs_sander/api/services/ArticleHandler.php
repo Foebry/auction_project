@@ -5,7 +5,7 @@ use models\Container;
 
     class ArticleHandler {
 
-        public function getById(int $art_id, Container $container): Article {
+        public function getArticleById(int $art_id, Container $container): Article {
 
             $data = $container->getDbManager()->getSQL("
                 SELECT *

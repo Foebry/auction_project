@@ -2,13 +2,14 @@
 
 use models\Response;
 use models\User;
+use models\Container;
 
     /**
-     * @param \models\Container $container
+     * @param Container $container
      * @param string $payload
      * @return Response
      */
-    function handleRegister( \models\Container $container, string $payload ):\models\Response {
+    function handleRegister( Container $container, string $payload ): Response {
         $dbm = $container->getDbManager();
         $payload = json_decode($payload, true);
         
@@ -40,7 +41,7 @@ use models\User;
         );
         
         // retrieve id from newly inserted entity
-        $id = $dbm->insertSQL(
+        $dbm->insertSQL(
             sprintf(
                 "INSERT into gw_user (usr_name, usr_email, usr_password) values('%s', '%s', '%s')",
                 $user->getUsrName(), $user->getUsrEmail(), $user->getUsrPassword()
@@ -48,21 +49,125 @@ use models\User;
         
         $dbm->closeConnection();
 
-        return new Response(["usr_id"=>$id, "usr_name"=>$user->getUsrName()]);
+        return new Response(["usr_name"=>$user->getUsrName()]);
     }
 
-    function getUserDetail($id) {
-        print("GET user detail logic");
+    function getUserDetailSelf( Container $container, array $user_data ): Response {
+
+        $email = $user_data["usr_email"];
+        $user = $container->getUserHandler()->getUserByEmail($email, $container);
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($user->asAssociativeArray(), 200);
     }
 
-    function patchUser($id, $payload){
-        print("PATCH user detail logic");
+    function PatchUserSelf( string $payload, Container $container, array $user_data ): Response {
+
+        $payload = json_decode($payload, true);
+
+        $payload = checkPayloadPATCH(["usr_name", "usr_lastname", "usr_email", "usr_password"], $payload, $container);
+
+        $usr_id = $container->getUserHandler()->getUserByEmail($user_data["usr_email"], $container)->getUsrId();
+
+        $container->getDbManager()->getSQL("UPDATE gw_user SET $payload where usr_id = $usr_id");
+        $user = $container->getUserHandler()->getUserById($usr_id, $container);
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($user->asAssociativeArray(), 200);
     }
 
-    function updateUser($payload){
-        print("PUT user detail logic");
+    function getUserDetail(int $id, Container $container): Response {
+
+        $user = $container->getUserHandler()->getUserById($id, $container);
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($user->asAssociativeArray(), 200);
     }
 
-    function getUserArticles($id) {
-        print("GET user articles logic");
+    function updateUser(int $usr_id, string $payload, Container $container): Response {
+
+        $payload = json_decode($payload, true);
+
+        $payload = checkPayloadPATCH(["usr_name", "usr_lastname", "usr_email", "usr_is_admin"], $payload, $container);
+
+        $container->getDbManager()->getSQL("UPDATE gw_user set $payload where usr_id = $usr_id");
+        $user = $container->getUserHandler()->getUserById($usr_id, $container);
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($user->asAssociativeArray(), 200);
+    }
+
+    function deleteUser(int $usr_id, Container $container): Response {
+
+        $container->getUserHandler()->getUserById($usr_id, $container);
+
+        $container->getDbManager()->getSQL("Delete from gw_user where usr_id = $usr_id");
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response([], 204);
+    }
+
+    function getUserAuctionsSelf( Container $container, array $user_data ): Response {
+
+        $usr_id = $container->getUserHandler()->getUserByEmail( $user_data["usr_email"], $container )->getUsrId();
+
+        $auctions_won = fetchAuctionsWonByUser($usr_id, $container);
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($auctions_won, 200);
+    }
+
+    function getUserAuctions(int $usr_id, Container $container): Response {
+
+        $user = $container->getUserHandler()->getUserById($usr_id, $container);
+
+        $auctions = fetchAuctionsWonByUser($usr_id, $container);
+
+        $data = [
+            "user"=>[
+                "id"=>$usr_id,
+                "name"=>$user->getUsrName(),
+                "biddings"=> $auctions
+            ],
+        ];
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($data, 200);
+    }
+
+    function getUserBiddingsSelf( Container $container, array $user_data): Response {
+
+        $usr_id = $container->getUserHandler()->getUserByEmail( $user_data["usr_email"], $container )->getUsrId();
+
+        $user_biddings = fetchBiddingsByUser($usr_id, $container);
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($user_biddings, 200);
+    }
+
+    function getUserBiddings( int $usr_id, Container $container ): Response {
+
+        $user = $container->getUserHandler()->getUserById($usr_id, $container);
+
+        $biddings = fetchBiddingsByUser($usr_id, $container);
+
+        $data = [
+            "user"=>[
+                "id"=>$usr_id,
+                "name"=>$user->getUsrName(),
+                "biddings"=> $biddings
+            ],
+        ];
+
+        $container->getDbManager()->closeConnection();
+
+        return new Response($data, 200);
     }

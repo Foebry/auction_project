@@ -67,3 +67,10 @@ function refreshToken(array $user_data, int $minutes=15): void {
     //set HTTP_cookie for token
     setcookie("__refresh_token__", $token, $expireAt, null, null, null, true);
 }
+
+function handleLogout(): Response {
+
+    unset($_COOKIE["__refresh_token__"]);
+
+    return new Response([], 204);
+}

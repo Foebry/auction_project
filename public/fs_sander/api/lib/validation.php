@@ -20,6 +20,27 @@ use models\Container;
         }
     }
 
+    function checkPayloadPATCH(array $fields, array $payload, Container $container): string {
+
+        $matching_fields = [];
+
+        foreach($payload as $key=>$value) {
+            if ( in_array($key, array_keys($fields)) ){
+                $matching_fields[$key] = $value;
+            }
+        }
+        if( $matching_fields === 0 ) $container->getResponseHandler()->badRequest();
+
+        $update = [];
+
+        foreach($matching_fields as $key=>$value) {
+            if ($key === "usr_password") $value = password_hash($value, 1);
+            $update[] = sprintf("$key='%s'", $value);
+        }
+
+        return implode(", ", $update);
+    }
+
     /**
      * validateJWT
      *
@@ -60,7 +81,7 @@ use models\Container;
         $user_info = validateJWT($container);
 
         // check if user is admin
-        if ( $user_info["isAdmin"] !== true )
+        if ( $user_info["isAdmin"] !== "1" )
             $container->getResponseHandler()->unauthorized();
 
         refreshToken($user_info, 60);
@@ -70,10 +91,13 @@ use models\Container;
      * ProtectedRoute
      *
      * @param  Container $container
-     * @return void
+     * @return array
      */
-    function ProtectedRoute(Container $container): void {
+    function ProtectedRoute(Container $container): array {
 
         $user_info = validateJWT($container);
+
         refreshToken($user_info);
+
+        return validateJWT($container);
     }

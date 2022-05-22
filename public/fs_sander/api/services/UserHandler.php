@@ -37,11 +37,14 @@ use models\Container;
          * @param  mixed $container
          * @return User
          */
-        public function getUserById( int $user_id, Container $container ): User {
+        public function getUserById( int $usr_id, Container $container ): User {
 
-            $userData = $container->getDbManager()->getSQL("SELECT * from gw_user where usr_id = $user_id");
+            $userData = $container->getDbManager()->getSQL("SELECT * from gw_user where usr_id = $usr_id");
 
-            if (!$userData) $container->getResponseHandler()->badRequest();
+            if (!$userData) {
+                $container->getDbManager()->closeConnection();
+                $container->getResponseHandler()->badRequest(["message"=>"No user with usr_id $usr_id"]);
+            }
 
             return new User(
                 $userData[0]["usr_id"],
