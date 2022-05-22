@@ -2,11 +2,13 @@
 
 namespace models;
 
-class Category {
+use BaseModel;
 
-    private $cat_id;
+class Category extends BaseModel {
 
-    private $cat_name;
+    protected $cat_id;
+
+    protected $cat_name;
 
     /**
      * @param $cat_id
@@ -22,6 +24,10 @@ class Category {
      */
     public function getCatId() {
         return $this->cat_id;
+    }
+
+    public function setCatId(int $cat_id): void{
+        $this->cat_id = $cat_id;
     }
 
     /**

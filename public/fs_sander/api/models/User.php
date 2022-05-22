@@ -2,15 +2,19 @@
 
 namespace models;
 
-class User {
+use BaseModel;
 
-    private $usr_id;
+class User extends BaseModel {
 
-    private $usr_name;
+    protected $usr_id;
 
-    private $usr_email;
+    protected $usr_name;
 
-    private $usr_password;
+    protected $usr_email;
+
+    protected $usr_password;
+
+    protected $usr_isAdmin;
 
     /**
      * @param $usr_id

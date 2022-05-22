@@ -58,8 +58,8 @@ switch ($route) {
         */
         if ( $uri === "/api/$route" ) {
             
-            if ( $method === "GET" ) getArticles(AdminRoute($container));
-            elseif ( $method === "POST" ) postArticle($payload, AdminRoute($container));
+            if ( $method === "GET" ) getArticles($container, AdminRoute($container));
+            elseif ( $method === "POST" ) postArticle($payload, $container, AdminRoute($container));
             else $responseHandler->notAllowed();
         }
 
@@ -76,9 +76,9 @@ switch ($route) {
 
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getArticleDetail($id, AdminRoute($container));
-            elseif ( $method === "PUT" ) updateArticle($payload, AdminRoute($container));
-            elseif ( $method === "PATCH" ) patchArticle($id, $payload, AdminRoute($container));
+            if ( $method === "GET" ) getArticleDetail($id, $container, AdminRoute($container));
+            elseif ( $method === "PATCH" ) updateArticle($id, $payload, $container, AdminRoute($container));
+            elseif ( $method === "DELETE" ) deleteArticle($id, $container, AdminRoute($container));
 
             else $responseHandler->notAllowed();
         }
@@ -108,8 +108,8 @@ switch ($route) {
         */
         if ( $uri === "/api/$route" ) {
             
-            if ( $method === "GET" ) getCategories(AdminRoute($container));
-            elseif( $method === "POST" ) postCategory($payload, AdminRoute($container));
+            if ( $method === "GET" ) getCategories($container, AdminRoute($container));
+            elseif( $method === "POST" ) postCategory($payload, $container, AdminRoute($container));
 
             else $responseHandler->notAllowed();
         }
@@ -126,8 +126,9 @@ switch ($route) {
 
             $id = explode("/", $uri)[3];
             
-            if ( $method === "GET" ) getCategory($id, AdminRoute($container));
-            elseif ( $method === "PATCH" ) updateCategory($payload, AdminRoute($container));
+            if ( $method === "GET" ) getCategory($id, $container, AdminRoute($container));
+            elseif ( $method === "PATCH" ) updateCategory($id, $payload, $container, AdminRoute($container));
+            elseif( $method === "DELETE" ) deleteCategory($id, $container, AdminRoute($container) );
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();
@@ -139,25 +140,45 @@ switch ($route) {
         * /api/user/{id}
         * GET, PATCH, PUT
         */
-        if ( preg_match("|api/$route/[0-9]+$|", $uri) ){
+        if( $uri === "/api/$route" ){
+            if( $method === "GET" ) getUserDetailSelf( $container, ProtectedRoute( $container ) );
+            if ($method === "PATCH" ) PatchUserSelf( $payload, $container, ProtectedRoute( $container ) );
+            else $responseHandler->notAllowed();
+        }
+
+        elseif ( preg_match("|api/$route/[0-9]+$|", $uri) ){
 
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getUserDetail($id, ProtectedRoute($container));
-            elseif( $method === "PATCH" ) patchUser($id, $payload, ProtectedRoute($container));
-            elseif ( $method === "PUT" ) updateUser($payload, ProtectedRoute($container));
+            if ( $method === "GET" ) getUserDetail($id, $container, AdminRoute($container));
+            elseif( $method === "PATCH" ) updateUser($id, $payload, $container, AdminRoute($container));
+            elseif ( $method === "DELETE" ) deleteUser($id, $container, AdminRoute($container));
 
             else $responseHandler->notAllowed();
+        }
+        elseif( $uri === "/api/$route/auctions"){
+            if( $method === "GET" ) getUserAuctionsSelf( $container, ProtectedRoute( $container ) );
+            else $container->notAllowed();
         }
         /*
         * /api/user/{id}/articles
         * GET
         */
-        elseif (preg_match("|api/$route/[0-9]*/articles$|", $uri)){
+        elseif (preg_match("|api/$route/[0-9]*/auctions$|", $uri)){
             
             $id = explode("/", $uri)[3];
 
-            if ($method === "GET") getUserArticles($id, ProtectedRoute($container));
+            if ($method === "GET") getUserAuctions($id, $container, AdminRoute($container));
+            else $responseHandler->notAllowed();
+        }
+        elseif( $uri === "/api/$route/biddings"){
+            if( $method === "GET" ) getUserBiddingsSelf( $container, ProtectedRoute( $container ) );
+            else $responseHandler->notAllowed();
+        }
+        elseif( preg_match("|api/$route/[0-9]+/biddings$|", $uri)){
+            $id = explode("/", $uri)[3];
+
+            if( $method === "GET" ) getUserBiddings( $id, $container, AdminRoute( $container ) );
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();
@@ -192,7 +213,15 @@ switch ($route) {
 
         break;
 
+    case "logout":
+        if( $uri === "/api/$route"){
+            if( $method === "DELETE" ) handleLogout();
+            else $responseHandler->notAllowed();
+        }
+        else $responseHandler->invalidRoute();
+        break;
+
     default:
-    $responseHandler->invalidRoute();
+        $responseHandler->invalidRoute();
         break;
 }

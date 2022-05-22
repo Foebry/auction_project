@@ -34,5 +34,7 @@ require_once "routes/Bidding.php";
 require_once "routes/Category.php";
 require_once "routes/User.php";
 
+require_once "helpers.php";
+
 //router
 require_once "routing.php";

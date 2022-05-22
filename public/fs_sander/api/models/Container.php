@@ -57,7 +57,7 @@ class Container {
         return $this->biddingHandler;
     }
 
-    function categoryHandler(): CategoryHandler {
+    function getCategoryHandler(): CategoryHandler {
         if ($this->categoryHandler === NULL) {
             $this->categoryHandler = new CategoryHandler();
         }

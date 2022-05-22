@@ -2,15 +2,17 @@
 
 namespace models;
 
-class Article {
+use BaseModel;
 
-    private $art_id;
+class Article extends BaseModel{
 
-    private $art_name;
+    protected $art_id;
 
-    private $art_img;
+    protected $art_name;
 
-    private $art_cat_id;
+    protected $art_img;
+
+    protected $art_cat_id;
 
     /**
      * @param $art_id
@@ -30,6 +32,10 @@ class Article {
      */
     public function getArtId() {
         return $this->art_id;
+    }
+
+    public function setArtId(int $art_id):void {
+        $this->art_id = $art_id;
     }
 
     /**
