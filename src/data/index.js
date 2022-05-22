@@ -4,6 +4,7 @@ import articleAPI from "./articleAPI";
 import auctionAPI from "./auctionAPI";
 import authenticationAPI from "./AuthenticationAPI";
 import biddingAPI from "./biddingAPI";
+import categoryAPI from "./categoryAPI";
 
 const store = configureStore({
     reducer: combineReducers({
@@ -11,6 +12,7 @@ const store = configureStore({
         [authenticationAPI.reducerPath]: authenticationAPI.reducer,
         [articleAPI.reducerPath]: articleAPI.reducer,
         [biddingAPI.reducerPath]: biddingAPI.reducer,
+        [categoryAPI.reducerPath]: categoryAPI.reducer,
     }),
 });
 

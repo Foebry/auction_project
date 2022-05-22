@@ -40,6 +40,7 @@ const articleAPI = createApi({
         }),
         deleteArticle: builder.mutation({
             query: (id) => `article/${id}`,
+            invalidatesTags: ["allArticles"],
         }),
     }),
 });
