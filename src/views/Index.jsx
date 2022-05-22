@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useContext } from "react";
 import Auction from "../components/Auction";
 import Categories from "../components/Categories";
@@ -6,10 +7,24 @@ import LoginModal from "../components/modals/LoginModal";
 import RegisterModal from "../components/modals/RegisterModal";
 import DetailModal from "../components/modals/DetailModal";
 import { useGetAuctionsQuery } from "../data/auctionAPI";
+=======
+import {useEffect, useState} from "react";
+import Auction from "../components/Auction";
+import Categories from "../components/Categories";
+import { currentAuctions } from "../mocks/auctions.js";
+import axios from 'axios';
+>>>>>>> API-cookie
 
 const Index = () => {
     const [activeFilter, setActiveFilter] = useState([]);
     const { modal } = useContext(AppContext);
+
+    useEffect(()=>{
+        (async ()=>{
+            const data = await axios("http://localhost:8000/api/auctions");
+            console.log(data);
+        })();
+    },[])
 
     const handleFilterClick = (e) => {
         const id = e.target.id;
