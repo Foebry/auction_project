@@ -41,7 +41,7 @@ use models\Container;
         );
         
         // retrieve id from newly inserted entity
-        $id = $dbm->insertSQL(
+        $dbm->insertSQL(
             sprintf(
                 "INSERT into gw_user (usr_name, usr_email, usr_password) values('%s', '%s', '%s')",
                 $user->getUsrName(), $user->getUsrEmail(), $user->getUsrPassword()
@@ -49,7 +49,7 @@ use models\Container;
         
         $dbm->closeConnection();
 
-        return new Response(["usr_id"=>$id, "usr_name"=>$user->getUsrName()]);
+        return new Response(["usr_name"=>$user->getUsrName(), "token"=>generateJWT($user)]);
     }
 
     function getUserDetailSelf( Container $container, array $user_data ): Response {
