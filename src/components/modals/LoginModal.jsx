@@ -29,7 +29,9 @@ const Loginblury__modal = () => {
             usr_password,
         });
         if (data) {
-            setActiveUser(data);
+            localStorage.setItem("usr_name", data.usr_name);
+            localStorage.setItem("usr_id", data.usr_id);
+            localStorage.setItem("csrf", data.csrf);
             setInputs({});
             setModal(null);
         }
