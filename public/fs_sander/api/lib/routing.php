@@ -5,7 +5,7 @@ $uri = explode("fs_sander", $_SERVER["REQUEST_URI"])[1];
 $route = explode("/", $uri)[2];
 $payload = file_get_contents("php://input");
 
-$container = $_SESSION["container"];
+$container = new models\Container();
 $responseHandler = $container->getResponseHandler();
 $dbm = $container->getDbManager();
 
@@ -35,7 +35,7 @@ switch ($route) {
 
             $id = explode("/", $uri)[3];
 
-            if ( $method === "GET" ) getAuctionDetail( $container, $id, ProtectedRoute($container) );
+            if ( $method === "GET" ) getAuctionDetail( $container, $id, AdminRoute($container) );
             else $responseHandler->notAllowed();
         }
         /*
@@ -158,7 +158,7 @@ switch ($route) {
         }
         elseif( $uri === "/api/$route/auctions"){
             if( $method === "GET" ) getUserAuctionsSelf( $container, ProtectedRoute( $container ) );
-            else $container->notAllowed();
+            else $responseHandler->notAllowed();
         }
         /*
         * /api/user/{id}/articles
@@ -192,7 +192,7 @@ switch ($route) {
         */
         if ($uri === "/api/$route") {
             
-            if ($method === "POST") handleAuthentication($container, $payload);
+            if ($method === "POST") handleLogin($container, $payload);
             else $responseHandler->notAllowed();
         }
         else $responseHandler->invalidRoute();

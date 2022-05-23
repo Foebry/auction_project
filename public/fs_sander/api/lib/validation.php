@@ -1,7 +1,7 @@
 <?php
 
 use models\Container;
-    
+
     /**
      * checkPayloadPOST
      *
@@ -41,40 +41,60 @@ use models\Container;
         return implode(", ", $update);
     }
 
-    function validateJWT(Container $container):array {
+    /**
+     * validateUser
+     *
+     * @param  Container $container
+     * @return array
+     */
+    function validateUser(Container $container):array {
 
-        //check if a HTTP_BEARER was sent
-        if ( !isset( $_SERVER["HTTP_BEARER"] ) )
-            $container->getResponseHandler()->unauthorized("no token present");
-        
-        $token = $_SERVER["HTTP_BEARER"];
-
-        //check if token has correct structure
-        if ( count( explode( ".", $token ) ) != 3 )
-            $container->getResponseHandler()->unauthorized("incorrect token");
-
-        [$header, $payload, $signature] = explode(".", $token);
+        [$header, $payload, $signature] = validateJWT($container);
         
         $header_decoded = json_decode(base64_decode($header), true);
 
-        // if signature is faked, error code 
+        // check signature van token.
         if (hash_hmac($header_decoded["alg"], "BOO", "$header.$payload") !== $signature)
-            $container->getResponseHandler()->unauthorized("incorrect token");
+            $container->getResponseHandler()->unauthorized();
         
         // if signature is correct, return the userInformation + tokenExp as array
         return json_decode(base64_decode($payload), true);
     }
 
-    function AdminRoute(Container $container) {
-        $user_info = validateJWT($container);
+    /**
+     * AdminRoute
+     *
+     * @param  Container $container
+     * @return void
+     */
+    function AdminRoute(Container $container): void {
+
+        [$header, $payload, $signature] = validateJWT($container);
+        $user = getUserFromToken("$header.$payload.$signature", $container);
 
         // check if user is admin
-        if ( $user_info["isAdmin"] !== "1" )
+        $user_is_admin = $container->getUserHandler()->getUserById($user->getUsrId(), $container)->IsAdmin();
+
+        if ( !boolval($user_is_admin) )
             $container->getResponseHandler()->unauthorized();
+
+        // verleng sessie met 60 min.
+        extendSession(60);
     }
 
-    function ProtectedRoute(Container $container) {
+    /**
+     * ProtectedRoute
+     *
+     * @param  Container $container
+     * @return array
+     */
+    function ProtectedRoute(Container $container): array {
+
+        $user_info = validateJWT($container);
+        $user_is_admin = $user_info["usr_is_admin"];
+
+        // verleng session 60 min voor admin, 15 voor user.
+        extendSession(boolval($user_is_admin) ? 60 : 15 );
 
         return validateJWT($container);
     }
-    
