@@ -3,6 +3,8 @@
 namespace models;
 
 use BaseModel;
+use ResponseHandler;
+use TypeError;
 
 class Category extends BaseModel {
 
@@ -14,9 +16,16 @@ class Category extends BaseModel {
      * @param $cat_id
      * @param $cat_name
      */
-    public function __construct($cat_id, $cat_name) {
-        $this->cat_id = $cat_id;
-        $this->cat_name = $cat_name;
+    public function __construct($data) {
+
+        try{
+            $this->setCatId($data["cat_id"] ?? null);
+            $this->setCatName($data["cat_name"]);
+        }
+        catch(TypeError $error){
+            $rh = new ResponseHandler();
+            $rh->badRequest();
+        }
     }
 
     /**

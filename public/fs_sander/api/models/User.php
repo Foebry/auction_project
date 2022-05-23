@@ -6,15 +6,15 @@ use BaseModel;
 
 class User extends BaseModel {
 
-    protected $usr_id;
+    public $usr_id;
 
-    protected $usr_name;
+    public $usr_name;
 
-    protected $usr_email;
+    public $usr_email;
 
-    protected $usr_password;
+    public $usr_password;
 
-    protected $usr_isAdmin;
+    public $usr_isAdmin;
 
     /**
      * @param $usr_id

@@ -1,21 +1,23 @@
 <?php
 
 use models\Container;
+use services\DbManager;
+use services\requests\Request;
 
     /**
      * checkPayloadPOST
      *
      * @param  array $fields
      * @param  array $payload
-     * @param  Container $container
+     * @param  DbManager $dbm
      * @return void
      */
-    function checkPayloadPOST(array $fields, array $payload, Container $container): void {
+    function checkPayloadPOST(array $fields, array $payload, DbManager $dbm): void {
 
         foreach($fields as $field){
             if ( !in_array($field, array_keys($payload)) ){
-                $container->getDbManager()->closeConnection();
-                $container->getResponseHandler()->badRequest();
+                $dbm->closeConnection();
+                $dbm->getResponseHandler()->badRequest();
             }
         }
     }
@@ -64,19 +66,21 @@ use models\Container;
     /**
      * AdminRoute
      *
-     * @param  Container $container
+     * @param  Request $request
      * @return void
      */
-    function AdminRoute(Container $container): void {
+    function AdminRoute(Request $request): void {
 
-        [$header, $payload, $signature] = validateJWT($container);
-        $user = getUserFromToken("$header.$payload.$signature", $container);
+        [$header, $payload, $signature] = validateJWT($request);
+        $user = getUserFromToken("$header.$payload.$signature", $request);
 
         // check if user is admin
-        $user_is_admin = $container->getUserHandler()->getUserById($user->getUsrId(), $container)->IsAdmin();
+        $user_is_admin = $request->getUserHandler()
+                                 ->getUserById($user->getUsrId(), $request->getDbManager())
+                                 ->IsAdmin();
 
         if ( !boolval($user_is_admin) )
-            $container->getResponseHandler()->unauthorized();
+            $request->getResponseHandler()->unauthorized();
 
         // verleng sessie met 60 min.
         extendSession(60);
@@ -85,16 +89,16 @@ use models\Container;
     /**
      * ProtectedRoute
      *
-     * @param  Container $container
+     * @param  Request $container
      * @return array
      */
-    function ProtectedRoute(Container $container): array {
+    function ProtectedRoute(Request $request): array {
 
-        $user_info = validateJWT($container);
+        $user_info = validateJWT($request);
         $user_is_admin = $user_info["usr_is_admin"];
 
         // verleng session 60 min voor admin, 15 voor user.
         extendSession(boolval($user_is_admin) ? 60 : 15 );
 
-        return validateJWT($container);
+        return validateJWT($request);
     }

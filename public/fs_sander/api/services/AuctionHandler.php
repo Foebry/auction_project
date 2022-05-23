@@ -1,15 +1,15 @@
 <?php
 
-    use \models\Container;
+    use \services\DbManager;
     use \models\Auction;
 
     class AuctionHandler{
         
-        public function getById($auction_id, Container $container){
+        public function getAuctionById($auction_id, DbManager $dbm){
 
-            $data = $container->getDbManager()->getSQL("SELECT * from gw_auction where auc_id = $auction_id")[0];
+            $data = $dbm->getSQL("SELECT * from gw_auction where auc_id = $auction_id")[0];
 
-            if(!$data) $container->getResponseHandler()->badRequest();
+            if(!$data) $dbm->getResponseHandler()->badRequest();
 
             return new Auction(
                 $data["auc_id"],

@@ -1,21 +1,22 @@
 <?php
 
 use models\Article;
-use models\Container;
+use services\DbManager;
+use services\requests\Request;
 
     class ArticleHandler {
 
-        public function getArticleById(int $art_id, Container $container): Article {
+        public function getArticleById(int $art_id, DbManager $dbm): Article {
 
-            $data = $container->getDbManager()->getSQL("
+            $data = $dbm->getSQL("
                 SELECT *
                 FROM gw_article
                 WHERE art_id = $art_id
             ")[0];
 
             if (!$data) {
-                $container->getDbManager()->closeConnection();
-                $container->getResponseHandler()->badRequest();
+                $dbm->closeConnection();
+                $dbm->getResponseHandler()->notFound($dbm, ["art_id"=>"No article with id $art_id", "auc_art_id"=>"No article with id $art_id"]);
             }
 
             $article = new Article(

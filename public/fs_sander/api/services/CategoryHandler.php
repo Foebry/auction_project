@@ -1,16 +1,16 @@
 <?php 
 
-    use models\Container;
     use models\Category;
+    use services\DbManager;
 
     class CategoryHandler {
         
-        public function getCategoryById(int $cat_id, Container $container): Category{
+        public function getCategoryById(int $cat_id, DbManager $dbm): Category{
 
-            $data = $container->getDbManager()->getSQL("SELECT * from gw_category where cat_id = $cat_id")[0];
+            $category_data = $dbm->getSQL("SELECT * from gw_category where cat_id = $cat_id")[0];
 
-            if(!$data) $container->getResponseHandler()->badRequest();
+            if(!$category_data) $dbm->getResponseHandler()->badRequest(["art_cat_id"=>"No category with id $cat_id"]);
 
-            return new Category( $data["cat_id"], $data["cat_name"] );
+            return new Category( $category_data );
         }
     }

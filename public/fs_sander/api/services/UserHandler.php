@@ -2,6 +2,7 @@
 
 use models\User;
 use models\Container;
+use services\DbManager;
 
     class UserHandler{
                 
@@ -34,17 +35,17 @@ use models\Container;
         /**
          * getUserById
          *
-         * @param  mixed $user_id
-         * @param  mixed $container
+         * @param  int $user_id
+         * @param  DbManager $container
          * @return User
          */
-        public function getUserById( int $usr_id, Container $container ): User {
+        public function getUserById( int $usr_id, DbManager $dbm ): User {
 
-            $userData = $container->getDbManager()->getSQL("SELECT * from gw_user where usr_id = $usr_id");
+            $userData = $dbm->getSQL("SELECT * from gw_user where usr_id = $usr_id");
 
             if (!$userData) {
-                $container->getDbManager()->closeConnection();
-                $container->getResponseHandler()->badRequest(["message"=>"No user with usr_id $usr_id"]);
+                $dbm->closeConnection();
+                $dbm->getResponseHandler()->badRequest(["message"=>"No user with usr_id $usr_id"]);
             }
 
             return new User(

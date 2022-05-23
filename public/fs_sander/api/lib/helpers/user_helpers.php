@@ -2,6 +2,7 @@
 
     use models\Container;
     use models\User;
+    use services\requests\Request;
 
     function fetchAuctionsWonByUser(int $usr_id, Container $container): array{
         $auctions_won = [];
@@ -57,12 +58,12 @@
         return $user_biddings;
     }
 
-    function getUserFromToken(string $token, Container $container): User {
+    function getUserFromToken(string $token, Request $request): User {
 
         
         $user_data = json_decode(base64_decode(explode(".", $token)[1]), true);
 
         $usr_id = $user_data["usr_id"];
 
-        return $container->getUserHandler()->getUserById($usr_id, $container);
+        return $request->getUserHandler()->getUserById($usr_id, $request->getDatabaseManager());
     }

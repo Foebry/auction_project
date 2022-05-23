@@ -1,41 +1,47 @@
 <?php
 
+    use services\DbManager;
+
     class ResponseHandler {
-        function __construct(){
 
-        }
-
-        function badRequest($msg=["message"=>"Bad Request"]){
-            print(json_encode($msg));
+        function badRequest(DbManager $dbm, $msg=[]){
+            $dbm->closeConnection();
+            print(json_encode(array_merge(["message"=>"Bad Request"], $msg)));
             header('HTTP/1.1 400');
             exit();
         }
 
-        function unauthorized($msg=["message"=>"Unauthorized"]){
-            print(json_encode($msg));
+        function unauthorized(DbManager $dbm, $msg=[]){
+            $dbm->closeConnection();
+            print(json_encode(array_merge(["message"=>"Unauthorized"], $msg)));
             header("HTTP/1.1 403");
             exit();
         }
 
-        function invalidRoute($msg=["message"=>"Not Found"]) {
-            print(json_encode($msg));
+        function invalidRoute(DbManager $dbm, $msg=[]) {
+            $dbm->closeConnection();
+            print(json_encode(array_merge(["message"=>"Not Found"], $msg)));
             header('HTTP/1.1 404');
             exit();
         }
 
-        function notAllowed($msg=["message"=>"Not Allowed"]){
-            print(json_encode($msg));
+        function notAllowed(DbManager $dbm, $msg=[]){
+            $dbm->closeConnection();
+            print(json_encode(array_merge(["message"=>"Not Allowed"], $msg)));
             header('HTTP/1.1 405');
             exit();
         }
 
-        function unprocessableEntity($msg=["message"=>"Unprocessable Entity"]){
-            print(json_encode($msg));
+        function unprocessableEntity(DbManager $dbm, $msg=[]){
+            $dbm->closeConnection();
+            print(json_encode(array_merge(["message"=>"Unproccessable Entity"], $msg)));
             header("HTTP/1.1 422 Unproccessable Entity");
             exit();
         }
 
-        function internalServerError($msg="Internal Server Error") {
+        function internalServerError(DbManager $dbm, $msg=[]) {
+            $dbm->closeConnection();
+            print(json_encode(array_merge(["message"=>"Internal Server Error"], $msg)));
             header("HTTP/1.1 500 $msg");
             exit();
         }

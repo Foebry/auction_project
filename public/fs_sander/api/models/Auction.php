@@ -2,10 +2,11 @@
 
 namespace models;
 
+use BaseModel;
 use DateTime;
 use \services\DbManager;
 
-class Auction {
+class Auction extends BaseModel {
 
     private $auc_id;
 
@@ -22,6 +23,10 @@ class Auction {
         $this->auc_id = $auc_id;
         $this->auc_art_id = $auc_art_id;
         $this->auc_expiration = $auc_expiration;
+    }
+
+    public function setAucId(int $auc_id){
+        $this->auc_id = $auc_id;
     }
 
     /**
