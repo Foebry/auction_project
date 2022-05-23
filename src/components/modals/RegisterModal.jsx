@@ -10,7 +10,12 @@ import { usePostRegisterMutation } from "../../data/authenticationAPI";
 
 const Registerblury__modal = () => {
     const { setModal, setActiveUser } = useContext(AppContext);
-    const [inputs, setInputs] = useState({});
+    const [inputs, setInputs] = useState({
+        usr_name: "",
+        usr_lastname: "",
+        usr_email: "",
+        usr_password: "",
+    });
     const [register] = usePostRegisterMutation();
 
     const handleInputChange = (e) => {
@@ -95,7 +100,7 @@ const Registerblury__modal = () => {
                 <button className="modal__btn">Register</button>
             </form>
             <p className="modal__link">
-                Already have an account? Go to{" "}
+                You already have an account? Go to{" "}
                 <button
                     className="modal__link__btnTo"
                     onClick={() => {

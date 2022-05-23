@@ -6,7 +6,10 @@ import { usePostLoginMutation } from "../../data/authenticationAPI";
 
 const Loginblury__modal = () => {
     const { setModal, setActiveUser } = useContext(AppContext);
-    const [inputs, setInputs] = useState({});
+    const [inputs, setInputs] = useState({
+        usr_email: "",
+        usr_password: "",
+    });
     const [login] = usePostLoginMutation();
 
     const handleInputChange = (e) => {
