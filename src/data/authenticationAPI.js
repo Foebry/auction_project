@@ -3,7 +3,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const authenticationAPI = createApi({
     reducerPath: "authenticationState",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/fs_sander/api",
+        baseUrl: "https://www.wdev2.be/fs_sander/api",
+        credentials: "include",
     }),
     endpoints: (builder) => ({
         postLogin: builder.mutation({

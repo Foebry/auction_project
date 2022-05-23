@@ -1,6 +1,7 @@
 <?php
 
     use models\Container;
+    use models\User;
 
     function fetchAuctionsWonByUser(int $usr_id, Container $container): array{
         $auctions_won = [];
@@ -34,7 +35,7 @@
             from gw_bidding
             join gw_auction ga on gw_bidding.bid_auc_id = ga.auc_id
             join gw_article g on ga.auc_art_id = g.art_id
-            where bid_usr_id=28
+            where bid_usr_id=$usr_id
             group by bid_auc_id"
         );
 
@@ -53,7 +54,15 @@
 
             $user_biddings[] = $bidding;
         }
-
-
         return $user_biddings;
+    }
+
+    function getUserFromToken(string $token, Container $container): User {
+
+        
+        $user_data = json_decode(base64_decode(explode(".", $token)[1]), true);
+
+        $usr_id = $user_data["usr_id"];
+
+        return $container->getUserHandler()->getUserById($usr_id, $container);
     }

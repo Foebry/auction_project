@@ -11,8 +11,9 @@
             exit();
         }
 
-        function unauthorized($msg="Unauthorized"){
-            header("HTTP/1.1 403 $msg");
+        function unauthorized($msg=["message"=>"Unauthorized"]){
+            print(json_encode($msg));
+            header("HTTP/1.1 403");
             exit();
         }
 
@@ -26,8 +27,9 @@
             exit();
         }
 
-        function unprocessableEntity($msg="Unprocessable Entity"){
-            header("HTTP/1.1 422 $msg");
+        function unprocessableEntity($msg=["message"=>"Unprocessable Entity"]){
+            print(json_encode($msg));
+            header("HTTP/1.1 422 Unproccessable Entity");
             exit();
         }
 

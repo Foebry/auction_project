@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
     MdLockOutline,
     MdOutlineAlternateEmail,
@@ -6,22 +6,57 @@ import {
 } from "react-icons/md";
 import BaseModal from "./baseModal";
 import { AppContext } from "../../context/AppContext";
+import { usePostRegisterMutation } from "../../data/authenticationAPI";
 
 const Registerblury__modal = () => {
     const { setModal } = useContext(AppContext);
+    const [register] = usePostRegisterMutation();
+
+    const [inputs, setInputs] = useState({
+        usr_name: "",
+        usr_lastname: "",
+        usr_email: "",
+        usr_password: "",
+    });
+
+    const onChange = (e) => {
+        setInputs({ ...inputs, [e.target.name]: e.target.value });
+    };
+
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        const { data, error } = await register(inputs);
+
+        if (data) {
+            localStorage.setItem("usr_name", data.usr_name);
+            localStorage.setItem("usr_id", data.usr_id);
+            localStorage.setItem("csrf", data.csrf);
+
+            setInputs({
+                usr_name: "",
+                usr_lastname: "",
+                usr_email: "",
+                usr_password: "",
+            });
+
+            setModal(null);
+        }
+    };
 
     return (
         <BaseModal>
             <h1 className="modal__title">Register</h1>
-            <div className="modal__input">
+            <form className="modal__input" onSubmit={onSubmit}>
                 <div className="modal__input__item">
                     <MdPersonOutline className="modal__input__item__icon" />
                     <input
                         className="modal__input__item__inputfield"
                         type="text"
                         placeholder="Enter first name"
-                        name="firstname"
+                        name="usr_name"
                         required
+                        value={inputs.firstname}
+                        onChange={onChange}
                     />
                 </div>
                 <div className="modal__input__item">
@@ -30,18 +65,22 @@ const Registerblury__modal = () => {
                         className="modal__input__item__inputfield"
                         type="text"
                         placeholder="Enter name"
-                        name="name"
+                        name="usr_lastname"
                         required
+                        value={inputs.lastname}
+                        onChange={onChange}
                     />
                 </div>
                 <div className="modal__input__item">
                     <MdOutlineAlternateEmail className="modal__input__item__icon" />
                     <input
                         className="modal__input__item__inputfield"
-                        type="email"
+                        type="text"
                         placeholder="Enter email"
-                        name="email"
+                        name="usr_email"
                         required
+                        value={inputs.email}
+                        onChange={onChange}
                     />
                 </div>
                 <div className="modal__input__item">
@@ -49,13 +88,15 @@ const Registerblury__modal = () => {
                     <input
                         className="modal__input__item__inputfield"
                         type="password"
-                        name="pwd"
+                        name="usr_password"
                         placeholder="Enter password"
                         required
+                        value={inputs.password}
+                        onChange={onChange}
                     />
                 </div>
-            </div>
-            <button className="modal__btn">Register</button>
+                <button className="modal__btn">Register</button>
+            </form>
             <p className="modal__link">
                 Already have an account? Go to{" "}
                 <button

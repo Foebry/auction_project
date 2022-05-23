@@ -34,7 +34,7 @@ const Loginblury__modal = () => {
                     <MdOutlineAlternateEmail className="modal__input__item__icon" />
                     <input
                         className="modal__input__item__inputfield"
-                        type="email"
+                        type="text"
                         placeholder="Enter email"
                         name="usr_email"
                         required

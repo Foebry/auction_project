@@ -1,15 +1,11 @@
+import axios from "axios";
 import React from "react";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 
 const Header = () => {
-    const { setModal } = useContext(AppContext);
+    const { setModal, logout } = useContext(AppContext);
     const usr_name = localStorage.getItem("usr_name");
-
-    const logout = () => {
-        localStorage.removeItem("usr_name");
-        window.location.reload();
-    };
 
     return (
         <header className="header container">

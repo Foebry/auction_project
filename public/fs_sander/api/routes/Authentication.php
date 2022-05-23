@@ -2,6 +2,7 @@
 
 use models\Response;
 use models\Container;
+use models\User;
 
 /**
  * handleAuthentication
@@ -10,41 +11,38 @@ use models\Container;
  * @param  string $payload
  * @return Response
  */
-function handleAuthentication(Container $container, string $payload): Response {
+function handleLogin(Container $container, string $payload): Response {
     $payload = json_decode($payload, true);
     $dbm = $container->getDbManager();
 
     // check if required fields are sent
     if (
         !in_array("usr_email", array_keys($payload)) ||
-        !in_array("usr_password", array_keys($payload))
+        !in_array("usr_password", array_keys($payload)) //||
+        // !in_array("csrf", array_keys($payload)) ||
+        // !in_array("form-key", array_keys($payload))
     ) {
-        $container->getResponseHandler()->badRequest();
+        $container->getResponseHandler()->badRequest(["message"=>"Invalid form"]);
     }
 
     $user = $container->getUserHandler()->getUserByEmail($payload["usr_email"], $container);
-
+    $_SESSION["response"] = [];
+    $_SESSION["response"]["user in handlelogin"] = json_encode($user->asAssociativeArray());
     //check if passwords do not match
     if ( !password_verify(($payload["usr_password"]), $user->getUsrPassword()) ){
         $dbm->closeConnection();
-        $container->getResponseHandler()->unprocessableEntity("Invalid password");
+        $container->getResponseHandler()->unprocessableEntity(["message"=>"Invalid data", "usr_password"=>"Invalid password"]);
     }
-
-    // renew cookie for 15min if user and 60 mins if admin
-    refreshToken(
-        ["usr_id"=>$user->getUsrId(), "usr_email"=>$user->getUsrEmail(), "usr_is_admin"=>$user->IsAdmin()],
-        $user->IsAdmin() ? 60 : 15);
+    
+    startSession($user->getUsrId(), $container);
 
     $dbm->closeConnection();
 
-    $csrf = hash_hmac("sha256", session_id(), "BOO");
-    $_SESSION["csrf"] = $csrf;
-    $_SESSION["expire"] = time() + 60 * 15;
-
-    // print(json_encode($_COOKIE));
-    // exit();
-
-    return new Response(["usr_name"=>$user->getUsrName(), "usr_id"=>$user->getUsrId(), "csrf"=>$csrf]);
+    return new Response([
+        "usr_name"=>$user->getUsrName(),
+        "usr_id"=>$user->getUsrId(),
+        "csrf"=>$_SESSION["csrf"]
+    ]);
 
 }
 
@@ -52,34 +50,54 @@ function handleAuthentication(Container $container, string $payload): Response {
 /**
  * refreshToken
  *
- * @param  array $user_data
+ * @param  User $user_data
  * @param  int $minutes
- * @return void
+ * @return string
  */
-function refreshToken(array $user_data, int $minutes=15): void {
+function generateJWT(User $user, int $minutes=5): string {
 
-    //first section of token contains the algorithm used to hash the signature
+    // Eerste deel van de JWT bevat info over algoritme & vervaltijd (om steeds nieuwe token te creëren)
     $header = base64_encode(json_encode(["token"=>"jwt", "alg"=>"sha256", "exp"=>time()+60*$minutes]));
 
-    //second section of token contains the user_information
-    $payload = base64_encode(json_encode($user_data));
+    // Tweede deel van de JWT bevat info over de user
+    if( $user ) {
+        $user_data = ["usr_id"=>$user->getUsrId(), "usr_email"=>$user->getUsrEmail(), "usr_password"=>$user->getUsrPassword()];
+        $payload = base64_encode(json_encode($user_data));
+    }
+    else $payload = explode(".", $_SESSION["__refresh_token__"])[1];
 
-    //third and final section of the token is the signature.
-    //signature is a hashed value (hashed with a secret only known to server) of encoded headerString and payloadString combined with a "."
+    // Derde en laatste deel van de JWT is een signature.
+    // De signature is de gehashte waarde van "$header.$payload" volgens het algoritme bepaald in de $header
     $signature = hash_hmac("sha256", "BOO", "$header.$payload");
 
-    $token = "$header.$payload.$signature";
-    // $expireAt = time() + 60 * $minutes;
-    $expireAt = time()+60;
+    return "$header.$payload.$signature";    
+}
+
+function createJwtCookie(User $user): string {
+
+    $minutes = boolval($user->IsAdmin()) ? 15 : 5;
+
+    $token = generateJWT($user, $minutes);
+
+    $expireAt = time() + 60 * $minutes;
     $options = ["expires"=>$expireAt, "secure"=>true, "httponly"=>true, "SameSite"=>"None"];
 
     //set HTTP_cookie for token
-    setcookie("__refresh_token__", $token, $options);
+    setcookie("jwt", $token, $options);
+
+    return $token;
 }
 
 function handleLogout(): Response {
 
-    unset($_COOKIE["__refresh_token__"]);
+    $token = $_COOKIE["jwt"];
+    
+    $options = ["expires"=>time(), "secure"=>true, "httponly"=>true, "SameSite"=>"None"];
+    // laat cookie vervallen
+    setcookie("jwt", $token, $options);
+    unset($_COOKIE["jwt"]);
+
+    destroySession();
 
     return new Response([], 204);
 }

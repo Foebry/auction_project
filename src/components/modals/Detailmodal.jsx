@@ -6,12 +6,15 @@ import { AppContext } from "../../context/AppContext";
 import { useGetAuctionByIdQuery } from "../../data/auctionAPI.js";
 
 const Detailblury__modal = () => {
-    const { modal } = useContext(AppContext);
-    const { data, isError, isLoading } = useGetAuctionByIdQuery(modal, {
+    const { modal, logout } = useContext(AppContext);
+    const { data, isError, isLoading, error } = useGetAuctionByIdQuery(modal, {
         pollingInterval: 0,
         refetchOnFocus: true,
         refetchOnReconnect: true,
     });
+
+    if (isError) console.log(error);
+
     return (
         <BaseModal>
             <div className="modal__title">{data && <h2>{data.name}</h2>} </div>
