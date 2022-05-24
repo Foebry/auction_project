@@ -4,6 +4,7 @@ const articleAPI = createApi({
     reducerPath: "articleState",
     baseQuery: fetchBaseQuery({
         baseUrl: "https://www.wdev2.be/fs_sander/api",
+        credentials: "include",
     }),
     endpoints: (builder) => ({
         getArticles: builder.query({
@@ -14,7 +15,7 @@ const articleAPI = createApi({
             query: (id) => `/article/${id}`,
         }),
         postArticle: builder.mutation({
-            query: ({ art_id, art_name, art_img, art_cat_id }) => ({
+            query: ({ art_id, art_name, art_img, art_cat_id }, csrf) => ({
                 url: `/articles`,
                 method: "POST",
                 body: {
@@ -22,24 +23,31 @@ const articleAPI = createApi({
                     art_name,
                     art_img,
                     art_cat_id,
+                    csrf,
                 },
             }),
             invalidatesTags: ["allArticles"],
         }),
         patchArticleById: builder.mutation({
-            query: (id, { art_name, art_img, art_cat_id }) => ({
-                url: `/article/${id}`,
+            query: ({ art_id, art_name, art_img, art_cat_id, csrf }) => ({
+                url: `/article/${art_id}`,
                 method: "PATCH",
                 body: {
                     art_name,
                     art_img,
                     art_cat_id,
+                    csrf,
                 },
             }),
             invalidatesTags: ["allArticles"],
         }),
         deleteArticle: builder.mutation({
-            query: (id) => `article/${id}`,
+            query: (id, csrf) => ({
+                url: `article/${id}`,
+                body: {
+                    csrf,
+                },
+            }),
             invalidatesTags: ["allArticles"],
         }),
     }),

@@ -4,6 +4,7 @@ const biddingAPI = createApi({
     reducerPath: "biddingState",
     baseQuery: fetchBaseQuery({
         baseUrl: "https://www.wdev2.be/fs_sander/api",
+        credentials: "include",
     }),
     endpoints: (builder) => ({
         getBiddings: builder.query({

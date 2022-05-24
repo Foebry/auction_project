@@ -4,6 +4,7 @@ const categoryAPI = createApi({
     reducerPath: "categoyState",
     baseQuery: fetchBaseQuery({
         baseUrl: "https://www.wdev2.be/fs_sander/api",
+        credentials: "include",
     }),
     endpoints: (builder) => ({
         getCategories: builder.query({
@@ -14,27 +15,34 @@ const categoryAPI = createApi({
             query: (id) => `/category/${id}`,
         }),
         postCategory: builder.mutation({
-            query: ({ cat_name }) => ({
+            query: ({ cat_name }, csrf) => ({
                 url: `/categories`,
                 method: "POST",
                 body: {
                     cat_name,
+                    csrf,
                 },
             }),
             invalidatesTags: ["allCategories"],
         }),
         patchCategoryById: builder.mutation({
-            query: (id, { cat_name }) => ({
-                url: `/category/${id}`,
+            query: ({ cat_id, cat_name }, csrf) => ({
+                url: `/category/${cat_id}`,
                 method: "PATCH",
                 body: {
                     cat_name,
+                    csrf,
                 },
             }),
             invalidatesTags: ["allCategories"],
         }),
         deleteCategory: builder.mutation({
-            query: (id) => `category/${id}`,
+            query: (id, csrf) => ({
+                url: `category/${id}`,
+                body: {
+                    csrf,
+                },
+            }),
             invalidatesTags: ["allCategories"],
         }),
     }),

@@ -4,6 +4,7 @@ const userAPI = createApi({
     reducerPath: "userState",
     baseQuery: fetchBaseQuery({
         baseUrl: "https://www.wdev2.be/fs_sander/api",
+        credentials: "include",
     }),
     endpoints: (builder) => ({
         getUsers: builder.query({
@@ -29,7 +30,10 @@ const userAPI = createApi({
             query: (id) => `/user/${id}/biddings`,
         }),
         patchCurrentUser: builder.mutation({
-            query: ({ usr_name, usr_lastname, usr_email, usr_password }) => ({
+            query: (
+                { usr_name, usr_lastname, usr_email, usr_password },
+                csrf
+            ) => ({
                 url: `/user`,
                 method: "PATCH",
                 body: {
@@ -37,28 +41,39 @@ const userAPI = createApi({
                     usr_lastname,
                     usr_email,
                     usr_password,
+                    csrf,
                 },
             }),
             invalidatesTags: ["allUsers"],
         }),
         patchUserById: builder.mutation({
-            query: (
-                id,
-                { usr_name, usr_lastname, usr_email, usr_password }
-            ) => ({
-                url: `/user/${id}`,
+            query: ({
+                usr_id,
+                usr_name,
+                usr_lastname,
+                usr_email,
+                usr_password,
+                csrf,
+            }) => ({
+                url: `/user/${usr_id}`,
                 method: "PATCH",
                 body: {
                     usr_name,
                     usr_lastname,
                     usr_email,
                     usr_password,
+                    csrf,
                 },
             }),
             invalidatesTags: ["allUsers"],
         }),
         deleteUser: builder.mutation({
-            query: (id) => `user/${id}`,
+            query: (id, csrf) => ({
+                url: `user/${id}`,
+                body: {
+                    csrf,
+                },
+            }),
             invalidatesTags: ["allUsers"],
         }),
     }),
