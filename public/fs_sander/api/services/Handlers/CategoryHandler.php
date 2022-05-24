@@ -1,5 +1,7 @@
 <?php 
 
+    namespace services\handlers;
+
     use models\Category;
     use services\DbManager;
 

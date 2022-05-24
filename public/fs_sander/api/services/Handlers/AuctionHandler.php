@@ -1,5 +1,7 @@
 <?php
 
+    namespace services\handlers;
+
     use \services\DbManager;
     use \models\Auction;
 

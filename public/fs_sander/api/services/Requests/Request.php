@@ -2,13 +2,13 @@
 
     namespace services\requests;
 
-    use ArticleHandler;
-    use ResponseHandler;
+    use services\handlers\ArticleHandler;
+    use services\handlers\ResponseHandler;
     use services\DbManager;
     use models\Response;
-    use AuctionHandler;
-use CategoryHandler;
-use UserHandler;
+    use services\handlers\AuctionHandler;
+    use services\handlers\CategoryHandler;
+    use services\handlers\UserHandler;
 
     class Request{
 

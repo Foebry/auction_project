@@ -1,6 +1,6 @@
 <?php
 
-    use models\Container;
+    use models\User;
     use services\requests\Request;
 
 function generateCSRF(): string {
@@ -37,4 +37,14 @@ function validateJWT(Request $request){
         $request->getResponseHandler()->unauthorized("wrong token format");
 
     return explode(".", $token);
+}
+
+function getUserFromToken(string $token, Request $request): User {
+
+        
+    $user_data = json_decode(base64_decode(explode(".", $token)[1]), true);
+
+    $usr_id = $user_data["usr_id"];
+
+    return $request->getUserHandler()->getUserById($usr_id, $request->getDbManager());
 }

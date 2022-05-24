@@ -1,8 +1,9 @@
 <?php
 
-use models\Article;
-use services\DbManager;
-use services\requests\Request;
+    namespace services\handlers;
+
+    use models\Article;
+    use services\DbManager;
 
     class ArticleHandler {
 

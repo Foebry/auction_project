@@ -1,8 +1,10 @@
 <?php
 
-use models\User;
-use models\Container;
-use services\DbManager;
+    namespace services\handlers;
+
+    use models\User;
+    use models\Container;
+    use services\DbManager;
 
     class UserHandler{
                 
@@ -13,9 +15,8 @@ use services\DbManager;
          * @param  Container $container
          * @return User
          */
-        public function getUserByEmail( string $email, Container $container ): User{
-            $dbm = $container->getDbManager();
-
+        public function getUserByEmail( string $email, DbManager $dbm ): User{
+           
             $userData = $dbm->getSQL("SELECT * from gw_user where usr_email = '$email'");
 
             if ($userData)
@@ -28,8 +29,7 @@ use services\DbManager;
                     $userData[0]["usr_is_admin"],
                 );
             
-            $dbm->closeConnection();
-            $container->getResponseHandler()->unprocessableEntity(["message"=>"Invalid data", "usr_email"=>"Unknown email adress"]);
+            $dbm->getResponseHandler()->unprocessableEntity($dbm, ["message"=>"Invalid data", "usr_email"=>"Unknown email adress"]);
         }
 
         /**

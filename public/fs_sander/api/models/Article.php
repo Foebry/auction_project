@@ -3,9 +3,10 @@
     namespace models;
 
     use BaseModel;
+    use models\Article as _Article;
     use TypeError;
-use ResponseHandler;
-use services\DbManager;
+    use ResponseHandler;
+    use services\requests\Request;
 
     class Article extends BaseModel{
 
@@ -23,12 +24,12 @@ use services\DbManager;
          * @param $art_img
          * @param $art_cat_id
          */
-        public function __construct($payload) {
+        public function __construct($data) {
             try{
-                $this->setArtId($payload["art_id"] ?? null);
-                $this->setArtName($payload["art_name"]);
-                $this->setArtImg($payload["art_img"]);
-                $this->setArtCatId($payload["art_cat_id"]);
+                $this->setArtId($data["art_id"] ?? null);
+                $this->setArtName($data["art_name"]);
+                $this->setArtImg($data["art_img"]);
+                $this->setArtCatId($data["art_cat_id"]);
             }
             catch(TypeError $error){
                 $rh = new ResponseHandler();
@@ -88,4 +89,26 @@ use services\DbManager;
         public function setArtCatId(int $art_cat_id) {
             $this->art_cat_id = $art_cat_id;
         }
+
+        public static function create(array $payload, Request $request): _Article{
+
+            $request->getCategoryHandler()->getCategoryById($payload["art_cat_id"], $request->getDbManager());
+            
+            $article = new Article($payload);
+
+            $art_id = $request->getDbManager()->insertSQL(
+                sprintf(
+                    "INSERT into gw_article(art_name, art_img, art_cat_id) values('%s', '%s', %d)",
+                    $article->getArtName(),
+                    $article->getArtImg(),
+                    $article->getArtCatId()
+                  )
+                );
+            
+            $article->setArtId($art_id);
+
+            return $article;
+        }
+
+        
     }

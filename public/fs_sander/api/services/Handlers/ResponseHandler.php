@@ -1,5 +1,7 @@
 <?php
 
+    namespace services\handlers;
+
     use services\DbManager;
 
     class ResponseHandler {
@@ -18,7 +20,7 @@
             exit();
         }
 
-        function invalidRoute(DbManager $dbm, $msg=[]) {
+        function notFound(DbManager $dbm, $msg=[]) {
             $dbm->closeConnection();
             print(json_encode(array_merge(["message"=>"Not Found"], $msg)));
             header('HTTP/1.1 404');

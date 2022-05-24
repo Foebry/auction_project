@@ -1,7 +1,9 @@
 <?php
     namespace services\requests;
 
+    use models\BaseModel;
     use models\Article;
+    use services\handlers\ArticleHandler;
 
     class ArticleRequest extends Request{
         
@@ -21,7 +23,7 @@
                 $art_id = explode("/", $uri)[3];
                 $this->resolveArticle($art_id);
             }
-            else $this->getResponseHandler()->invalidRoute();
+            else $this->getResponseHandler()->notFound($this->getDbManager());
 
             
         }
@@ -33,6 +35,8 @@
 
             if( $this->method === "GET" ) $this->getArticles();
             elseif( $this->method === "POST" ) $this->postArticle($this->payload);
+
+            else $this->getResponseHandler()->notAllowed($this->getDbManager());
         }
         /**
          * @Route("/api/article/:id" methods=["GET", "PATCH", "DELETE"])
@@ -55,22 +59,9 @@
 
         private function postArticle(array $payload){
 
-            $payload = Article::checkPostPayload($payload, $this->getDbManager());
+            $payload = BaseModel::checkPostPayload("gw_article", $payload, $this->getDbManager());
 
-            $this->getCategoryHandler()->getCategoryById($payload["art_cat_id"], $this->getDbManager());
-
-            $article = new Article($payload);
-
-            $art_id = $this->getDbManager()->insertSQL(
-                sprintf(
-                    "INSERT into gw_article(art_name, art_img, art_cat_id) values('%s', '%s', %d)",
-                    $article->getArtName(),
-                    $article->getArtImg(),
-                    $article->getArtCatId()
-                  )
-                );
-            
-            $article->setArtId($art_id);
+            $article = Article::create($payload, $this);
 
             $this->respond($article->asAssociativeArray(), 201);
         }
@@ -86,10 +77,14 @@
         private function updateArticle(int $art_id) {
 
             $payload = $this->payload;
-            $update = Article::checkPatchPayload($payload, $this->getDbManager());
+            $update = BaseModel::checkPatchPayload("gw_article", $payload, $this->getDbManager());
 
-            $this->getDbManager("UPDATE gw_article set $update where art_id = $art_id");
+            // nagaan of article met art_id bestaat.
+            $article = $this->getArticleHandler()->getArticleById($art_id, $this->getDbManager());
 
+            $this->getDbManager()->getSQL("UPDATE gw_article set $update where art_id = $art_id");
+
+            // nieuwe data article ophalen
             $article = $this->getArticleHandler()->getArticleById($art_id, $this->getDbManager());
 
             $this->respond($article->asAssociativeArray());

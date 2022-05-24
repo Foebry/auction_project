@@ -1,6 +1,7 @@
 <?php
 
-use services\DbManager;
+    namespace models;
+    use services\DbManager;
 
     class BaseModel{
         
@@ -14,12 +15,12 @@ use services\DbManager;
             return get_object_vars($this);
         }
 
-        public static function checkPostPayload(array $payload, DbManager $dbm){
+        public static function checkPostPayload($table, array $payload, DbManager $dbm){
 
-            $table_headers = $dbm->getTableHeaders("auction");
+            $table_headers = $dbm->getTableHeaders($table);
 
             foreach($table_headers as $key => $row){
-                if(!in_array($key, array_keys($payload))) $dbm->getResponseHandler()->badRequest(["$key"=>"Missing value"]);
+                if(!in_array($key, array_keys($payload))) $dbm->getResponseHandler()->badRequest($dbm, ["$key"=>"Missing value"]);
 
                 if( $row["key"] === "PRI" ) continue;
 
@@ -36,9 +37,9 @@ use services\DbManager;
             return $payload;
         }
 
-        public static function checkPatchPayload(array $payload, DbManager $dbm){
+        public static function checkPatchPayload($table, array $payload, DbManager $dbm){
 
-            $table_headers = $dbm->getTableHeaders("auction");
+            $table_headers = $dbm->getTableHeaders($table);
             $matching_fields = [];
 
             foreach( $payload as $key => $value ){
@@ -56,7 +57,7 @@ use services\DbManager;
                 }
             }
 
-            if( count($matching_fields) === 0 ) $dbm->getResponseHandler()->badRequest();
+            if( count($matching_fields) === 0 ) $dbm->getResponseHandler()->badRequest($dbm);
 
             foreach( $matching_fields as $key => $value ) {
                 if( $key === "usr_password" ) $value = password_hash($value, 1);
