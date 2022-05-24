@@ -22,9 +22,10 @@ class User extends BaseModel {
      * @param $usr_email
      * @param $usr_password
      */
-    public function __construct($usr_id, $usr_name, $usr_email, $usr_password, $usr_isAdmin=false) {
+    public function __construct($usr_id, $usr_name, $usr_lastname, $usr_email, $usr_password, $usr_isAdmin=false) {
         $this->usr_id = $usr_id;
         $this->usr_name = $usr_name;
+        $this->usr_lastname = $usr_lastname;
         $this->usr_email = $usr_email;
         $this->usr_password = $usr_password;
         $this->usr_isAdmin = $usr_isAdmin;
@@ -35,6 +36,10 @@ class User extends BaseModel {
      */
     public function getUsrId() {
         return $this->usr_id;
+    }
+
+    public function setUsrId($usr_id) {
+        $this->usr_id = $usr_id;
     }
 
     /**
@@ -51,6 +56,14 @@ class User extends BaseModel {
         if (is_string($usr_name)){
             $this->usr_name = $usr_name;
         }
+    }
+
+    public function getLastName(): string{
+        return $this->usr_lastname;
+    }
+
+    public function setLastName(string $lastname): void {
+        $this->usr_lastname = $lastname;
     }
 
     /**

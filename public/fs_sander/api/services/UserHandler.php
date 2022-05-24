@@ -21,13 +21,14 @@ use models\Container;
                 return new User(
                     $userData[0]["usr_id"],
                     $userData[0]["usr_name"],
+                    $userData[0]["usr_lastname"],
                     $userData[0]["usr_email"],
                     $userData[0]["usr_password"],
                     $userData[0]["usr_is_admin"],
                 );
             
             $dbm->closeConnection();
-            $container->getResponseHandler()->unprocessableEntity("Unknown email adress");
+            $container->getResponseHandler()->unprocessableEntity(["message"=>"Invalid data", "usr_email"=>"Unknown email adress"]);
         }
 
         /**
@@ -49,6 +50,7 @@ use models\Container;
             return new User(
                 $userData[0]["usr_id"],
                 $userData[0]["usr_name"],
+                $userData[0]["usr_lastname"],
                 $userData[0]["usr_email"],
                 $userData[0]["usr_password"],
                 $userData[0]["usr_is_admin"],

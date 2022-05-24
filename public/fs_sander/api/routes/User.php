@@ -12,12 +12,13 @@ use models\Container;
     function handleRegister( Container $container, string $payload ): Response {
         $dbm = $container->getDbManager();
         $payload = json_decode($payload, true);
-        
+
         // check if all required fields are sent
         if (
             !in_array("usr_name", array_keys($payload))||
             !in_array("usr_email", array_keys($payload)) || 
-            !in_array("usr_password", array_keys($payload))
+            !in_array("usr_password", array_keys($payload)) ||
+            !in_array("usr_lastname", array_keys($payload))
         ) {
             $dbm->closeConnection();
             $container->getResponseHandler()->badRequest();
@@ -27,29 +28,34 @@ use models\Container;
         $users = $dbm->getSQL(
             sprintf("select usr_email from gw_user where usr_email = '%s'", $payload["usr_email"])
         );
-        
+
         if ($users){
             $dbm->closeConnection();
-            $container->getResponseHandler()->unprocessableEntity("This emailadress is taken");
+            $container->getResponseHandler()->unprocessableEntity(["message"=>"Unproccesable Entity", "usr_email"=>"This emailadress is taken"]);
         }
 
         $user = new User(
             null,
             $payload["usr_name"],
+            $payload["usr_lastname"],
             $payload["usr_email"],
             password_hash($payload["usr_password"], 1)
         );
-        
+
         // retrieve id from newly inserted entity
-        $dbm->insertSQL(
+        $usr_id = $dbm->insertSQL(
             sprintf(
-                "INSERT into gw_user (usr_name, usr_email, usr_password) values('%s', '%s', '%s')",
-                $user->getUsrName(), $user->getUsrEmail(), $user->getUsrPassword()
+                "INSERT into gw_user (usr_name, usr_lastname, usr_email, usr_password) values('%s', '%s', '%s', '%s')",
+                $user->getUsrName(), $user->getLastName(), $user->getUsrEmail(), $user->getUsrPassword()
             ));
-        
+
+        $user->setUsrId($usr_id);
+
+        startSession($user);
+
         $dbm->closeConnection();
 
-        return new Response(["usr_name"=>$user->getUsrName(), "token"=>generateJWT($user)]);
+        return new Response(["usr_name"=>$user->getUsrName(), "usr_id"=>$user->getUsrId(), "csrf"=>$_SESSION["csrf"]]);
     }
 
     function getUserDetailSelf( Container $container, array $user_data ): Response {

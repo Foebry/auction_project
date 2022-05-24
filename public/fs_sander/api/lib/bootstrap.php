@@ -1,7 +1,5 @@
 <?php
 
-use models\Container;
-
 require_once "access_control.php";
 require_once "validation.php";
 //services
@@ -22,10 +20,6 @@ require_once "models/Category.php";
 require_once "models/Response.php";
 require_once "models/User.php";
 
-if ( !isset($_SESSION ) ) session_start();
-// create Container id needed;
-if ( !isset( $_SESSION["container"] ) ) $_SESSION["container"] = new Container();
-
 //routes
 require_once "routes/Article.php";
 require_once "routes/Auction.php";
@@ -34,7 +28,7 @@ require_once "routes/Bidding.php";
 require_once "routes/Category.php";
 require_once "routes/User.php";
 
-require_once "helpers.php";
+require_once "helpers/index.php";
 
 //router
 require_once "routing.php";
