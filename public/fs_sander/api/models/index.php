@@ -1,6 +1,5 @@
 <?php
-
-    require_once "models/Container.php";
+    
     require_once "models/BaseModel.php";
     require_once "models/Article.php";
     require_once "models/Auction.php";

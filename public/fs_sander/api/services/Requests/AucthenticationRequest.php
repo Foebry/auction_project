@@ -19,7 +19,7 @@
 
             if( $uri === "/api/login" ) $this->handleLogin();
             elseif( $uri === "/api/register" ) $this->handleRegister();
-            elseif( $uri === "api/logout" ) $this->handleLogout( ProtectedRoute( $this ) );
+            elseif( $uri === "/api/logout" ) $this->handleLogout(  );
 
             else $this->getResponseHandler()->notFound($this->getDbManager());
         }
@@ -39,13 +39,13 @@
                 !in_array("usr_email", array_keys($payload)) ||
                 !in_array("usr_password", array_keys($payload)) //||
                 // !in_array("csrf", array_keys($payload)) ||
-                // !in_array("form-key", array_keys($payload))
+                // !in_array("formkey", array_keys($payload))
             ) {
                 $this->getResponseHandler()->badRequest($this->getDbManager(), ["message"=>"Invalid form"]);
             }
 
             // if( $payload["csrf"] !== externalCsrf($payload["form-key"]) ) $this->getResponseHandler()->badRequest(["csrf"=>"Foutief CSRF token"]);
-        
+            
             $user = $this->getUserHandler()->getUserByEmail($payload["usr_email"], $this->getDbManager());
 
             if (!password_verify( $payload["usr_password"], $user->getUsrPassword())){
@@ -66,19 +66,30 @@
          */
         private function handleRegister(): void{
 
+            if( $this->getMethod() !== "POST" ) $this->getResponseHandler()->notAllowed($this->getDbManager());
+
             $payload = $this->getPayload();
 
             $payload = BaseModel::checkPostPayload("gw_user", $payload, $this->getDbManager());
 
             $user = User::create($payload, $this->getDbManager());
 
-            $this->respond($user->asAssociativeArray, 201);
+            startSession($user->getUsrId(), $this);
+
+            $this->respond([
+                "usr_name"=>$user->getUsrName(),
+                "usr_id"=>$user->getUsrId(),
+                "csrf"=>$_SESSION["csrf"]
+            ]);
         }
         /**
          * @Route("/api/logout", method="DELETE")
-         * @RouteType protected
+         * @RouteType public
          */
         private function handleLogout(): void{
+
+            if( $this->getMethod() !== "DELETE" ) $this->getResponseHandler()->notAllowed($this->getDbManager());
+
             $token = $_COOKIE["jwt"];
 
             $options = ["expires"=>time(), "secure"=>true, "httponly"=>true, "SameSite"=>"None"];

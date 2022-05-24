@@ -2,7 +2,7 @@
 
     namespace services;
 
-    use ResponseHandler;
+    use services\handlers\ResponseHandler;
     use services\requests\AuctionRequest;
     use services\requests\ArticleRequest;
     use services\requests\BiddingRequest;
@@ -21,30 +21,40 @@
 
         private function resolveRoute(): void{
 
-            switch ($this->getRoute()){
-                case ("auctions" || "auction"): 
+            $route = $this->getRoute();
+
+            switch($route) {
+
+                case in_array($route, ["auctions", "auction"]):
                     new AuctionRequest();
                     break;
-                case ("articles" || "article"): 
+                
+                case in_array($route, ["articles", "article"]):
                     new ArticleRequest();
                     break;
-                case ("biddings" || "bidding"): 
+                
+                case in_array($route, ["biddings", "bidding"]):
                     new BiddingRequest();
                     break;
-                case ("categories" || "category"): 
-                    new CategoryRequest();
-                    break;
-                case ("user"): 
+                
+                case "user":
                     new UserRequest();
                     break;
-                case ("login" || "register" || "logout"): 
+                    
+                case in_array($route, ["categories", "category"]):
+                    new CategoryRequest();
+                    break;
+                
+                case in_array($route, ["login", "register", "logout"]):
                     new AuthenticationRequest();
                     break;
+                
                 default:
-                    $responseHandler = new ResponseHandler();
-                    $responseHandler->invalidRoute();
+                    $rh = new ResponseHandler();
+                    $rh->notFound(new DbManager($rh));
                     break;
             }
+            
         }
 
         private function getUri(){

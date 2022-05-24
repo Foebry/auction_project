@@ -9,6 +9,8 @@
         $_SESSION["csrf"] = generateCSRF();
         
         $user = $request->getUserHandler()->getUserById($usr_id, $request->getDbManager());
+        // print(json_encode($user->asAssociativeArray()));
+        // exit();
         
         // na 15 min geen activiteit zal de session vervallen voor user. 60 min voor admin.
         $_SESSION["__refresh_token__"] = generateJWT($user, $user->IsAdmin() ? 60 : 15);
@@ -37,10 +39,12 @@
     }
 
     function sessionExpired(): bool {
+
         $header = explode(".", $_SESSION["__refresh_token__"])[0];
+
         $header = json_decode(base64_decode($header), true);
-        
+
         $expire = $header["expire"];
 
-        return $expire > time();
+        return $expire < time();
     }

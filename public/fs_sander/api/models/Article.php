@@ -2,8 +2,7 @@
 
     namespace models;
 
-    use BaseModel;
-    use models\Article as _Article;
+    use models\BaseModel;
     use TypeError;
     use ResponseHandler;
     use services\requests\Request;
@@ -16,7 +15,7 @@
 
         protected $art_img;
 
-        protected $art_cat_id;
+        public $art_cat_id;
 
         /**
          * @param $art_id
@@ -24,11 +23,11 @@
          * @param $art_img
          * @param $art_cat_id
          */
-        public function __construct($data) {
+        public function __construct(array $data) {
             try{
                 $this->setArtId($data["art_id"] ?? null);
                 $this->setArtName($data["art_name"]);
-                $this->setArtImg($data["art_img"]);
+                $this->setArtImg($data["art_img"] ?? "default.jpg");
                 $this->setArtCatId($data["art_cat_id"]);
             }
             catch(TypeError $error){
@@ -90,7 +89,7 @@
             $this->art_cat_id = $art_cat_id;
         }
 
-        public static function create(array $payload, Request $request): _Article{
+        public static function create(array $payload, Request $request): Article{
 
             $request->getCategoryHandler()->getCategoryById($payload["art_cat_id"], $request->getDbManager());
             

@@ -20,17 +20,27 @@
             $table_headers = $dbm->getTableHeaders($table);
 
             foreach($table_headers as $key => $row){
-                if(!in_array($key, array_keys($payload))) $dbm->getResponseHandler()->badRequest($dbm, ["$key"=>"Missing value"]);
+                if( $row["key"] === "PRI") continue;
 
-                if( $row["key"] === "PRI" ) continue;
+                $can_be_null = $row["is_null"] === "YES";
+                $included = in_array($key, array_keys($payload));
+
+                if( !$included && !$can_be_null ) {
+                    $dbm->getResponseHandler()->badRequest($dbm, ["$key"=>"Missing value"]);
+                }
+                elseif( !$included && $can_be_null ) continue;
 
                 if( $row["datatype"] === "varchar") {
-                    $value = validateString($payload[$key], $key, $row, $dbm);
+                    $value = validateString($table, $payload[$key], $key, $row, $dbm);
                     $payload[$key] = $value;
                 }
                 elseif( $row["datatype"] === "int") {
                     $value = validateInteger($payload[$key], $key, $dbm);
                     $payload[$key] = $value;
+                }
+                elseif ($row["datatype"] === "double"){
+                    $value = validateFloat($payload[$key], $key, $dbm);
+                    $matching_fields[$key] = $value;
                 }
             }
 
@@ -47,17 +57,21 @@
                     if( $table_headers[$key]["key"] === "PRI" ) continue;
 
                     if( $table_headers[$key]["datatype"] === "varchar" ){
-                        $value = validateString($value, $key, $table_headers[$key], $dbm);
+                        $value = validateString($table, $value, $key, $table_headers[$key], $dbm);
                         $matching_fields[$key] = $value;
                     }
                     elseif( $table_headers[$key]["datatype"] === "int"){
                         $value = validateInteger($value, $key, $dbm);
                         $matching_fields[$key] = $value;
                     }
+                    elseif ($table_headers[$key]["datatype"] === "double"){
+                        $value = validateFloat($value, $key, $dbm);
+                        $matching_fields[$key] = $value;
+                    }
                 }
             }
 
-            if( count($matching_fields) === 0 ) $dbm->getResponseHandler()->badRequest($dbm);
+            if( count($matching_fields) === 0 ) $dbm->getResponseHandler()->badRequest($dbm, ["message"=>"No valid information was sent"]);
 
             foreach( $matching_fields as $key => $value ) {
                 if( $key === "usr_password" ) $value = password_hash($value, 1);

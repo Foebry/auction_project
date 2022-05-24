@@ -23,11 +23,13 @@
 
         /**
          * @Route("/api/biddings", methods=["GET", "POST"])
+         * @RouteType Protected ("POST")
+         * @RouteType Admin ("GET")
          */
         private function resolveBiddings():void {
 
-            if( $this->method === "GET" ) $this->getBiddings();
-            elseif( $this->method === "POST" ) $this->postBidding();
+            if( $this->method === "GET" ) $this->getBiddings( AdminRoute( $this ) );
+            elseif( $this->method === "POST" ) $this->postBidding( ProtectedRoute( $this ));
 
             else $this->getResponseHandler()->notAllowed();
         }
@@ -39,12 +41,16 @@
             $this->respond($data);
         }
 
-        private function postBidding(): void {
+        private function postBidding(array $exploded_token): void {
+            
+            $payload = $this->getPayload();
+            $usr_id = getUserFromToken(implode(".", $exploded_token), $this)->getUsrId();
+            $payload["bid_usr_id"] = $usr_id;
 
-            $payload = BaseModel::checkPostPayload("gw_bidding", $this->payload, $this->getDbManager());
+            $payload = BaseModel::checkPostPayload("gw_bidding", $payload, $this->getDbManager());
 
             $bidding = Bidding::create($payload, $this);
 
-            $this->respond($bidding->asAssociativeArray, 201);
+            $this->respond($bidding->asAssociativeArray(), 201);
         }
     }

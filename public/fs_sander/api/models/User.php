@@ -2,18 +2,18 @@
 
     namespace models;
 
-    use BaseModel;
-    use ResponseHandler;
+    use models\BaseModel;
+    use services\handlers\ResponseHandler;
     use services\DbManager;
-    use services\requests\Request;
-    use models\User as _User;
-use TypeError;
+    use TypeError;
 
     class User extends BaseModel {
 
         public $usr_id;
 
         public $usr_name;
+
+        public $usr_lastname;
 
         public $usr_email;
 
@@ -27,19 +27,19 @@ use TypeError;
          * @param $usr_email
          * @param $usr_password
          */
-        public function __construct( $data ){
-
+        public function __construct( array $data ){
+            
             try{
                 $this->setUsrId($data["usr_id"] ?? null);
                 $this->setUsrName($data["usr_name"]);
-                $this->setLastName($data["usr_lastname"]);
+                $this->setLastName($data["usr_lastname"] ?? '');
                 $this->setUsrEmail($data["usr_email"]);
-                $this->setUsrPassword($data["usr_password"]);
-                $this->setUsrAdmin($data["usr_id_admin"] ?? 0);
+                $this->setUsrPassword($data["usr_password"], !in_array("usr_id", array_keys($data)));
+                $this->setUsrAdmin($data["usr_is_admin"] ?? 0);
             }
             catch(TypeError $error){
                 $rh = new ResponseHandler();
-                $rh->badRequest(["message"=>$error->getMessage()]);
+                $rh->badRequest(new DbManager($rh), ["message"=>$error->getMessage()]);
             }
         }
 
@@ -50,7 +50,7 @@ use TypeError;
             return $this->usr_id;
         }
 
-        public function setUsrId($usr_id) {
+        public function setUsrId(int $usr_id=null) {
             $this->usr_id = $usr_id;
         }
 
@@ -64,17 +64,15 @@ use TypeError;
         /**
          * @param string $usr_name
          */
-        public function setUsrName($usr_name) {
-            if (is_string($usr_name)){
-                $this->usr_name = $usr_name;
-            }
+        public function setUsrName(string $usr_name) {
+            $this->usr_name = $usr_name;
         }
 
         public function getLastName(): string{
             return $this->usr_lastname;
         }
 
-        public function setLastName(string $lastname): void {
+        public function setLastName(string $lastname=""): void {
             $this->usr_lastname = $lastname;
         }
         
@@ -93,12 +91,12 @@ use TypeError;
          * @param string $usr_email
          */
         public function setUsrEmail($usr_email) {
-            if (preg_match('/.+\@.+\..+', $usr_email || $usr_email === "admin")){
+            if (preg_match('/.+\@.+\..+/', $usr_email) || $usr_email === "admin"){
                 $this->usr_email = $usr_email;
             }
             else{
                 $rh = new ResponseHandler();
-                $rh->badRequest(["usr_email"=>"Wrong format"]);
+                $rh->badRequest(new DbManager($rh), ["usr_email"=>"Wrong format"]);
             }
         }
 
@@ -112,8 +110,10 @@ use TypeError;
         /**
          * @param string $usr_password
          */
-        public function setUsrPassword($usr_password) {
-            $this->usr_password = $usr_password;
+        public function setUsrPassword($usr_password, $needsHash=false) {
+
+            if( $needsHash ) $this->usr_password = password_hash($usr_password, 1);
+            else $this->usr_password = $usr_password;
         }
 
         public function setUsrAdmin(int $admin=0){
@@ -150,7 +150,7 @@ use TypeError;
                 unset($auction["art_img"]);
                 unset($auction["art_name"]);
 
-                $auctions_won = $auction;
+                $auctions_won[] = $auction;
             }
 
             return $auctions_won;
@@ -161,11 +161,11 @@ use TypeError;
             $user_biddings = [];
 
             $data = $dbm->getSQL(
-                "select bid_id id, max(bid_price) amount, bid_time time, bid_auc_id, art_name, art_id, art_img
+                "select max(bid_id) id, max(bid_price) amount, bid_time time, bid_auc_id, art_name, art_id, art_img
                 from gw_bidding
                 join gw_auction ga on gw_bidding.bid_auc_id = ga.auc_id
                 join gw_article g on ga.auc_art_id = g.art_id
-                where bid_usr_id=$usr_id
+                where ga.auc_usr_id=$usr_id
                 group by bid_auc_id"
             );
 
@@ -194,7 +194,7 @@ use TypeError;
             return $user_biddings;
         }
 
-        public static function create( array $payload, DbManager $dbm): _User{
+        public static function create( array $payload, DbManager $dbm): User{
 
             $user = new User($payload);
 

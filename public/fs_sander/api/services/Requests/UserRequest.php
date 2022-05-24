@@ -8,6 +8,8 @@
     class UserRequest extends Request{
 
         public function __construct(){
+            // session_start();
+            
             parent::__construct();
             $this->resolveEndpoint();
         }
@@ -20,7 +22,7 @@
 
             elseif( $uri === "/api/user/auctions") $this->getOwnAuctions( ProtectedRoute( $this ));
 
-            elseif( $uri === "/api/usr/biddings") $this->getOwnBiddings( ProtectedRoute( $this ));
+            elseif( $uri === "/api/user/biddings") $this->getOwnBiddings( ProtectedRoute( $this ));
 
             elseif( preg_match("|api/user/[0-9]+$|", $uri) ) {
                 $usr_id = explode("/", $uri)[3];
@@ -32,35 +34,34 @@
             }
             elseif( preg_match("|api/user/[0-9]+/biddings$|", $uri) ) {
                 $usr_id = explode("/", $uri)[3];
-                $this->getSpecificUsersBiddings($usr_id);
+                $this->getSpecificUsersBiddings($usr_id, AdminRoute( $this ) );
             }
-            else $this->getResponseHandler()->invalidRoute();            
+            else $this->getResponseHandler()->notFound($this->getDbManager());            
 
         }
         /**
          * @Route("/api/user", methods=["GET", "PATCH"])
          * @RouteType protected
          */
-        private function resolveUser(array $user_data): void{
+        private function resolveUser(array $exploded_token): void{
 
             $method = $this->getMethod();
 
-            if( $method === "GET") $this->getUserSelf( $user_data );
-            elseif( $method === "PATCH" ) $this->updateUserSelf( $user_data );
+            if( $method === "GET") $this->getUserSelf( $exploded_token );
+            elseif( $method === "PATCH" ) $this->updateUserSelf( $exploded_token );
            
-            else $this->getResponseHandler()->notAllowed();
+            else $this->getResponseHandler()->notAllowed($this->getDbManager());
             
         }
         /**
          * @Route("/api/user/auctions", method="GET")
          * @RouteType protected
          */
-        private function getOwnAuctions( array $user_data): void{
+        private function getOwnAuctions( array $exploded_token): void{
 
-            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed();
+            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed($this->getDbManager());
 
-            $email = $user_data["usr_email"];
-            $user = $this->getUserHandler()->getUserByEmail($email, $this->getDbManager());
+            $user = getUserFromToken(implode(".", $exploded_token), $this);
             $usr_id = $user->getUsrId();
 
             $auctions_won = User::fetchAuctionsWon($usr_id, $this->getDbManager());
@@ -72,12 +73,11 @@
          * @Route("/api/user/biddings", method="GET")
          * @RouteType protected
          */
-        private function getOwnBiddings( array $user_data ): void {
+        private function getOwnBiddings( array $exploded_token ): void {
 
-            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed();
+            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed($this->getDbManager());
 
-            $email = $user_data["usr_email"];
-            $user = $this->getUserHandler()->getUserByEmail($email, $this->getDbManager());
+            $user = getUserFromToken( implode(".", $exploded_token), $this );
             $usr_id = $user->getUsrId();
 
             $user_biddings = User::fetchBiddings($usr_id, $this->getDbManager());
@@ -96,7 +96,7 @@
             elseif( $method === "PATCH" ) $this->updateSpecificUser( $usr_id );
             elseif( $method === "DELETE" ) $this->deleteSpecificUser( $usr_id );
             
-            else $this->getResponseHandler()->notAllowed();
+            else $this->getResponseHandler()->notAllowed($this->getDbManager());
         }
         /**
          * @Route("/api/user/:id/auctions", method="GET")
@@ -104,7 +104,7 @@
          */
         private function getSpecificUserAuctions(int $usr_id):void {
 
-            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed();
+            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed($this->getDbManager());
 
             $user = $this->getUserHandler()->getUserById($usr_id, $this->getDbManager());
 
@@ -126,7 +126,7 @@
          */
         private function getSpecificUsersBiddings(int $usr_id): void {
 
-            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed();
+            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed($this->getDbManager());
 
             $user = $this->getUserHandler()->getUserById($usr_id, $this->getDbManager());
 
@@ -143,23 +143,25 @@
             $this->respond($data);
         }
 
-        private function getUserSelf(array $user_data): void {
+        private function getUserSelf(array $exploded_token): void {
 
-            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed();
+            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed($this->getDbManager());
 
-            $email = $user_data["usr_email"];
-            $user = $this->getUserHandler()->getUserByEmail($email, $this->getDbManager());
+            $user = getUserFromToken(implode(".", $exploded_token), $this);
 
             $this->respond($user->asAssociativeArray());
         }
 
-        private function updateUserSelf(array $user_data): void {
+        private function updateUserSelf(array $exploded_token): void {
             
-            $email = $user_data["usr_email"];
-            $user = $this->getUserHandler()->getUserByEmail($email, $this->getDbManager());
+            $user = getUserFromToken(implode(".", $exploded_token), $this);
             $usr_id = $user->getUsrId();
 
             $payload = $this->getPayload();
+
+            // gebruiker mag zichzelf geen admin maken. 
+            // indien toch aanwezig in payload, filter uit.
+            if( !$user->IsAdmin() && in_array("usr_is_admin", array_keys($payload)) ) unset($payload["usr_is_admin"]);
 
             $update = BaseModel::checkPatchPayload("gw_user", $payload, $this->getDbManager());
 

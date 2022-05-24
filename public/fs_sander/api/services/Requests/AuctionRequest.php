@@ -1,7 +1,8 @@
 <?php
 
     namespace services\requests;
-    
+
+    use models\BaseModel;
     use DateTime;
     use models\Auction;
 
@@ -24,25 +25,30 @@
             }
             elseif( preg_match("|api/auction/[0-9]+/biddings$|", $uri ) ) {
                 $auction_id = explode("/", $uri)[3];
-                $this->getAuctionBiddings($auction_id);
+                $this->getAuctionBiddings($auction_id, ProtectedRoute( $this ) );
             }
-            else $this->getResponseHandler()->invalidRoute();
+            else $this->getResponseHandler()->notFound($this->getDbManager());
         }
 
         /**
          * @Route("/api/auctions" methods=["GET", "POST"])
+         * @RouteType public ("GET")
+         * @RouteType Admin ("POST")
          */
         private function resolveAuctions(){
 
             if( $this->method === "GET") $this->getAuctions();
-            elseif( $this->method === "POST" ) $this->postAuction($this->payload);
+            elseif( $this->method === "POST" ) $this->postAuction($this->getPayload(), AdminRoute( $this ) );
 
-            else $this->getResponseHandler()->notAllowed();
+            else $this->getResponseHandler()->notAllowed($this->getDbManager());
         }
         /**
          * @Route("/api/auction/:id" method="GET")
+         * @RouteType public
          */
         private function getAuctionDetail(int $id) {
+
+            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed($this->getDbManager());
 
             $auction = $this->getAuctionHandler()->getAuctionById($id, $this->getDbManager());
 
@@ -79,9 +85,12 @@
             $this->respond($data);
         }
         /**
-         * @Route("/api/auction/:id/biddings" method="POST")
+         * @Route("/api/auction/:id/biddings" method="GET")
+         * @RouteType protected
          */
         private function getAuctionBiddings($auction_id){
+
+            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed();
 
             $biddings = $this->getDbManager()
                              ->getSQL("SELECT * from gw_bidding where bid_auc_id = $auction_id");
@@ -92,20 +101,10 @@
         
         private function postAuction(array $payload){
 
-            checkPayloadPOST(["auc_art_id", "auc_expiration"], $payload, $this->getDbManager());
-            $article = $this->getArticleHandler()
-                            ->getArticleById($payload["auc_art_id"], $this->getDbManager());
+            BaseModel::checkPostPayload("gw_auction", $payload, $this->getDbManager());
             
-            $auction = new Auction(null, $article->getArtId(), $payload["auc_expiration"]);
-            $auction_id = $this->getDbManager()->insertSQL(
-                sprintf(
-                    "INSERT into gw_auction(auc_art_id, auc_expiration) values(%d, %d)",
-                    $article->getArtCatId(),
-                    $payload["auc_expiration"]
-                )
-            );
-            $auction->setAucId($auction_id);
-
+            $auction = Auction::create($payload, $this);
+            
             $this->respond($auction->asAssociativeArray(), 201);
         }
         

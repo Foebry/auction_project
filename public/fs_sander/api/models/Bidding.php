@@ -2,21 +2,21 @@
 
     namespace models;
 
-    use BaseModel;
+    use models\BaseModel;
     use \DateTime;
-use ResponseHandler;
-use services\requests\Request;
-use TypeError;
+    use services\handlers\ResponseHandler;
+    use services\requests\Request;
+    use TypeError;
 
     class Bidding extends BaseModel {
 
-        protected $bid_id;
+        public $bid_id;
 
-        protected $bid_user_id;
+        public $bid_user_id;
 
-        protected $bid_auc_id;
+        public $bid_auc_id;
 
-        protected $bid_price;
+        public $bid_price;
 
         /**
          * @param $bid_id
@@ -27,13 +27,13 @@ use TypeError;
         public function __construct($data) {
             try{
                 $this->setBidId($data["bid_id"] ?? null);
-                $this->setBidAucId($data["bid_id"]);
+                $this->setBidAucId($data["bid_auc_id"]);
                 $this->setBidUserId($data["bid_usr_id"]);
                 $this->setBidPrice($data["bid_price"]);
             }
             catch(TypeError $error){
                 $rh = new ResponseHandler();
-                $rh->badRequest(["message"=>$error->getMessage()]);
+                $rh->badRequest(null, ["message"=>$error->getMessage()]);
             }
         }
 
@@ -44,7 +44,7 @@ use TypeError;
             return $this->bid_id;
         }
 
-        public function setBidId(int $bid_id) {
+        public function setBidId(int $bid_id=null) {
             $this->bid_id = $bid_id;
         }
 
@@ -77,7 +77,7 @@ use TypeError;
         }
 
         /**
-         * @return double
+         * @return float
          */
         public function getBidPrice() {
             return $this->bid_price;
@@ -86,27 +86,26 @@ use TypeError;
         /**
          * @param float $bid_price
          */
-        public function setBidPrice(int $bid_price) {
+        public function setBidPrice(float $bid_price) {
             $this->bid_price = $bid_price;
         }
 
 
-        public static function create(array $payload, Request $request) {
+        public static function create(array $payload, Request $request): Bidding {
 
             $bidding = new Bidding($payload);
 
             Bidding::validateBidPrice($payload, $request);
 
             $now = new DateTime();
-            $currentTimestamp = $now->getTimestamp()*1000;
 
             $bidding_id = $request->getDbManager()->insertSQL(
                 sprintf(
-                    "INSERT into gw_bidding (bid_usr_id, bid_auc_id, bid_price, bid_time) values(%d, %d, %d, %d)",
+                    "INSERT into gw_bidding (bid_usr_id, bid_auc_id, bid_price, bid_time) values(%d, %d, %f, %d)",
                     $bidding->getBidUserId(),
                     $bidding->getBidAucId(),
                     $bidding->getBidPrice(),
-                    $currentTimestamp
+                    $now->format("Y-m-d H:i:s")
                 )
             );
 
@@ -126,7 +125,7 @@ use TypeError;
             
             $dbm = $request->getDbManager();
             $auction = $request->getAuctionHandler()->getAuctionById($payload["bid_auc_id"], $dbm);
-
+            
             // valideer of bid hoger is dan hoogste bod op auction
             if ($payload["bid_price"] <= $auction->getHighestBidValue($dbm)){
                 $request->getResponseHandler()->badRequest($dbm, ["bid_price"=>"Bid too low"]);

@@ -6,8 +6,8 @@
 
     class ResponseHandler {
 
-        function badRequest(DbManager $dbm, $msg=[]){
-            $dbm->closeConnection();
+        function badRequest(DbManager $dbm=null, $msg=[]){
+            $dbm && $dbm->closeConnection();
             print(json_encode(array_merge(["message"=>"Bad Request"], $msg)));
             header('HTTP/1.1 400');
             exit();
@@ -20,15 +20,15 @@
             exit();
         }
 
-        function notFound(DbManager $dbm, $msg=[]) {
-            $dbm->closeConnection();
+        function notFound(DbManager $dbm=null, $msg=[]) {
+            $dbm && $dbm->closeConnection();
             print(json_encode(array_merge(["message"=>"Not Found"], $msg)));
             header('HTTP/1.1 404');
             exit();
         }
 
-        function notAllowed(DbManager $dbm, $msg=[]){
-            $dbm->closeConnection();
+        function notAllowed(DbManager $dbm=null, $msg=[]){
+            $dbm && $dbm->closeConnection();
             print(json_encode(array_merge(["message"=>"Not Allowed"], $msg)));
             header('HTTP/1.1 405');
             exit();

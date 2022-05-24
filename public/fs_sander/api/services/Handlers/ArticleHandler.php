@@ -13,19 +13,14 @@
                 SELECT *
                 FROM gw_article
                 WHERE art_id = $art_id
-            ")[0];
+            ");
 
             if (!$data) {
                 $dbm->closeConnection();
                 $dbm->getResponseHandler()->notFound($dbm, ["art_id"=>"No article with id $art_id", "auc_art_id"=>"No article with id $art_id"]);
             }
 
-            $article = new Article(
-                $data["art_id"],
-                $data["art_name"],
-                $data["art_img"],
-                $data["art_cat_id"]
-            );
+            $article = new Article($data[0]);
 
             return $article;
         }

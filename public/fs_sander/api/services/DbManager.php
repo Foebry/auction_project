@@ -33,6 +33,9 @@
     }
 
     public function getSQL($query) {
+      $fs = fopen("c:/users/rain_/desktop/log.log", "a");
+      fwrite($fs, $query."\n");
+      fclose($fs);
       $conn = $this->getConnection();
       $result = $conn->query($query);
 
@@ -40,6 +43,9 @@
     }
 
     public function insertSQL($query): int{
+      $fs = fopen("c:/users/rain_/desktop/log.log", "a");
+      fwrite($fs, $query."\n");
+      fclose($fs);
       $conn = $this->getConnection();
 
       $conn->query($query);
@@ -59,7 +65,7 @@
     public function getTableHeaders(string $table): array{
       $headers = [];
 
-      $data = $this->getSQL("SELECT * from information_schema.columns where table_name=$table and table_schema='fs_sander'");
+      $data = $this->getSQL(sprintf("SELECT * from information_schema.columns where table_name='%s' and table_schema='fs_sander'", $table));
 
       foreach($data as $row){
         $column = $row["COLUMN_NAME"];

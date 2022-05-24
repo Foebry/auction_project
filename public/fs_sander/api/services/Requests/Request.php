@@ -25,9 +25,9 @@
 
         public function __construct(){
             $this->method = $_SERVER["REQUEST_METHOD"];
-            $this->payload = json_decode(file_get_contents("php://input"));
+            $this->payload = file_get_contents("php://input");
             $this->uri = explode("fs_sander", $_SERVER["REQUEST_URI"])[1];
-            $this->route = explode("/", $this->getUri)[2];
+            $this->route = explode("/", $this->getUri())[2];
         }
 
         protected function getMethod(): string{
@@ -35,7 +35,7 @@
         }
 
         protected function getPayload(): array{
-            return $this->payload;
+            return json_decode($this->payload, true);
         }
 
         protected function getUri(): string{

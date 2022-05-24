@@ -17,18 +17,19 @@
 
             $uri = $this->getUri();
 
-            if( $uri === "/api/categories" ) $this->resolveCategories();
+            if( $uri === "/api/categories" ) $this->resolveCategories( AdminRoute( $this ) );
 
             elseif( preg_match("|api/category/[0-9]+$|", $uri) ){
                 
                 $cat_id = explode("/", $uri)[3];
-                $this->resolveCategory($cat_id);
+                $this->resolveCategory($cat_id, AdminRoute( $this ));
             }
-            else $this->getResponseHandler()->invalidRoute();
+            else $this->getResponseHandler()->notFound();
         }
 
         /**
          * @Route("/api/categories", methods=["GET", "POST"])
+         * @RouteType admin
          */
         private function resolveCategories(): void {
 
@@ -39,6 +40,7 @@
         }
         /**
          * @Route("/api/category/:id", methods=["GET", "PATCH", "DELETE"])
+         * @RouteType admin
          */
         private function resolveCategory(int $cat_id): void {
 

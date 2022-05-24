@@ -2,9 +2,9 @@
 
     namespace models;
 
-    use BaseModel;
+    use models\BaseModel;
     use models\Category as _Category;
-    use ResponseHandler;
+    use services\handlers\ResponseHandler;
     use services\requests\Request;
     use TypeError;
 
@@ -26,7 +26,7 @@
             }
             catch(TypeError $error){
                 $rh = new ResponseHandler();
-                $rh->badRequest($error->getMessage());
+                $rh->badRequest(null, ["message"=>$error->getMessage()]);
             }
         }
 
@@ -37,7 +37,7 @@
             return $this->cat_id;
         }
 
-        public function setCatId(int $cat_id): void{
+        public function setCatId(int $cat_id=null): void{
             $this->cat_id = $cat_id;
         }
 
@@ -51,7 +51,7 @@
         /**
          * @param string $cat_name
          */
-        public function setCatName($cat_name) {
+        public function setCatName(string $cat_name) {
             if(is_string($cat_name)){
                 $this->cat_name = $cat_name;
             }

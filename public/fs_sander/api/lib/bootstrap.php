@@ -3,11 +3,9 @@
     use services\Router;
 
     require_once "access_control.php";
-    require_once "validation.php";
-    require_once "services";
-    require_once "models";
-    require_once "routes";
-    require_once "helpers";
+    require_once "helpers/index.php";
+    require_once "models/index.php";
+    require_once "services/index.php";
 
-    $router = new Router();
+    new Router();
 
