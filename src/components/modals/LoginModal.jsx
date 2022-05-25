@@ -5,8 +5,12 @@ import { AppContext } from "../../context/AppContext";
 import { usePostLoginMutation } from "../../data/authenticationAPI";
 
 const Loginblury__modal = () => {
-    const { setModal, setActiveUser } = useContext(AppContext);
+    const { setModal } = useContext(AppContext);
     const [inputs, setInputs] = useState({
+        usr_email: "",
+        usr_password: "",
+    });
+    const [formErrors, setFormErrors] = useState({
         usr_email: "",
         usr_password: "",
     });
@@ -17,23 +21,24 @@ const Loginblury__modal = () => {
             ...inputs,
             [e.target.name]: e.target.value,
         });
+        setFormErrors({
+            ...formErrors,
+            [e.target.name]: "",
+        });
     };
 
     async function submitHandler(e) {
         e.preventDefault();
 
-        const usr_email = inputs.email;
-        const usr_password = inputs.password;
-        const { data, error } = await login({
-            usr_email,
-            usr_password,
-        });
+        const { data, error } = await login(inputs);
         if (data) {
             localStorage.setItem("usr_name", data.usr_name);
             localStorage.setItem("usr_id", data.usr_id);
             localStorage.setItem("csrf", data.csrf);
             setInputs({});
             setModal(null);
+        } else if (error) {
+            setFormErrors({ ...formErrors, ...error.data });
         }
     }
     return (
@@ -44,25 +49,31 @@ const Loginblury__modal = () => {
                     <MdOutlineAlternateEmail className="modal__input__item__icon" />
                     <input
                         className="modal__input__item__inputfield"
-                        type="email"
-                        value={inputs.email}
+                        type="text"
+                        value={inputs.usr_email}
                         placeholder="Enter email"
-                        name="email"
+                        name="usr_email"
                         onChange={handleInputChange}
                         required
                     />
+                    <p className="modal__input__item__error">
+                        {formErrors.usr_email}
+                    </p>
                 </div>
                 <div className="modal__input__item">
                     <MdLockOutline className="modal__input__item__icon" />
                     <input
                         className="modal__input__item__inputfield"
                         type="password"
-                        value={inputs.password}
-                        name="password"
+                        value={inputs.usr_password}
+                        name="usr_password"
                         placeholder="Enter password"
                         onChange={handleInputChange}
                         required
                     />
+                    <p className="modal__input__item__error">
+                        {formErrors.usr_password}
+                    </p>
                 </div>
                 <button className="modal__btn">Login</button>
             </form>
