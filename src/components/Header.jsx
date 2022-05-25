@@ -4,7 +4,8 @@ import { AppContext } from "../context/AppContext";
 import { Routes } from "../types/RouteTypes";
 
 const Header = () => {
-    const { userId, setUserId } = useContext(AppContext);
+    const { setModal, handleLogout } = useContext(AppContext);
+    const name = localStorage.getItem("usr_name");
 
     return (
         <header className="header container">
@@ -13,24 +14,28 @@ const Header = () => {
                     <span>OneClick</span> Pirate
                 </h1>
                 <div className="header__items__links">
-                    {!userId && (
+                    {!name && (
                         <>
                             <Link
                                 className="link"
                                 to={Routes.LOGIN}
-                                onClick={() => setUserId(52)}
+                                onClick={() => setModal("login")}
                             >
                                 Login
                             </Link>
-                            <Link className="link" to={Routes.REGISTER}>
+                            <Link
+                                className="link"
+                                to={Routes.REGISTER}
+                                onClick={() => setModal("register")}
+                            >
                                 Register
                             </Link>
                         </>
                     )}
-                    {userId && (
+                    {name && (
                         <>
                             <p>
-                                Welcome <span>NAME</span>
+                                Welcome <span>{name}</span>
                             </p>
                             <Link className="link" to={"#"}>
                                 My Products
@@ -38,7 +43,7 @@ const Header = () => {
                             <Link
                                 className="link"
                                 to={"#"}
-                                onClick={() => setUserId(undefined)}
+                                onClick={handleLogout}
                             >
                                 Logout
                             </Link>

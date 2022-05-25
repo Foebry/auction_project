@@ -1,0 +1,71 @@
+.modal {
+    &__title {
+        margin: 0 auto;
+        font-size: 40px;
+        color: $mediumdarkblue;
+    }
+
+    &__input {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        margin: 0 auto;
+        gap: 20px;
+        &__item {
+            width: 80%;
+            margin: 0 auto;
+            &__icon {
+                color: $mediumdarkblue;
+                font-size: 20px;
+                margin-right: 10px;
+            }
+            &__icon2 {
+                color: transparent;
+                background-color: transparent;
+                font-size: 20px;
+                margin-right: 10px;
+            }
+            &__inputfield {
+                font-size: 20px;
+                width: 250px;
+                border: none;
+                outline: none;
+                border-bottom: 1px solid $lightmediumblue;
+                font-family: initial;
+                color: $mediumdarkblue;
+            }
+            ::placeholder {
+                color: $lightgrey;
+            }
+        }
+    }
+    &__btn {
+        margin: 0 auto;
+        width: 150px;
+        height: 40px;
+        color: $white;
+        background-color: $mediumblue;
+        font-family: initial;
+        outline: none;
+        border: none;
+        border-radius: 15px;
+        &:hover {
+            font-weight: bold;
+            background-color: $lightmediumblue;
+            cursor: pointer;
+        }
+    }
+    &__link {
+        margin: 0 auto;
+        color: $lightmediumblue;
+        margin-bottom: 75px;
+        &__btnTo {
+            border: none;
+            color: $darkblue;
+            &:hover {
+                font-weight: bold;
+                cursor: pointer;
+            }
+        }
+    }
+}

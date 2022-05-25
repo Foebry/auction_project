@@ -35,7 +35,7 @@
         }
 
         protected function getPayload(): array{
-            return json_decode($this->payload, true);
+            return json_decode($this->payload, true) ?? [];
         }
 
         protected function getUri(): string{

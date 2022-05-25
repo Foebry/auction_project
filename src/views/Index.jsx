@@ -1,18 +1,15 @@
-import {useEffect, useState} from "react";
+import { useState, useContext } from "react";
 import Auction from "../components/Auction";
 import Categories from "../components/Categories";
-import { currentAuctions } from "../mocks/auctions.js";
-import axios from 'axios';
+import { AppContext } from "../context/AppContext";
+import LoginModal from "../components/modals/LoginModal";
+import RegisterModal from "../components/modals/RegisterModal";
+import DetailModal from "../components/modals/DetailModal";
+import { useGetAuctionsQuery } from "../data/auctionAPI";
 
 const Index = () => {
     const [activeFilter, setActiveFilter] = useState([]);
-
-    useEffect(()=>{
-        (async ()=>{
-            const data = await axios("http://localhost:8000/api/auctions");
-            console.log(data);
-        })();
-    },[])
+    const { modal } = useContext(AppContext);
 
     const handleFilterClick = (e) => {
         const id = e.target.id;
@@ -26,13 +23,28 @@ const Index = () => {
             setActiveFilter([...filter, id]);
         }
     };
+    const { data, isError, isLoading } = useGetAuctionsQuery(undefined, {
+        pollingInterval: 0,
+        refetchOnFocus: true,
+        refetchOnReconnect: true,
+    });
     return (
         <>
+            {modal == "login" && <LoginModal />}
+            {modal == "register" && <RegisterModal />}
+
+            {typeof modal == "number" && <DetailModal />}
             <Categories onClick={handleFilterClick} />
             <div className="container__small">
-                {currentAuctions.map((auction) => (
-                    <Auction key={auction.id} {...auction} />
-                ))}
+                {isLoading && <p>loading...</p>}
+                {isError && <p>error...</p>}
+                {data && data.auctions && (
+                    <ul>
+                        {data.auctions.map((auction) => (
+                            <Auction key={auction.id} {...auction} />
+                        ))}
+                    </ul>
+                )}
             </div>
         </>
     );

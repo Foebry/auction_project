@@ -1,0 +1,28 @@
+.modal {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 400px;
+    height: 500px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px 2px $lightmediumblue;
+    background-color: $white;
+    z-index: 100;
+    &__closeBtn {
+        display: flex;
+        justify-content: flex-end;
+        height: 20px;
+        margin: 5px;
+        & button {
+            background-color: transparent;
+            border: none;
+            font-size: 25px;
+            cursor: pointer;
+        }
+    }
+}
