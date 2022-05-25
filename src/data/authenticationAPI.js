@@ -3,21 +3,31 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const authenticationAPI = createApi({
     reducerPath: "authenticationState",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://www.wdev2.be/fs_sander/api",
+        baseUrl: import.meta.env.VITE_API,
+        credentials: "include",
     }),
     endpoints: (builder) => ({
-        postLogin: builder.mutation({
-            query: ({ usr_email, usr_password }) => ({
+        login: builder.mutation({
+            query: ({ usr_email, usr_password, csrf, formkey }) => ({
                 url: "/login",
                 method: "POST",
                 body: {
                     usr_email,
                     usr_password,
+                    csrf,
+                    formkey,
                 },
             }),
         }),
-        postRegister: builder.mutation({
-            query: ({ usr_name, usr_lastname, usr_email, usr_password }) => ({
+        register: builder.mutation({
+            query: ({
+                usr_name,
+                usr_lastname,
+                usr_email,
+                usr_password,
+                csrf,
+                formkey,
+            }) => ({
                 url: "/register",
                 method: "POST",
                 body: {
@@ -25,12 +35,20 @@ const authenticationAPI = createApi({
                     usr_lastname,
                     usr_email,
                     usr_password,
+                    csrf,
+                    formkey,
                 },
+            }),
+        }),
+        logout: builder.mutation({
+            query: ({}) => ({
+                url: "/logout",
+                method: "DELETE",
             }),
         }),
     }),
 });
 
 export default authenticationAPI;
-export const { usePostLoginMutation, usePostRegisterMutation } =
+export const { useLoginMutation, useRegisterMutation, useLogoutMutation } =
     authenticationAPI;

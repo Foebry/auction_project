@@ -6,7 +6,7 @@ import {
 } from "react-icons/md";
 import BaseModal from "./baseModal";
 import { AppContext } from "../../context/AppContext";
-import { usePostRegisterMutation } from "../../data/authenticationAPI";
+import { useRegisterMutation } from "../../data/authenticationAPI";
 
 const Registerblury__modal = () => {
     const { setModal, setActiveUser } = useContext(AppContext);
@@ -26,7 +26,7 @@ const Registerblury__modal = () => {
         usr_password: "",
         usr_pass_conf: "",
     });
-    const [register] = usePostRegisterMutation();
+    const [register] = useRegisterMutation();
 
     const handleInputChange = (e) => {
         setInputs({
