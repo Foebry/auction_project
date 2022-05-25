@@ -1,49 +1,76 @@
 <?php
 
-namespace models;
+    namespace models;
 
-use BaseModel;
+    use models\BaseModel;
+    use models\Category as _Category;
+    use services\handlers\ResponseHandler;
+    use services\requests\Request;
+    use TypeError;
 
-class Category extends BaseModel {
+    class Category extends BaseModel {
 
-    protected $cat_id;
+        protected $cat_id;
 
-    protected $cat_name;
+        protected $cat_name;
 
-    /**
-     * @param $cat_id
-     * @param $cat_name
-     */
-    public function __construct($cat_id, $cat_name) {
-        $this->cat_id = $cat_id;
-        $this->cat_name = $cat_name;
-    }
+        /**
+         * @param int $cat_id
+         * @param string $cat_name
+         */
+        public function __construct($data) {
 
-    /**
-     * @return int
-     */
-    public function getCatId() {
-        return $this->cat_id;
-    }
-
-    public function setCatId(int $cat_id): void{
-        $this->cat_id = $cat_id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCatName() {
-        return $this->cat_name;
-    }
-
-    /**
-     * @param string $cat_name
-     */
-    public function setCatName($cat_name) {
-        if(is_string($cat_name)){
-            $this->cat_name = $cat_name;
+            try{
+                $this->setCatId($data["cat_id"] ?? null);
+                $this->setCatName($data["cat_name"]);
+            }
+            catch(TypeError $error){
+                $rh = new ResponseHandler();
+                $rh->badRequest(null, ["message"=>$error->getMessage()]);
+            }
         }
-    }
 
-}
+        /**
+         * @return int
+         */
+        public function getCatId() {
+            return $this->cat_id;
+        }
+
+        public function setCatId(int $cat_id=null): void{
+            $this->cat_id = $cat_id;
+        }
+
+        /**
+         * @return string
+         */
+        public function getCatName() {
+            return $this->cat_name;
+        }
+
+        /**
+         * @param string $cat_name
+         */
+        public function setCatName(string $cat_name) {
+            if(is_string($cat_name)){
+                $this->cat_name = $cat_name;
+            }
+        }
+
+        public static function create(array $payload, Request $request): _Category {
+
+            $category = new Category($payload);
+
+            $cat_id = $request->getDbManager()->insertSQL(
+                sprintf(
+                    "INSERT into gw_category(cat_name) values('%s')",
+                    $payload["cat_name"]
+                )
+            );
+
+            $category->setCatId($cat_id);
+
+            return $category;
+        }
+
+    }
