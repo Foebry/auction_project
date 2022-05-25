@@ -6,6 +6,9 @@
         $params = [];
 
         foreach($list as $item){
+
+            if($item === "") continue;
+
             [$key, $value] = explode("=", $item);
             $params[$key] = $value;
         }

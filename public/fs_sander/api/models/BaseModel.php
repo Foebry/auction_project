@@ -51,21 +51,28 @@
 
             $table_headers = $dbm->getTableHeaders($table);
             $matching_fields = [];
-
+            
             foreach( $payload as $key => $value ){
                 if( in_array($key, array_keys($table_headers)) ){
+
+                    $datatype = $table_headers[$key]["datatype"];
+
                     if( $table_headers[$key]["key"] === "PRI" ) continue;
 
-                    if( $table_headers[$key]["datatype"] === "varchar" ){
+                    if( $datatype === "varchar" ){
                         $value = validateString($table, $value, $key, $table_headers[$key], $dbm);
                         $matching_fields[$key] = $value;
                     }
-                    elseif( $table_headers[$key]["datatype"] === "int"){
+                    elseif( $datatype === "int"){
                         $value = validateInteger($value, $key, $dbm);
                         $matching_fields[$key] = $value;
                     }
-                    elseif ($table_headers[$key]["datatype"] === "double"){
+                    elseif ($datatype === "double"){
                         $value = validateFloat($value, $key, $dbm);
+                        $matching_fields[$key] = $value;
+                    }
+                    elseif( $datatype === "timestamp"){
+                        $value = validateTimestamp($value, $key, $dbm);
                         $matching_fields[$key] = $value;
                     }
                 }

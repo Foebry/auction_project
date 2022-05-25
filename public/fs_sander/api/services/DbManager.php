@@ -2,7 +2,8 @@
 
   namespace services;
 
-  use PDO;
+use DateTime;
+use PDO;
   use PDOException;
   use services\handlers\ResponseHandler;
 
@@ -18,10 +19,17 @@
     public function getConnection() {
       if ($this->connection === null) { 
         try {
-          $this->connection = new PDO('mysql:host=185.115.218.166;dbname=fs_sander', 'fs_sander', 'Y8SkDIvlwM8Y');
+          $host = env("DBHOST");
+          $dbname = env("DBNAME");
+          $dbuser = env("DBUSER");
+          $dbpass = env("DBPASSWORD");
+
+          // exit(print(json_encode(["host"=>$host, "dbname"=>$dbname, "dbuser"=>$dbuser, "dbpass"=>$dbpass])));
+
+          $this->connection = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $dbpass);
         } 
         catch (PDOException $error) {
-          $this->responseHandler->internalServerError($error);
+          $this->getResponseHandler()->internalServerError($this, ["message"=>$error->getMessage()]);
           die();
         }
       }
@@ -33,20 +41,26 @@
     }
 
     public function getSQL($query) {
-      $fs = fopen("c:/users/rain_/desktop/log.log", "a");
-      fwrite($fs, $query."\n");
-      fclose($fs);
-      $conn = $this->getConnection();
-      $result = $conn->query($query);
 
-      return $result->rowCount() > 0 ? $result->fetchAll(PDO::FETCH_ASSOC) : [];
+      DbManager::log($query);
+
+        try{
+          $conn = $this->getConnection();
+          $result = $conn->query($query);
+
+          return $result->rowCount() > 0 ? $result->fetchAll(PDO::FETCH_ASSOC) : [];
+        }
+        catch(PDOException $exc){
+          DbManager::log($exc->getMessage(), "error");
+
+        }
     }
 
     public function insertSQL($query): int{
-      $fs = fopen("c:/users/rain_/desktop/log.log", "a");
-      fwrite($fs, $query."\n");
-      fclose($fs);
+
       $conn = $this->getConnection();
+      
+      DbManager::log($query);
 
       $conn->query($query);
 
@@ -54,12 +68,10 @@
     }
 
     private function getLastInsertId(): int{
-      $conn = $this->getConnection();
 
-      $result = $conn->query("SELECT LAST_INSERT_ID() as id");
-      $id = $result->fetch(PDO::FETCH_ASSOC)["id"];
+      $result = $this->getSQL("SELECT LAST_INSERT_ID() as id");
 
-      return $id;
+      return $result["id"];
     }
 
     public function getTableHeaders(string $table): array{
@@ -90,6 +102,25 @@
         $this->responseHandler = new ResponseHandler();
       }
       return $this->responseHandler;
+    }
+
+    public static function log($msg, $mode="log"){
+
+      $logfile = env("LOGFILE_LOG");
+      $now = new DateTime("now");
+      $time = $now->format("Y-m-d H:i:s");
+
+      if( $mode === "error" ) $logfile = env("LOGFILE_ERROR");
+
+      if(strpos($logfile, "ROOT") !== false){
+        $logfile = str_replace("ROOT", $_SERVER["DOCUMENT_ROOT"], $logfile);
+      }
+
+      // exit(print($logfile));
+
+      $fs = fopen($logfile, "a");
+      fwrite($fs, "$time - $msg \n");
+      fclose($fs);
     }
 
   }

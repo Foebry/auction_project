@@ -80,7 +80,7 @@
 
             if( $default ){
                 $dt = new Datetime("now + 10min");
-                $this->auc_expiration = $dt->format("Y-m-d h:i:s");
+                $this->auc_expiration = $dt->format("Y-m-d H:i:s");
             }
             else $this->auc_expiration = $auc_expiration;
         }
@@ -152,7 +152,7 @@
             
             $auction_id = $request->getDbManager()->insertSQL(
                 sprintf(
-                    "INSERT into gw_auction(auc_art_id, auc_expiration, auc_start, auc_usr_id) values(%d, %d, '%s', %d)",
+                    "INSERT into gw_auction(auc_art_id, auc_expiration, auc_start, auc_usr_id) values(%d, '%s', '%s', %d)",
                     $article->getArtId(),
                     $auction->getAucExpiration(),
                     $auction->getAucStart(),
@@ -163,5 +163,25 @@
             $auction->setAucId($auction_id);
 
             return $auction;
+        }
+
+        /**
+         * @return Auction[]
+         */
+        public static function getAllExpiredNotSold(DbManager $dbm): array {
+
+            $time = new DateTime("now");
+            $now = $time->format("Y-m-d H:i:s");
+
+            $query = sprintf("SELECT * from gw_auction where auc_expiration < '%s' and auc_usr_id = -1", $now);
+            $data = $dbm->getSQL($query);
+
+            $auctions = [];
+
+            foreach($data as $row){
+                $auctions[] = new Auction($row);
+            }
+
+            return $auctions;
         }
     }

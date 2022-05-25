@@ -42,14 +42,14 @@
         function unprocessableEntity(DbManager $dbm, $msg=[]){
             $dbm->closeConnection();
             print(json_encode(array_merge(["message"=>"Unproccessable Entity"], $msg)));
-            header("HTTP/1.1 422 Unproccessable Entity");
+            header("HTTP/1.1 422");
             exit();
         }
 
         function internalServerError(DbManager $dbm, $msg=[]) {
             $dbm->closeConnection();
             print(json_encode(array_merge(["message"=>"Internal Server Error"], $msg)));
-            header("HTTP/1.1 500 $msg");
+            header("HTTP/1.1 500");
             exit();
         }
     }

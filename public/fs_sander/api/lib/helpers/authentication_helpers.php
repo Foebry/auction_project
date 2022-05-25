@@ -32,7 +32,8 @@
 
         // Derde en laatste deel van de JWT is een signature.
         // De signature is de gehashte waarde van "$header.$payload" volgens het algoritme bepaald in de $header
-        $signature = hash_hmac("sha256", "BOO", "$header.$payload");
+        $secret = env("SECRETKEY");
+        $signature = hash_hmac("sha256", "$header.$payload", $secret);
 
         return "$header.$payload.$signature";
     }

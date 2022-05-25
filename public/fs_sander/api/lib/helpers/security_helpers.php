@@ -37,6 +37,7 @@ function validateJWT(Request $request){
             );
         }
     }
+
     else $token = $_COOKIE["jwt"];
 
     // check structuur van token.
@@ -44,9 +45,21 @@ function validateJWT(Request $request){
         $request->getResponseHandler()->unauthorized(
             $request->getDbManager(),
             ["message"=>"wrong token format"]
-        );
+    );
 
-    return explode(".", $token);
+    // check token signature
+    [$header, $payload, $signature] = explode(".", $token);
+    $decoded_header = json_decode(base64_decode($header), true);
+
+    if( !in_array( "alg", array_keys($decoded_header) ) ) $request->getResponseHandler()->badRequest(null, ["message"=>"Invalid Token"]);
+    
+    $alg = $decoded_header["alg"];
+
+    $secret = env("SECRETKEY");
+
+    if( hash_hmac($alg, "$header.$payload", $secret) !== $signature) $request->getResponseHandler()->badRequest(null, ["message"=>"Invalid Token"]);
+
+    return [$header, $payload, $signature];
 }
 
 function getUserFromToken(string $token, Request $request): User {

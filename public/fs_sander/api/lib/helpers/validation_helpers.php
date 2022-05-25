@@ -2,7 +2,7 @@
 
     use services\DbManager;
 
-    function validateString(string $table, string $value, string $key, array $headers, DbManager $dbm){
+    function validateString(string $table, string $value, string $key, array $headers, DbManager $dbm): string{
 
         $value = htmlentities(trim($value), ENT_QUOTES);
 
@@ -27,7 +27,7 @@
         return $value;
     }
 
-    function validateInteger(string $value, string $key, DbManager $dbm){
+    function validateInteger(string $value, string $key, DbManager $dbm): int{
 
         if ( !is_numeric($value) ){
             $dbm->getResponseHandler()->badRequest($dbm, ["$key"=>"This is a numeric field"]);
@@ -37,7 +37,7 @@
         return intval($value);
     }
 
-    function validateFloat(string $value, string $key, DbManager $dbm){
+    function validateFloat(string $value, string $key, DbManager $dbm): float{
 
         if( !is_numeric($value) ){
             $dbm->getResponseHandler()->badRequest($dbm, ["$key"=>"This is a numeric field"]);
@@ -45,4 +45,17 @@
         }
 
         return floatval($value);
+    }
+
+    function validateTimestamp(string $value, string $key, DbManager $dbm): string {
+
+        try{
+            $datetime = new DateTime($value);
+            
+            return $datetime->format("Y-m-d H:i:s");
+        }
+        catch(Error $error){
+            $dbm->getResponseHandler()->badRequest($dbm, ["$key"=>"$value is not a valid datetime"]);
+        }
+
     }

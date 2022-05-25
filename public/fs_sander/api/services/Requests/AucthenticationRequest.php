@@ -57,6 +57,7 @@
             $this->respond([
                 "usr_name"=>$user->getUsrName(),
                 "usr_id"=>$user->getUsrId(),
+                "usr_isAdmin"=>$user->IsAdmin(),
                 "csrf"=>$_SESSION["csrf"]
             ]);
         }
@@ -79,6 +80,7 @@
             $this->respond([
                 "usr_name"=>$user->getUsrName(),
                 "usr_id"=>$user->getUsrId(),
+                "usr_isAdmin"=>$user->IsAdmin(),
                 "csrf"=>$_SESSION["csrf"]
             ]);
         }
