@@ -189,29 +189,34 @@
         return "";
     }
 
-    function getOffset(string $query_string): string {
+    function getOffset(string $query_string, $total): array {
 
         $params = getParamList($query_string);
 
         foreach($params as $key => $value){
-            if( $key == "page") return "offset $value";
+            if( $key == "page") {
+                $page_count = $params["page_count"];
+
+                $offset = min(($value -1) * $page_count, floor($total / $page_count) * $page_count);
+                $page = $offset / $page_count + 1;
+
+                return ["offset ".$offset, $page];
+            }
         }
 
-        return "";
+        return ["", 1];
     }
 
     function processParams(string $route, string $query_string, $default_joins): array {
 
         $active_filters = getActiveFilters($route, $query_string);
-            $active_sorts = getActiveSorts($route, $query_string);
-            $join_tables = getJoinsNeeded($route, $query_string, $default_joins);
-            $limit = getPageLimit($query_string);
-            $offset = getOffset($query_string);
+        $active_sorts = getActiveSorts($route, $query_string);
+        $join_tables = getJoinsNeeded($route, $query_string, $default_joins);
 
-            $where = translateActiveFilters($active_filters);
-            $sort = translateActiveSorts($active_sorts);
-            $join = translateJoins($join_tables);
+        $where = translateActiveFilters($active_filters);
+        $sort = translateActiveSorts($active_sorts);
+        $join = translateJoins($join_tables);
 
-        return[$join, $where, $sort, $limit, $offset];
+        return[$join, $where, $sort];
     }
 
