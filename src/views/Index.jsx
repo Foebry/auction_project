@@ -38,9 +38,9 @@ const Index = () => {
             <div className="container__small">
                 {isLoading && <p>loading...</p>}
                 {isError && <p>error...</p>}
-                {data && (
+                {data && data.auctions && (
                     <ul>
-                        {data.map((auction) => (
+                        {data.auctions.map((auction) => (
                             <Auction key={auction.id} {...auction} />
                         ))}
                     </ul>

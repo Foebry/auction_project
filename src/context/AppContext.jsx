@@ -9,8 +9,12 @@ const AppProvider = ({ children }) => {
     const [modal, setModal] = useState(null);
     const onClose = () => setModal(null);
     const handleLogout = async () => {
-        const { data, error } = await logout();
-        data && (localStorage.clear(), setModal(undefined));
+        const { error } = await logout({});
+        if (!error) {
+            console.log("ok");
+            localStorage.clear();
+            window.location.reload();
+        }
     };
 
     return (
@@ -21,6 +25,7 @@ const AppProvider = ({ children }) => {
                 modal,
                 setModal,
                 onClose,
+                handleLogout,
             }}
         >
             {children}
