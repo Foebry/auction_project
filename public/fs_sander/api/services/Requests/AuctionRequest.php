@@ -16,8 +16,8 @@
 
         private function resolveEndpoint(): void {
             $uri = $this->getUri();
-
-            if( $uri === "/api/auctions") $this->resolveAuctions();
+            if( preg_match("|api/auctions\??.*|", $uri) ) $this->resolveAuctions();
+            // if( $uri === "/api/auctions") $this->resolveAuctions();
 
             elseif( preg_match("|api/auction/[0-9]+$|", $uri ) ) {
                 $auction_id = explode("/", $uri)[3];
@@ -110,19 +110,34 @@
         
         private function getAuctions(){
 
-            $now = new DateTime("now");
-            $now = $now->getTimestamp();
+            $params = getParamList($this->getQueryString());
+        
+            [$join, $where, $sort, $limit, $offset] = processParams("auctions", $this->getQueryString(), ["gw_article"=>["art_id", "auc_art_id"]]);
             
-            $data = $this->getDbManager()->getSQL(
-                "SELECT 
-                    auc_id id, art_name name, auc_expiration expiration, 
-                    (select max(bid_price) from gw_bidding where bid_auc_id = auc_id) as highest_bid, art_img image
-                FROM gw_auction JOIN gw_article
-                    on auc_art_id = art_id
-                WHERE auc_expiration > $now"
-            );
+            $select = "SELECT auc_id id, art_name name, auc_expiration expiration,"."\n". 
+"(select max(bid_price) from gw_bidding where bid_auc_id = auc_id) as highest_bid, art_img image
+    FROM gw_auction\n";
 
-            $this->respond($data);
+            $total = $this->getDbManager()->getSQL("select count(*) total from ($select $join $where $sort) as temp")[0]["total"];
+            $total_pages = intval(ceil(intval($total) / ($params["page_count"] ?? 10)));
+            // $page = min($total_pages, $offset / $params["page_count"]);
+            // $next_page = 
+
+            // exit(print(json_encode(["total_pages"=>$total_pages])));
+
+            $query = "$select $join $where $sort $limit $offset";
+
+            $auctions = $this->getDbManager()->getSQL($query);
+
+            // $this->respond($data);
+            $this->respond([
+                // "page"=>$page,
+                "total"=>$total,
+                "total_pages"=>$total_pages,
+                // "next_page"=>$next_page,
+                // "prev_page"=>$prev_page,
+                "auctions"=>$auctions
+            ]);
         }
         
     }

@@ -46,6 +46,12 @@
             return $this->route;
         }
 
+        public function getQueryString(): string {
+            $split = explode("?", $_SERVER["REQUEST_URI"]);
+            if( count($split) > 1 ) return $split[1];
+            return "";
+        }
+
         public function getDbManager():DbManager{
             if( $this->dbm === null ) {
                 $this->dbm = new DbManager($this->getResponseHandler());

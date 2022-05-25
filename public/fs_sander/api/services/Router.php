@@ -15,7 +15,9 @@
         public function __construct()
         {
             $this->uri = explode("fs_sander", $_SERVER["REQUEST_URI"])[1];
-            $this->route = explode("/", $this->getUri())[2];
+            $this->route = explode("?", explode("/", $this->getUri())[2])[0];
+            // exit(print(json_encode($_SERVER)));
+            // exit(print(json_encode(["route"=>$this->getRoute()])));
             $this->resolveRoute();
         }
 
@@ -24,6 +26,10 @@
             $route = $this->getRoute();
 
             switch($route) {
+
+                case "":
+                    $rh = new ResponseHandler();
+                    $rh->render("swagger.html");
 
                 case in_array($route, ["auctions", "auction"]):
                     new AuctionRequest();

@@ -130,7 +130,7 @@
          * @param  Container $container
          * @return void
          */
-        public static function validateBidTiming(Auction $auction, Container $container): void{
+        public static function validateBidTiming(Auction $auction, Request $request): void{
 
             $now = new DateTime("now");
             $currentTimestamp = $now->getTimestamp()*1000;
@@ -139,7 +139,7 @@
             // $auction_not_started = $currentTimestamp < $auction->getAucStart();
 
             if ($auction_expired /*or $auction_not_started */)
-                $container->getResponseHandler()->unprocessableEntity("You cannot bid on this auction at this time");
+                $request->getResponseHandler()->unprocessableEntity($request->getDbManager(), ["message"=>"You cannot bid on this auction at this time"]);
 
         }
 

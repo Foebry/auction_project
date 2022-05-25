@@ -6,6 +6,11 @@
 
     class ResponseHandler {
 
+        function render($template): void{
+            print(file_get_contents("./templates/$template"));
+            exit();
+        }
+
         function badRequest(DbManager $dbm=null, $msg=[]){
             $dbm && $dbm->closeConnection();
             print(json_encode(array_merge(["message"=>"Bad Request"], $msg)));
