@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const articleAPI = createApi({
     reducerPath: "articleState",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://www.wdev2.be/fs_sander/api",
+        baseUrl: import.meta.env.VITE_API,
         credentials: "include",
     }),
     endpoints: (builder) => ({
@@ -15,7 +15,7 @@ const articleAPI = createApi({
             query: (id) => `/article/${id}`,
         }),
         postArticle: builder.mutation({
-            query: ({ art_id, art_name, art_img, art_cat_id }, csrf) => ({
+            query: ({ art_id, art_name, art_img, art_cat_id, csrf }) => ({
                 url: `/articles`,
                 method: "POST",
                 body: {

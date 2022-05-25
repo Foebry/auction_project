@@ -4,9 +4,8 @@ import { AppContext } from "../context/AppContext";
 import { Routes } from "../types/RouteTypes";
 
 const Header = () => {
-    const { setModal } = useContext(AppContext);
+    const { setModal, handleLogout } = useContext(AppContext);
     const name = localStorage.getItem("usr_name");
-    const logout = () => {};
 
     return (
         <header className="header container">
@@ -41,7 +40,11 @@ const Header = () => {
                             <Link className="link" to={"#"}>
                                 My Products
                             </Link>
-                            <Link className="link" to={"#"} onClick={logout}>
+                            <Link
+                                className="link"
+                                to={"#"}
+                                onClick={handleLogout}
+                            >
                                 Logout
                             </Link>
                         </>

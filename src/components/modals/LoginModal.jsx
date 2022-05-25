@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { MdLockOutline, MdOutlineAlternateEmail } from "react-icons/md";
 import BaseModal from "./baseModal";
 import { AppContext } from "../../context/AppContext";
-import { usePostLoginMutation } from "../../data/authenticationAPI";
+import { useLoginMutation } from "../../data/authenticationAPI";
 
 const Loginblury__modal = () => {
     const { setModal } = useContext(AppContext);
@@ -14,7 +14,7 @@ const Loginblury__modal = () => {
         usr_email: "",
         usr_password: "",
     });
-    const [login] = usePostLoginMutation();
+    const [login] = useLoginMutation();
 
     const handleInputChange = (e) => {
         setInputs({

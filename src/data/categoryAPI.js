@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const categoryAPI = createApi({
     reducerPath: "categoyState",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://www.wdev2.be/fs_sander/api",
+        baseUrl: import.meta.env.VITE_API,
         credentials: "include",
     }),
     endpoints: (builder) => ({
@@ -15,7 +15,7 @@ const categoryAPI = createApi({
             query: (id) => `/category/${id}`,
         }),
         postCategory: builder.mutation({
-            query: ({ cat_name }, csrf) => ({
+            query: ({ cat_name, csrf }) => ({
                 url: `/categories`,
                 method: "POST",
                 body: {
@@ -26,7 +26,7 @@ const categoryAPI = createApi({
             invalidatesTags: ["allCategories"],
         }),
         patchCategoryById: builder.mutation({
-            query: ({ cat_id, cat_name }, csrf) => ({
+            query: ({ cat_id, cat_name, csrf }) => ({
                 url: `/category/${cat_id}`,
                 method: "PATCH",
                 body: {
@@ -37,7 +37,7 @@ const categoryAPI = createApi({
             invalidatesTags: ["allCategories"],
         }),
         deleteCategory: builder.mutation({
-            query: (id, csrf) => ({
+            query: ({ id, csrf }) => ({
                 url: `category/${id}`,
                 body: {
                     csrf,

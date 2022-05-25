@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const userAPI = createApi({
     reducerPath: "userState",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://www.wdev2.be/fs_sander/api",
+        baseUrl: import.meta.env.VITE_API,
         credentials: "include",
     }),
     endpoints: (builder) => ({

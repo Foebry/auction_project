@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const biddingAPI = createApi({
     reducerPath: "biddingState",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://www.wdev2.be/fs_sander/api",
+        baseUrl: import.meta.env.VITE_API,
         credentials: "include",
     }),
     endpoints: (builder) => ({
@@ -12,14 +12,14 @@ const biddingAPI = createApi({
             providesTags: ["allBiddings"],
         }),
         postBiddings: builder.mutation({
-            query: ({ bid_usr_id, bid_auc_id, bid_price }, csrf) => ({
+            query: ({ bid_usr_id, bid_auc_id, bid_price, csrf }) => ({
                 url: `/biddings`,
                 method: "POST",
                 body: {
                     bid_usr_id,
                     bid_auc_id,
                     bid_price,
-                    csrf
+                    csrf,
                 },
             }),
             invalidatesTags: ["allBiddings"],
