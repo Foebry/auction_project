@@ -12,6 +12,7 @@ const Detailblury__modal = () => {
         refetchOnFocus: true,
         refetchOnReconnect: true,
     });
+
     return (
         <BaseModal>
             <div className="modal__title">{data && <h2>{data.name}</h2>} </div>
