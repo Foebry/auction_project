@@ -5,7 +5,7 @@ import { Routes } from "../types/RouteTypes";
 
 const Header = () => {
     const { setModal } = useContext(AppContext);
-    const name = localStorage.getItem("usr_nam");
+    const name = localStorage.getItem("usr_name");
     const logout = () => {};
 
     return (
