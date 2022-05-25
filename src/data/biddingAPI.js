@@ -12,13 +12,14 @@ const biddingAPI = createApi({
             providesTags: ["allBiddings"],
         }),
         postBiddings: builder.mutation({
-            query: ({ bid_usr_id, bid_auc_id, bid_price }) => ({
+            query: ({ bid_usr_id, bid_auc_id, bid_price }, csrf) => ({
                 url: `/biddings`,
                 method: "POST",
                 body: {
                     bid_usr_id,
                     bid_auc_id,
                     bid_price,
+                    csrf
                 },
             }),
             invalidatesTags: ["allBiddings"],
