@@ -152,7 +152,7 @@
             
             $auction_id = $request->getDbManager()->insertSQL(
                 sprintf(
-                    "INSERT into gw_auction(auc_art_id, auc_expiration, auc_start, auc_usr_id) values(%d, '%s', '%s', %d)",
+                    "INSERT into gw_auction(auc_art_id, auc_expiration, auc_start, auc_usr_id) values(%d, '%s', '%s', %d);",
                     $article->getArtId(),
                     $auction->getAucExpiration(),
                     $auction->getAucStart(),

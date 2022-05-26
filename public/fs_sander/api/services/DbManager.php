@@ -24,8 +24,6 @@ use PDO;
           $dbuser = env("DBUSER");
           $dbpass = env("DBPASSWORD");
 
-          // exit(print(json_encode(["host"=>$host, "dbname"=>$dbname, "dbuser"=>$dbuser, "dbpass"=>$dbpass])));
-
           $this->connection = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $dbpass);
         } 
         catch (PDOException $error) {
@@ -62,16 +60,10 @@ use PDO;
       
       DbManager::log($query);
 
-      $conn->query($query);
-
-      return $this->getLastInsertId();
-    }
-
-    private function getLastInsertId(): int{
-
-      $result = $this->getSQL("SELECT LAST_INSERT_ID() as id");
-
-      return $result["id"];
+      $conn->exec($query);
+      $id = $conn->lastInsertId();
+      
+      return $id;
     }
 
     public function getTableHeaders(string $table): array{

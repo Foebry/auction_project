@@ -30,6 +30,7 @@
                 $this->setBidAucId($data["bid_auc_id"]);
                 $this->setBidUserId($data["bid_usr_id"]);
                 $this->setBidPrice($data["bid_price"]);
+                $this->setBidTime($data["bid_time"] ?? "", !in_array("bid_time", array_keys($data)));
             }
             catch(TypeError $error){
                 $rh = new ResponseHandler();
@@ -90,6 +91,18 @@
             $this->bid_price = $bid_price;
         }
 
+        private function setBidTime(string $bid_time, $default): void {
+            if( $default ){
+                $dt = new DateTime("now");
+                $this->bid_time = $dt->format("Y-m-d H:i:s");
+            }
+            else $this->bid_time = $bid_time;
+        }
+
+        public function getBidTime(): string{
+            return $this->bid_time;
+        }
+
 
         public static function create(array $payload, Request $request): Bidding {
 
@@ -101,7 +114,7 @@
 
             $bidding_id = $request->getDbManager()->insertSQL(
                 sprintf(
-                    "INSERT into gw_bidding (bid_usr_id, bid_auc_id, bid_price, bid_time) values(%d, %d, %f, %d)",
+                    "INSERT into gw_bidding (bid_usr_id, bid_auc_id, bid_price, bid_time) values(%d, %d, %f, '%s')",
                     $bidding->getBidUserId(),
                     $bidding->getBidAucId(),
                     $bidding->getBidPrice(),

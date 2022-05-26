@@ -6,6 +6,7 @@ import LoginModal from "../components/modals/LoginModal";
 import RegisterModal from "../components/modals/RegisterModal";
 import DetailModal from "../components/modals/DetailModal";
 import { useGetAuctionsQuery } from "../data/auctionAPI";
+import Detailblury__modal from "../components/modals/DetailModal";
 
 const Index = () => {
     const [activeFilter, setActiveFilter] = useState([]);
@@ -33,7 +34,7 @@ const Index = () => {
             {modal == "login" && <LoginModal />}
             {modal == "register" && <RegisterModal />}
 
-            {typeof modal == "number" && <DetailModal />}
+            {typeof modal === "number" && <Detailblury__modal />}
             <Categories onClick={handleFilterClick} />
             <div className="container__small">
                 {isLoading && <p>loading...</p>}
