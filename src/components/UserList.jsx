@@ -8,6 +8,9 @@ const UserList = () => {
         refetchOnFocus: true,
         refetchOnReconnect: true,
     });
+
+    console.log(data);
+
     return (
         <ul className="userlist">
             <li className="userlist__user">
@@ -18,6 +21,7 @@ const UserList = () => {
             </li>
             {isError && <p>error..</p>}
             {isLoading && <p>loading..</p>}
+
             <li className="userlist__user">
                 <p>Michiel Peeters</p>
                 <p className="userlist__user__email">
