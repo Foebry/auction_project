@@ -12,14 +12,14 @@ const Registerblury__modal = () => {
 
     return (
         <BaseModal>
-            <h1 className="modal__title">Register</h1>
+            <h1 className="modal__title">Change my Details</h1>
             <div className="modal__input">
                 <div className="modal__input__item">
                     <MdPersonOutline className="modal__input__item__icon" />
                     <input
                         className="modal__input__item__inputfield"
                         type="text"
-                        placeholder="Enter first name"
+                        placeholder="Voornaam"
                         name="firstname"
                         required
                     />
@@ -29,7 +29,7 @@ const Registerblury__modal = () => {
                     <input
                         className="modal__input__item__inputfield"
                         type="text"
-                        placeholder="Enter name"
+                        placeholder="Achternaam"
                         name="name"
                         required
                     />
@@ -39,7 +39,7 @@ const Registerblury__modal = () => {
                     <input
                         className="modal__input__item__inputfield"
                         type="email"
-                        placeholder="Enter email"
+                        placeholder="email"
                         name="email"
                         required
                     />
@@ -50,31 +50,13 @@ const Registerblury__modal = () => {
                         className="modal__input__item__inputfield"
                         type="password"
                         name="pwd"
-                        placeholder="Enter password"
+                        placeholder="*********"
                         required
                     />
                 </div>
             </div>
-            <button className="modal__btn">Register</button>
-            <p className="modal__link">
-                Already have an account? Go to{" "}
-                <button
-                    className="modal__link__btnTo"
-                    onClick={() => {
-                        setModal("login");
-                    }}
-                >
-                    Login
-                </button>
-                <button
-                    className="modal__link__btnTo"
-                    onClick={() => {
-                        setModal("user");
-                    }}
-                >
-                    User
-                </button>
-            </p>
+            <button className="modal__btn">Edit</button>
+            <p className="modal__link"></p>
         </BaseModal>
     );
 };
