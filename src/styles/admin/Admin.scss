@@ -1,0 +1,47 @@
+.admin{
+    margin: 20px auto !important;
+    background-color: $white;
+    min-height: 95vh;
+    border-radius: 50px;
+    display: flex;
+    gap: 20px;
+    &__nav{
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
+        width: 200px;
+        height: 95vh;
+        display: flex;
+        flex-direction: column;
+        background-color: $darkblue;
+        &__item{
+            height: 75px;
+            width: 200px;
+            background-color: $white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid $mediumblue;
+            border-right: 1px solid $mediumblue;
+            font-size: 30px;
+            font-weight: bold;
+            &:first-child{
+                border-top-left-radius: 50px;
+                color: $mediumblue;
+            }
+            button {
+                height: 100%;
+                width: 100%;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                background-color: $white;
+                font-size: 15px;
+                font-weight: bold;
+                &:hover{
+                    background-color: $mediumblue;
+                    color: $white;
+                }
+            }
+        }
+    }
+}
