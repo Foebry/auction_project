@@ -18,6 +18,8 @@
 
             $uri = $this->getUri();
 
+            if( $uri ==="/api/users" ) $this->getAllUsers( AdminRoute( $this ) );
+
             if( $uri === "/api/user" ) $this->resolveUser( ProtectedRoute( $this ));
 
             elseif( $uri === "/api/user/auctions") $this->getOwnAuctions( ProtectedRoute( $this ));
@@ -38,6 +40,19 @@
             }
             else $this->getResponseHandler()->notFound($this->getDbManager());            
 
+        }
+        /**
+         * @Route("/api/users", method="GET")
+         * @RouteType Admin
+         */
+        private function getAllUsers(){
+
+            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed();
+            
+            $query = "SELECT usr_id id, concat(usr_name,' ', usr_lastname) name, usr_is_admin isAdmin, usr_created_at joinDate from gw_user";
+            $data = $this->getDbManager()->getSQL($query);
+
+            $this->respond($data);
         }
         /**
          * @Route("/api/user", methods=["GET", "PATCH"])
