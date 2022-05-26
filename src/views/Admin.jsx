@@ -1,22 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import UserList from "../components/UserList";
 
 const Admin = () => {
+    const [contentShow, setContentShow] = useState("users");
+
     return (
         <section className="container__medium admin">
             <ul className="admin__nav">
                 <li className="admin__nav__item">Admin</li>
-                <li className="admin__nav__item">
-                    <button>Users</button>
+                <li
+                    className={
+                        contentShow == "users"
+                            ? `admin__nav__item admin__nav__item--active`
+                            : `admin__nav__item`
+                    }
+                >
+                    <button onClick={() => setContentShow("users")}>
+                        Users
+                    </button>
                 </li>
-                <li className="admin__nav__item">
-                    <button>Auctions</button>
+                <li
+                    className={
+                        contentShow == "auctions"
+                            ? `admin__nav__item admin__nav__item--active`
+                            : `admin__nav__item`
+                    }
+                >
+                    <button onClick={() => setContentShow("auctions")}>
+                        Auctions
+                    </button>
                 </li>
-                <li className="admin__nav__item">
-                    <button>Articles</button>
+                <li
+                    className={
+                        contentShow == "articles"
+                            ? `admin__nav__item admin__nav__item--active`
+                            : `admin__nav__item`
+                    }
+                >
+                    <button onClick={() => setContentShow("articles")}>
+                        Articles
+                    </button>
                 </li>
             </ul>
-            <UserList />
+            {contentShow == "users" && <UserList />}
         </section>
     );
 };

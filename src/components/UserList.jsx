@@ -1,6 +1,6 @@
 import React from "react";
 import { MdDelete, MdModeEdit } from "react-icons/md";
-import { useGetUsersQuery } from "../data/userAPI";
+import { useGetUsersQuery, useDeleteUserMutation } from "../data/userAPI";
 
 const UserList = () => {
     const { data, isError, isLoading } = useGetUsersQuery(undefined, {
@@ -9,7 +9,7 @@ const UserList = () => {
         refetchOnReconnect: true,
     });
 
-    console.log(data);
+    const [deleteUser] = useDeleteUserMutation();
 
     return (
         <ul className="userlist">
@@ -21,48 +21,29 @@ const UserList = () => {
             </li>
             {isError && <p>error..</p>}
             {isLoading && <p>loading..</p>}
-
-            <li className="userlist__user">
-                <p>Michiel Peeters</p>
-                <p className="userlist__user__email">
-                    michiel1.peeters@gmail.com
-                </p>
-                <p className="userlist__user__role">Admin</p>
-                <div className="userlist__buttons">
-                    <button className="userlist__buttons__button">
-                        <MdModeEdit />
-                    </button>
-                    <button className="userlist__buttons__button">
-                        <MdDelete />
-                    </button>
-                </div>
-            </li>
-            <li className="userlist__user">
-                <p>Sander Fabry</p>
-                <p className="userlist__user__email">rain_fabry@hotmail.com</p>
-                <p className="userlist__user__role">Admin</p>
-                <div className="userlist__buttons">
-                    <button className="userlist__buttons__button">
-                        <MdModeEdit />
-                    </button>
-                    <button className="userlist__buttons__button">
-                        <MdDelete />
-                    </button>
-                </div>
-            </li>
-            <li className="userlist__user">
-                <p>Tim Vercammen</p>
-                <p className="userlist__user__email">timvercammen@telenet.be</p>
-                <p className="userlist__user__role">Admin</p>
-                <div className="userlist__buttons">
-                    <button className="userlist__buttons__button">
-                        <MdModeEdit />
-                    </button>
-                    <button className="userlist__buttons__button">
-                        <MdDelete />
-                    </button>
-                </div>
-            </li>
+            {data &&
+                data.map(({ id, name, email, isAdmin }) => {
+                    return (
+                        <li className="userlist__user" key={id}>
+                            <p>{name}</p>
+                            <p className="userlist__user__email">{email}</p>
+                            <p className="userlist__user__role">
+                                {isAdmin ? "Admin" : "User"}
+                            </p>
+                            <div className="userlist__buttons">
+                                <button className="userlist__buttons__button">
+                                    <MdModeEdit />
+                                </button>
+                                <button
+                                    className="userlist__buttons__button"
+                                    onClick={() => deleteUser(id)}
+                                >
+                                    <MdDelete className="icon" />
+                                </button>
+                            </div>
+                        </li>
+                    );
+                })}
         </ul>
     );
 };

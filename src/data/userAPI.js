@@ -9,7 +9,7 @@ const userAPI = createApi({
     endpoints: (builder) => ({
         getUsers: builder.query({
             query: () => "/users",
-            providesTags: ["allUsers"],
+            providesTags: ["ALLUSERS"],
         }),
         getCurrentUser: builder.query({
             query: () => "/user",
@@ -44,7 +44,7 @@ const userAPI = createApi({
                     csrf,
                 },
             }),
-            invalidatesTags: ["allUsers"],
+            invalidatesTags: ["ALLUSERS"],
         }),
         patchUserById: builder.mutation({
             query: ({
@@ -65,16 +65,14 @@ const userAPI = createApi({
                     csrf,
                 },
             }),
-            invalidatesTags: ["allUsers"],
+            invalidatesTags: ["ALLUSERS"],
         }),
         deleteUser: builder.mutation({
-            query: (id, csrf) => ({
-                url: `user/${id}`,
-                body: {
-                    csrf,
-                },
+            query: (id) => ({
+                url: `/user/${id}`,
+                method: "DELETE",
             }),
-            invalidatesTags: ["allUsers"],
+            invalidatesTags: ["ALLUSERS"],
         }),
     }),
 });

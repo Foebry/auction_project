@@ -1,7 +1,7 @@
 .admin{
     margin: 20px auto !important;
     background-color: $white;
-    min-height: 95vh;
+    min-height: 80vh;
     border-radius: 50px;
     display: flex;
     gap: 20px;
@@ -9,7 +9,7 @@
         border-top-left-radius: 50px;
         border-bottom-left-radius: 50px;
         width: 200px;
-        height: 95vh;
+        height: 80vh;
         display: flex;
         flex-direction: column;
         background-color: $darkblue;
@@ -24,6 +24,13 @@
             border-right: 1px solid $mediumblue;
             font-size: 30px;
             font-weight: bold;
+            &--active{
+                background-color: $mediumblue;
+                button{
+                    color: $white;
+                }
+                
+            }
             &:first-child{
                 border-top-left-radius: 50px;
                 color: $mediumblue;
@@ -34,7 +41,7 @@
                 border: none;
                 outline: none;
                 cursor: pointer;
-                background-color: $white;
+                background-color: transparent;
                 font-size: 15px;
                 font-weight: bold;
                 &:hover{
