@@ -156,14 +156,6 @@ const Registerblury__modal = () => {
                 >
                     Login
                 </button>
-                <button
-                    className="modal__link__btnTo"
-                    onClick={() => {
-                        setModal("user");
-                    }}
-                >
-                    User
-                </button>
             </p>
         </BaseModal>
     );
