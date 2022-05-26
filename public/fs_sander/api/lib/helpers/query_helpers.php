@@ -203,11 +203,11 @@
                 $offset = min(($value -1) * $page_count, floor($total / $page_count) * $page_count);
                 $page = $offset / $page_count + 1;
 
-                return ["offset ".$offset, $page];
+                return ["offset ".$offset, $page, $offset];
             }
         }
 
-        return ["", 1];
+        return ["", 1, 1];
     }
 
     function processParams(string $route, string $query_string, $default_joins): array {

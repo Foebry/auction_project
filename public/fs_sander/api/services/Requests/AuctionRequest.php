@@ -144,7 +144,8 @@
 
             $limit = getPageLimit($this->getQueryString());
 
-            [$offset, $page] = getOffset($this->getQueryString(), $total);
+            [$offset, $page, $start] = getOffset($this->getQueryString(), $total);
+            $page_count = $params["page_count"] ?? 10;
 
             $next_page = $page < $total_pages ? $page + 1 : null;
             $prev_page = $page > 1 ? $page -1 : null;
@@ -158,9 +159,10 @@
             $this->respond([
                 "page"=>$page,
                 "total"=>$total,
-                "total_pages"=>$total_pages,
-                "next_page"=>$next_page,
-                "prev_page"=>$prev_page,
+                "nextPage"=>$next_page,
+                "prevPage"=>$prev_page,
+                "start"=>$start ?? 9,
+                "end"=>min($page_count * $page, $total),
                 "auctions"=>$auctions
             ]);
         }

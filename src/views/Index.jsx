@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useMemo } from "react";
 import Auction from "../components/Auction";
 import Categories from "../components/Categories";
 import { AppContext } from "../context/AppContext";
@@ -6,10 +6,29 @@ import LoginModal from "../components/modals/LoginModal";
 import RegisterModal from "../components/modals/RegisterModal";
 import DetailModal from "../components/modals/DetailModal";
 import { useGetAuctionsQuery } from "../data/auctionAPI";
+import Pagination from "../components/Pagination";
 
 const Index = () => {
-    const [activeFilter, setActiveFilter] = useState([]);
     const { modal } = useContext(AppContext);
+    const [filter, setFilter] = useState([]);
+
+    const { data, isError, isLoading } = useGetAuctionsQuery(
+        filter,
+        {
+            pollingInterval: 1000,
+            refetchOnFocus: true,
+            refetchOnReconnect: true,
+        },
+        [filter]
+    );
+
+    const options = useMemo(
+        () => ({
+            page: data?.page,
+            filter: filter.join(","),
+        }),
+        [data]
+    );
 
     const handleFilterClick = (e) => {
         const id = e.target.id;
@@ -17,17 +36,10 @@ const Index = () => {
 
         classList.toggle("categories__buttons__btn--active");
 
-        if (activeFilter.includes(id)) {
-            setActiveFilter(filter.filter((item) => item != id));
-        } else {
-            setActiveFilter([...filter, id]);
-        }
+        if (filter.includes(id)) setFilter(filter.filter((el) => el != id));
+        else setFilter([...options.filter, id]);
     };
-    const { data, isError, isLoading } = useGetAuctionsQuery(undefined, {
-        pollingInterval: 0,
-        refetchOnFocus: true,
-        refetchOnReconnect: true,
-    });
+
     return (
         <>
             {modal == "login" && <LoginModal />}
@@ -39,11 +51,15 @@ const Index = () => {
                 {isLoading && <p>loading...</p>}
                 {isError && <p>error...</p>}
                 {data && data.auctions && (
-                    <ul>
-                        {data.auctions.map((auction) => (
-                            <Auction key={auction.id} {...auction} />
-                        ))}
-                    </ul>
+                    <>
+                        <Pagination {...data} />
+                        <ul>
+                            {data.auctions.map((auction) => (
+                                <Auction key={auction.id} {...auction} />
+                            ))}
+                        </ul>
+                        <Pagination {...data} />
+                    </>
                 )}
             </div>
         </>
