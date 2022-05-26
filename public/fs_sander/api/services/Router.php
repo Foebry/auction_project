@@ -42,7 +42,7 @@
                     new BiddingRequest();
                     break;
                 
-                case "user":
+                case in_array($route, ["user", "users"]):
                     new UserRequest();
                     break;
                     
