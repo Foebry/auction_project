@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { Routes } from "../types/RouteTypes";
-import LoginModal from "./modals/LoginModal";
-import RegisterModal from "./modals/RegisterModal";
 
 const Header = () => {
-    const { userId, setUserId, setModal } = useContext(AppContext);
+    const { setModal, handleLogout } = useContext(AppContext);
+    const name = localStorage.getItem("usr_name");
 
     return (
         <header className="header container">
@@ -15,7 +14,7 @@ const Header = () => {
                     <span>OneClick</span> Pirate
                 </h1>
                 <div className="header__items__links">
-                    {!userId && (
+                    {!name && (
                         <>
                             <Link
                                 className="link"
@@ -33,10 +32,10 @@ const Header = () => {
                             </Link>
                         </>
                     )}
-                    {userId && (
+                    {name && (
                         <>
                             <p>
-                                Welcome <span>NAME</span>
+                                Welcome <span>{name}</span>
                             </p>
                             <Link className="link" to={"#"}>
                                 My Products
@@ -44,7 +43,7 @@ const Header = () => {
                             <Link
                                 className="link"
                                 to={"#"}
-                                onClick={() => setUserId(undefined)}
+                                onClick={handleLogout}
                             >
                                 Logout
                             </Link>

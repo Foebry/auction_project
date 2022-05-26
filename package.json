@@ -3,7 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "node resetExp.js && vite --open",
+    "server": "php -S 127.0.0.1:8000 -t public",
+    "dev": "vite --open",
     "build": "vite build",
     "preview": "vite preview"
   },

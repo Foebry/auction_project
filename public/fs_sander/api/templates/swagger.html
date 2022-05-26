@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>OneClick Pirates openAPI</title>
+        <link rel="stylesheet" href="./styles/style.css" />
+        <script defer src="./js/index.js"></script>
+    </head>
+    <body>
+        <main>
+            <section>
+                <h1>Auctions</h1>
+                <ul>
+                    <li class="get">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/auctions</p>
+                            <span>Retrieve all auctions</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <div class="coming-soon">
+                                <h2>Parameters</h2>
+                            <p>
+                                Can be sent to enlarge and create a more
+                                specific query string
+                            </p>
+                            <p>
+                                example:
+                                <span
+                                    >/auctions?sort=-id,-duration&filter[cat_id]=1,2,3&page=1&page_count=2</span
+                                >
+                            </p>
+                                <table>
+                                    <tr>
+                                        <th>parameter</th>
+                                        <th>type</th>
+                                        <th>description</th>
+                                    </tr>
+                                    <tr>
+                                        <td>sort</td>
+                                        <td><p class="optional">string</p></td>
+                                        <td>
+                                            retrieve data in an ordered fashion. ie:
+                                            "-id" to retrieve data ordered by id
+                                            descending
+                                            <p>
+                                                Possible sorts: id, cat_id, start,
+                                                end, duration
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>filter</td>
+                                        <td><p class="optional">string</p></td>
+                                        <td>
+                                            retrieve a portion of the availlable
+                                            data based on your filtered values.
+                                            <p>
+                                                Possible filters: cat_id, status
+                                                (upcoming, active, expired)
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>page</td>
+                                        <td><p class="optional">int</p></td>
+                                        <td>
+                                            retrieve specific page of data
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>page_count</td>
+                                        <td><p class="optional">int</p></td>
+                                        <td>retrieve set amount of auctions per page</td>
+                                    </tr>
+                                </table>
+                            </div>                           
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Description</p>
+                                </div>
+                                <div class="response">
+                                    <p>200</p>
+                                    <p class="response">[<br />&ensp;
+                                        {<br />&ensp;
+                                        &ensp;"id": 1,<br />&ensp;
+                                        &ensp;"name": "Sofa",<br />&ensp;
+                                        &ensp;"expiration": 1752383738000,<br />&ensp;
+                                        &ensp;"highest_bid": 5,</br />&ensp;
+                                        &ensp;"image": "sofa.jpg"<br />&ensp;
+                                    },<br/>
+                                    &ensp;{<br />&ensp;
+                                    &ensp;"id": 2,<br />&ensp;
+                                    &ensp;"name": "Boekenkast",<br />&ensp;
+                                    &ensp;"expiration": 1752383738000,<br />&ensp;
+                                    &ensp;"highest_bid": 5,<br />&ensp;
+                                    &ensp;"image": "boekenkast.jpg"<br />&ensp;},<br />
+                                    ]</p>
+                                </div>
+                                <div class="response">
+                                    <p>400</p>
+                                    <p>Bad Request</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="post">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/auctions</p>
+                            <span>Post a new auction</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <div class="payload">
+                                <h2>Payload</h2>
+                                <table>
+                                    <tr>
+                                        <th>key</th>
+                                        <th>type</th>
+                                        <th>description</th>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="required">auc_art_id</p></td>
+                                        <td>int</td>
+                                        <td>
+                                            <p>The article_id to auction</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="required">auc_expiration</p></td>
+                                        <td>int</td>
+                                        <td>
+                                            <p>Timestamp of expiration datetime</p>
+                                        </td>
+                                    </tr>
+                                    <tr class="coming-soon">
+                                        <td><p class="coming-soon">auc_start</p></td>
+                                        <td>int</td>
+                                        <td>
+                                            <p>Timestamp of start datetime</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Description</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">{<br />&ensp;
+                                        "id": 1,<br />&ensp;
+                                        "art_id": 1,<br />&ensp;
+                                        "expiration": 1752383738000,<br />
+                                    }</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">400</p>
+                                    <p>Bad Request</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p>Unauthorized</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="get">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/auction/{id}</p>
+                            <span>Retrieve details on specific auction</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Description</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        {<br />
+                                            &ensp;"id": 1, <br />
+                                            &ensp;"image": "sofa.jpg", <br />
+                                            &ensp;"name": "Sofa", <br />
+                                            &ensp;"expiration": 1752383738000,<br/>
+                                            &ensp;"biddings":[<br />
+                                            &ensp; &ensp;{<br />
+                                            &ensp; &ensp; &ensp;"id": 4,<br />
+                                            &ensp; &ensp; &ensp;"bid": 5,<br />
+                                            &ensp; &ensp; &ensp;"user": {<br />
+                                            &ensp; &ensp; &ensp; &ensp;"name": "Michiel",<br />
+                                            &ensp; &ensp; &ensp; &ensp;"lastname": ""<br />
+                                            &ensp; &ensp; &ensp;}<br />
+                                            &ensp; &ensp;},<br />
+                                            &ensp; &ensp;{<br />
+                                            &ensp; &ensp; &ensp;"id": 3,<br />
+                                            &ensp; &ensp; &ensp;"bid": 4,<br />
+                                            &ensp; &ensp; &ensp;"user": {<br />
+                                            &ensp; &ensp; &ensp; &ensp;"name": "Michiel",<br />
+                                            &ensp; &ensp; &ensp; &ensp;"lastname": ""<br />
+                                            &ensp; &ensp; &ensp;},<br />
+                                            &ensp; &ensp;}<br />
+                                            &ensp;]<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">400</p>
+                                    <p>Bad Request</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p>Unauthorized</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="get">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/auction/{id}/biddings</p>
+                            <span
+                                >Retrieve all biddings on specific auction</span
+                            >
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Description</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        [<br />
+                                        &ensp;{<br />
+                                        &ensp; &ensp; "bid_id": 3,<br />
+                                        &ensp; &ensp; "bid_usr_id": 1,<br />
+                                        &ensp; &ensp; "bid_auc_id": 1,<br />
+                                        &ensp; &ensp; "bid_price": 4,<br />
+                                        &ensp; &ensp; "bid_time": 1652265091000<br />
+                                        &ensp;},<br />
+                                        &ensp;{<br />
+                                        &ensp; &ensp; "bid_id": 4,<br />
+                                        &ensp; &ensp; "bid_usr_id": 1,<br />
+                                        &ensp; &ensp; "bid_auc_id": 1,<br />
+                                        &ensp; &ensp; "bid_price": 5,<br />
+                                        &ensp; &ensp; "bid_time": 1652265091000<br />
+                                        &ensp;},<br />
+                                        ]
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p>Unauthorized</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h1>Articles</h1>
+                <ul>
+                    <li class="get updated">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/articles</p>
+                            <span>Retrieve a list of all articles</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only to Admin accounts</p>
+                            <div class="responses">
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Description</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        [<br />
+                                        &ensp;{<br />
+                                        &ensp;&ensp;id: 1,<br />
+                                        &ensp;&ensp;name:"Sofa",<br />
+                                        &ensp;&ensp;image: "sofa.jpg",<br />
+                                        &ensp;&ensp;cat_id: 1<br />
+                                        &ensp;}<br />
+                                        ]
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="post updated">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/articles</p>
+                            <span>Post new article</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only to Admin accounts</p>
+                            <div class="responses">
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Description</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">201</p>
+                                    <p class="response">
+                                        {<br />
+                                            &ensp;&ensp;id: 1,<br />
+                                            &ensp;&ensp;name:"Sofa",<br />
+                                            &ensp;&ensp;image: "sofa.jpg",<br />
+                                            &ensp;&ensp;cat_id: 1<br />
+                                            &ensp;}
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized" <br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="get updated">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/article/{id}</p>
+                            <span>Get details to specific article</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only to Admin accounts</p>
+                            <div class="responses">
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Description</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        {<br />
+                                            &ensp;&ensp;id: 1,<br />
+                                            &ensp;&ensp;name:"Sofa",<br />
+                                            &ensp;&ensp;image: "sofa.jpg",<br />
+                                            &ensp;&ensp;cat_id: 1<br />
+                                            &ensp;}
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="patch updated">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/article/{id}</p>
+                            <span>Update data on specific article</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only to Admin accounts</p>
+                            <div class="payload">
+                                <h2>Payload</h2>
+                                <table>
+                                    <tr>
+                                        <th>key</th>
+                                        <th>type</th>
+                                        <th>description</th>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="optional">art_name</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>The name of the article</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="optional">art_img</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>The image filename of the article</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="optional">art_cat_id</p></td>
+                                        <td>int</td>
+                                        <td>
+                                            <p>Category id the article will belong to</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Description</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        {<br />
+                                            &ensp;&ensp;id: 1,<br />
+                                            &ensp;&ensp;name:"Sofa",<br />
+                                            &ensp;&ensp;image: "sofa.jpg",<br />
+                                            &ensp;&ensp;cat_id: 1<br />
+                                            &ensp;}
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">404</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "No category with id {id}"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="delete new">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/article/{id}</p>
+                            <span>Delete a specific article</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <div class="responses">
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Description</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">204</p>
+                                    <p class="response">
+                                        []
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">404</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "No article with id {id}"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h1>Biddings</h1>
+                <ul>
+                    <li class="get soon">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/biddings</p>
+                            <span>Retrieve all biddings</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        Coming soon
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="post updated">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/biddings</p>
+                            <span>Post a new bidding</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only to authenticated users</p>
+                            <div class="payload">
+                                <h2>Payload</h2>
+                                <table>
+                                    <tr>
+                                        <th>key</th>
+                                        <th>type</th>
+                                        <th>description</th>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="required">bid_usr_id</p></td>
+                                        <td>int</td>
+                                        <td>
+                                            <p>The id of the user</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="required">bid_auc_id</p></td>
+                                        <td>int</td>
+                                        <td>
+                                            <p>The id of the auction the use bid on</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="required">bid_price</p></td>
+                                        <td>int</td>
+                                        <td>
+                                            <p>User bid price</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;"bid_id": 26,<br />
+                                        &ensp;"bid_user_id": 28,<br />
+                                        &ensp;"bid_auc_id": 1,<br />
+                                        &ensp;"bid_price": 7<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">400</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Bad Request" <br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">400</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message:"Bad Request"<br />
+                                        &ensp;bid_price: "Bid too low"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">422</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "You cannot bid on this auction at this time" <br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h1>Categories</h1>
+                <ul>
+                    <li class="get updated">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/categories</p>
+                            <span>Retrieve a list of all categories</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only for authenticated users</p>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        [<br />
+                                        &ensp;{<br />
+                                        &ensp;&ensp;id: 1,<br />
+                                        &ensp;&ensp;name: "Reizen" <br />
+                                        &ensp;}<br />
+                                        ]
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p>Unauthorized</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="post updated">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/categories</p>
+                            <span>Create a new category</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is only availlable to Admin accounts</p>
+                            <div class="payload">
+                                <h2>Payload</h2>
+                                <table>
+                                    <tr>
+                                        <th>key</th>
+                                        <th>type</th>
+                                        <th>description</th>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="required">cat_name</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>The name for the new category</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">201</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;id: 1,<br />
+                                        &ensp;name: "Reizen"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">400</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Bad Request" <br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="get new">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/category/{id}</p>
+                            <span>Retrieve data on a specific category</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only for admin accounts</p>
+                            <div class="responses">
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;&ensp;id: 1,<br />
+                                        &ensp;&ensp;name: "Reizen" <br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">400</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "No category with id {id}"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="patch new">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/category/{id}</p>
+                            <span>Update data of a specific category</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only for admin accounts</p>
+                            <div class="payload">
+                                <h2>Payload</h2>
+                                <table>
+                                    <tr>
+                                        <th>key</th>
+                                        <th>type</th>
+                                        <th>description</th>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="required">cat_name</p></td>
+                                        <td>int</td>
+                                        <td>
+                                            <p>The new name of the category</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="responses">
+                                <h2>Response</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;&ensp;id: 1,<br />
+                                        &ensp;&ensp;name: "Reizen" <br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">400</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">404</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "No category with id {id}"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="delete new">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/category/{id}</p>
+                            <span>Delete a specific category</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only for admin accounts</p>
+                            <div class="responses">
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">204</p>
+                                    <p class="response">
+                                        []
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">404</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "No category with id {id}"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">404</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "No category with id {id}"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h1>Users</h1>
+                <ul>
+                    <li class="get new">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/user</p>
+                            <span>Retrieve data about self</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only for authenticated users</p>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;name: "firstname",<br />
+                                        &ensp;lastname: "lastname",<br />
+                                        &ensp;email: "email@example.com"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="patch new">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/user</p>
+                            <span>Update data self</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only for authenticated users</p>
+                            <div class="payload">
+                                <h2>Payload</h2>
+                                <table>
+                                    <tr>
+                                        <th>key</th>
+                                        <th>type</th>
+                                        <th>description</th>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="optional">usr_name</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>Update name value</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="optional">usr_lastname</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>Update lastname value</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="optional">usr_email</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>Update email value</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="optional">usr_password</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>Update password value</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;name: "firstname update",<br />
+                                        &ensp;lastname: "lastname update",<br />
+                                        &ensp;email: "email@update.com"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">400</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Bad Request"<br/>
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="get updated">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/user/{id}</p>
+                            <span>Retrieve data from specific user</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only for Admin accounts</p>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;id: {id}<br />
+                                        &ensp;name: "firstname",<br />
+                                        &ensp;lastname: "lastname",<br />
+                                        &ensp;email: "email@example.com"<br />
+                                        &ensp;isAdmin: 0,<br />
+                                        &ensp;createdAt: "2022-05-01 00:00:00"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br/>
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">404</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "No user with id {id}"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="patch new">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/user/{id}</p>
+                            <span>Update data of specific user</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only for Admin accounts</p>
+                            <div class="payload">
+                                <h2>Payload</h2>
+                                <table>
+                                    <tr>
+                                        <th>key</th>
+                                        <th>type</th>
+                                        <th>description</th>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="optional">usr_name</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>Update name value</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="optional">usr_lastname</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>Update lastname value</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="optional">usr_email</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>Update email value</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="optional">usr_password</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>Update password value</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;name: "firstname update",<br />
+                                        &ensp;lastname: "lastname update",<br />
+                                        &ensp;email: "email@update.com"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">404</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "No user with id {id}" <br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="delete new">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/user/{id}</p>
+                            <span>Delete user</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only to Admin accounts</p>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">204</p>
+                                    <p class="response">
+                                        []
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">404</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "No user with id {id}"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="get new">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/user/auctions</p>
+                            <span>Get auctions won</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only to authenticated users</p>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        [<br />
+                                        &ensp;{<br />
+                                        &ensp;&ensp;id: 1,<br />
+                                        &ensp;&ensp;article: {<br />
+                                        &ensp;&ensp;&ensp;id: 1,<br />
+                                        &ensp;&ensp;&ensp;name: "Sofa",<br />
+                                        &ensp;&ensp;&ensp;image: "sofa.jpg"<br />
+                                        &ensp;&ensp;}<br />
+                                        &ensp;}<br />
+                                        ]
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="get new">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/user/{id}/auctions</p>
+                            <span>Get auctions won by specific user</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only to Admin accounts</p>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;user: {<br />
+                                        &ensp;&ensp;id: 1,<br />
+                                        &ensp;&ensp;name: "name" <br />
+                                        &ensp;&ensp;lastname: "lastname"<br />
+                                        &ensp;&ensp;auctions: [<br />
+                                        &ensp;&ensp;&ensp;{<br />
+                                        &ensp;&ensp;&ensp;&ensp;id: 1,<br />
+                                        &ensp;&ensp;&ensp;&ensp;article: {<br />
+                                        &ensp;&ensp;&ensp;&ensp;&ensp;id: 1, <br />
+                                        &ensp;&ensp;&ensp;&ensp;&ensp;name: "Sofa",<br />
+                                        &ensp;&ensp;&ensp;&ensp;&ensp;image: "sofa.jpg"<br />
+                                        &ensp;&ensp;&ensp;&ensp;}<br />
+                                        &ensp;&ensp;&ensp;}<br />
+                                        &ensp;&ensp;]<br />
+                                        &ensp;}<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">404</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "No user with id {id}"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="get new">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/user/biddings</p>
+                            <span>Get list of own biddings</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only for authenticated users</p>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        []
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="get new">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/user/{id}/biddings</p>
+                            <span>Retrieve a list of biddings done by a specific user</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This endpoint is availlable only to Admin accounts</p>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">[]</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">401</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;mesage: "Unauthorized"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">404</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "No user with id {id}"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h1>Login</h1>
+                <ul>
+                    <li class="post updated">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/login</p>
+                            <span>login authentication</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This is a publid endpoint</p>
+                            <div class="payload">
+                                <h2>Payload</h2>
+                                <table>
+                                    <tr>
+                                        <th>key</th>
+                                        <th>type</th>
+                                        <th>description</th>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="required">usr_email</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>user email</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="required">usr_password</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>user password</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">200</p>
+                                    <p class="response">
+                                        {<br /><br />
+                                        &ensp;"usr_name": "test<br />
+                                        &ensp;"usr_id": 28<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">422</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Invalid form"<br />
+                                        &ensp;usr_email: "Unknown email adress"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">422</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Invalid form" <br />
+                                        &ensp;usr_password: "Invalid password" <br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h1>Register</h1>
+                <ul>
+                    <li class="post">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/register</p>
+                            <span>register as new user</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <p>This is a public endpoint</p>
+                            <div class="payload">
+                                <h2>Payload</h2>
+                                <table>
+                                    <tr>
+                                        <th>key</th>
+                                        <th>type</th>
+                                        <th>description</th>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="required">usr_name</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>user first name</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="required">usr_lastname</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>usr_lastname</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="required">usr_email</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>user email</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="required">usr_password</p></td>
+                                        <td>string</td>
+                                        <td>
+                                            <p>user password</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">201</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;"usr_id": 28,<br />
+                                        &ensp;"usr_name": "test"<br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">400</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Invalid form"<br />
+                                        &ensp;usr_email: "Email is already taken" <br />
+                                        }
+                                    </p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">400</p>
+                                    <p class="response">
+                                        {<br />
+                                        &ensp;message: "Bad request"<br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h1>Logout</h1>
+                <ul>
+                    <li class="delete new">
+                        <div class="info">
+                            <button class="method"></button>
+                            <p>/logout</p>
+                            <span>Log out</span>
+                            <button class="expand"></button>
+                        </div>
+                        <div class="extra extra--hidden">
+                            <div class="responses">
+                                <h2>Responses</h2>
+                                <div class="head">
+                                    <p class="code">Code</p>
+                                    <p class="desc">Response</p>
+                                </div>
+                                <div class="response">
+                                    <p class="code">204</p>
+                                    <p class="response">[]</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </main>
+    </body>
+</html>
