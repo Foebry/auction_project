@@ -49,7 +49,7 @@
 
             if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed();
             
-            $query = "SELECT usr_id id, concat(usr_name, usr_lastname) name, usr_is_admin isAdmin, usr_created_at joinDate from gw_user";
+            $query = "SELECT usr_id id, concat(usr_name,' ', usr_lastname) name, usr_is_admin isAdmin, usr_created_at joinDate from gw_user";
             $data = $this->getDbManager()->getSQL($query);
 
             $this->respond($data);
