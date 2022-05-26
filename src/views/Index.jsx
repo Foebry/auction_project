@@ -1,4 +1,4 @@
-import { useState, useContext, useMemo } from "react";
+import { useState, useContext, useMemo, useEffect } from "react";
 import Auction from "../components/Auction";
 import Categories from "../components/Categories";
 import { AppContext } from "../context/AppContext";
@@ -10,24 +10,24 @@ import Pagination from "../components/Pagination";
 
 const Index = () => {
     const { modal } = useContext(AppContext);
-    const [filter, setFilter] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [page, setPage] = useState(1);
 
     const { data, isError, isLoading } = useGetAuctionsQuery(
-        filter,
+        { categories: categories.join(","), page },
         {
             pollingInterval: 1000,
             refetchOnFocus: true,
             refetchOnReconnect: true,
-        },
-        [filter]
+        }
     );
 
     const options = useMemo(
         () => ({
-            page: data?.page,
-            filter: filter.join(","),
+            page,
+            categories: categories.join(""),
         }),
-        [data]
+        [data, page, categories]
     );
 
     const handleFilterClick = (e) => {
@@ -36,8 +36,9 @@ const Index = () => {
 
         classList.toggle("categories__buttons__btn--active");
 
-        if (filter.includes(id)) setFilter(filter.filter((el) => el != id));
-        else setFilter([...options.filter, id]);
+        if (categories.includes(id))
+            setCategories(categories.filter((el) => el != id));
+        else setCategories([...options.categories, id]);
     };
 
     return (
@@ -52,13 +53,15 @@ const Index = () => {
                 {isError && <p>error...</p>}
                 {data && data.auctions && (
                     <>
-                        <Pagination {...data} />
+                        <Pagination {...{ ...data, setPage }} />
                         <ul>
                             {data.auctions.map((auction) => (
                                 <Auction key={auction.id} {...auction} />
                             ))}
                         </ul>
-                        <Pagination {...data} />
+                        {data.end - data.start > 1 && (
+                            <Pagination {...{ ...data, setPage }} />
+                        )}
                     </>
                 )}
             </div>

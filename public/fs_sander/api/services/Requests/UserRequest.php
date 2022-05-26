@@ -18,7 +18,7 @@
 
             $uri = $this->getUri();
 
-            if( $uri === "/api/user" ) $this->resolveUser( ProtectedRoute( $this ));
+            if( preg_match("|/api/user$|", $uri) ) $this->resolveUser( ProtectedRoute( $this ));
 
             elseif( $uri === "/api/user/auctions") $this->getOwnAuctions( ProtectedRoute( $this ));
 

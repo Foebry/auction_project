@@ -124,20 +124,16 @@
         }
         
         private function getAuctions(): void{
-
             $where = $sort = "";
             $join = "join gw_article on art_id = auc_art_id";
             
             $select = "SELECT auc_id id, art_name name, auc_expiration expiration,"."\n". 
             "(select max(bid_price) from gw_bidding where bid_auc_id = auc_id) as highest_bid, art_img image
                 FROM gw_auction\n";
-            
-            if( explode("?", $this->getQueryString()) === 2 ){
 
-                $params = getParamList($this->getQueryString());
+            $params = getParamList($this->getQueryString());
 
-                [$join, $where, $sort] = processParams("auctions", $this->getQueryString(), ["gw_article"=>["art_id", "auc_art_id"]]);
-            }
+            [$join, $where, $sort] = processParams("auctions", $this->getQueryString(), ["gw_article"=>["art_id", "auc_art_id"]]);
 
             $total = $this->getDbManager()->getSQL("select count(*) total from ($select $join $where $sort) as temp")[0]["total"];
             $total_pages = intval(ceil(intval($total) / ($params["page_count"] ?? 10)));
@@ -161,7 +157,7 @@
                 "total"=>$total,
                 "nextPage"=>$next_page,
                 "prevPage"=>$prev_page,
-                "start"=>$start ?? 9,
+                "start"=>min($total, $start),
                 "end"=>min($page_count * $page, $total),
                 "auctions"=>$auctions
             ]);
