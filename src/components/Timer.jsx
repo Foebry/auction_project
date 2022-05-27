@@ -2,28 +2,27 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 
 const Timer = ({ rest }) => {
-    const currentDate = moment().add(1, "hour");
-    const future = moment(rest);
-    const timeLeft = moment(future.diff(currentDate)).format("HH:mm:ss");
-    // console.log(expiration);
+    const [timeLeft, setTimeLeft] = useState("00:00:00");
 
-    const [time, setTime] = useState(timeLeft);
+    const updateTime = () => {
+        const currentTime = moment();
+        const future = moment(rest);
+
+        const diff = future - currentTime;
+
+        if (diff > 0) {
+            setTimeout(() => {
+                const format = diff > 3600000 ? "hh:mm:ss" : "00:mm:ss";
+                setTimeLeft(moment(diff).format(format));
+            }, 1000);
+        }
+    };
 
     useEffect(() => {
-        const timerId = setInterval(() => {
-            setTime(timeLeft);
-        }, 1000);
+        updateTime();
+    }, [timeLeft]);
 
-        if (timeLeft == "00:00:00") {
-            clearInterval(timerId);
-        }
-
-        return () => {
-            clearInterval(timerId);
-        };
-    });
-
-    return <div className="timer">{time}</div>;
+    return <div className="timer">{timeLeft}</div>;
 };
 
 export default Timer;
