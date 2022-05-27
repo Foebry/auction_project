@@ -1,7 +1,7 @@
 .list{
     padding: 20px 0;
     margin: 0 auto;
-    &__user{
+    &__user, &__article{
         display: flex;
         gap: 100px;
         justify-content: space-between;

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ArticleList from "../components/ArticleList";
 import UserList from "../components/UserList";
 
 const Admin = () => {
@@ -43,6 +44,7 @@ const Admin = () => {
                 </li>
             </ul>
             {contentShow == "users" && <UserList />}
+            {contentShow == "articles" && <ArticleList />}
         </section>
     );
 };
