@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react";
 import {
     MdLockOutline,
     MdOutlineAlternateEmail,
@@ -6,24 +6,27 @@ import {
 } from "react-icons/md";
 import BaseModal from "./baseModal";
 import { AppContext } from "../../context/AppContext";
-import { usePatchCurrentUserMutation } from "../../data/userAPI";
-import { useGetCurrentUserQuery } from "../../data/userAPI";
+import {
+    usePatchCurrentUserMutation,
+    useGetCurrentUserQuery,
+} from "../../data/userAPI";
 
 const EditUserblury__modal = () => {
     const { setModal } = useContext(AppContext);
-    const { modal } = useContext(AppContext);
-    const { data } = useGetCurrentUserQuery(undefined, {
-        pollingInterval: 0,
+
+    const { data: fetchData } = useGetCurrentUserQuery(undefined, {
         refetchOnFocus: true,
         refetchOnReconnect: true,
     });
+
+    const userData = useMemo(() => fetchData, [fetchData]);
 
     const [formErrors, setFormErrors] = useState({
         usr_name: "",
         usr_lastname: "",
         usr_email: "",
         usr_password: "",
-        usr_pass_conf: "",
+        usr_pass_verify: "",
     });
 
     const [inputs, setInputs] = useState({
@@ -33,7 +36,7 @@ const EditUserblury__modal = () => {
         usr_password: "",
         usr_pass_verify: "",
     });
-    const [register] = usePatchCurrentUserMutation();
+    const [update] = usePatchCurrentUserMutation();
 
     const handleInputChange = (e) => {
         setInputs({
@@ -51,25 +54,33 @@ const EditUserblury__modal = () => {
 
         const { usr_password, usr_pass_verify } = inputs;
 
-        if (usr_password !== usr_pass_verify) {
+        if (usr_password && usr_pass_verify === "") {
             setFormErrors({
                 ...formErrors,
-                usr_pass_conf: "Passwords don't match",
+                usr_pass_verify:
+                    "To update your password, please enter your previous password first.",
             });
+
             return;
         }
 
-        const { data, error } = await register(inputs);
+        let newData = {};
 
-        if (data) {
-            localStorage.setItem("usr_name", data.usr_name);
+        for (const [key, value] of Object.entries(inputs)) {
+            if (value !== "") newData = { ...newData, [key]: value };
+        }
+
+        const { data: updateData, error } = await update(newData);
+
+        if (updateData) {
+            localStorage.setItem("usr_name", updateData.usr_name);
             setInputs({});
             setModal(null);
         } else if (error) {
             setFormErrors({ ...formErrors, ...error.data });
         }
     }
-    console.log({ modal });
+
     return (
         <BaseModal>
             <h1 className="modal__title">Change my Details</h1>
@@ -80,10 +91,11 @@ const EditUserblury__modal = () => {
                         className="modal__input__item__inputfield"
                         type="text"
                         value={inputs.usr_name}
-                        placeholder={data?.usr_name}
+                        placeholder={userData.usr_name}
                         onChange={handleInputChange}
                         name="usr_name"
                     />
+                    <p>{formErrors.usr_name}</p>
                 </div>
                 <div className="modal__input__item">
                     <MdPersonOutline className="modal__input__item__icon2" />
@@ -91,21 +103,23 @@ const EditUserblury__modal = () => {
                         className="modal__input__item__inputfield"
                         type="text"
                         value={inputs.usr_lastname}
-                        placeholder={data?.usr_lastname}
+                        placeholder={userData.usr_lastname}
                         onChange={handleInputChange}
                         name="usr_lastname"
                     />
+                    <p>{formErrors.usr_lastname}</p>
                 </div>
                 <div className="modal__input__item">
                     <MdOutlineAlternateEmail className="modal__input__item__icon" />
                     <input
                         className="modal__input__item__inputfield"
-                        type="email"
+                        type="text"
                         value={inputs.usr_email}
-                        placeholder={data?.usr_email}
+                        placeholder={userData?.usr_email ?? "email"}
                         onChange={handleInputChange}
                         name="usr_email"
                     />
+                    <p>{formErrors.usr_email}</p>
                 </div>
                 <div className="modal__input__item">
                     <MdLockOutline className="modal__input__item__icon" />
@@ -117,6 +131,7 @@ const EditUserblury__modal = () => {
                         placeholder="new password"
                         onChange={handleInputChange}
                     />
+                    <p>{formErrors.usr_password}</p>
                 </div>
                 <div className="modal__input__item">
                     <MdLockOutline className="modal__input__item__icon" />
@@ -129,6 +144,7 @@ const EditUserblury__modal = () => {
                         onChange={handleInputChange}
                     />
                 </div>
+                <p>{formErrors.usr_pass_verify}</p>
                 <button className="modal__btn">Edit</button>
             </form>
             <p className="modal__link"></p>

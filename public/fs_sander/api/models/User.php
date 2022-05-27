@@ -96,7 +96,7 @@
             }
             else{
                 $rh = new ResponseHandler();
-                $rh->badRequest(new DbManager($rh), ["usr_email"=>"Wrong format"]);
+                $rh->badRequest(new DbManager($rh), ["usr_email"=>"This is not a valid email"]);
             }
         }
 

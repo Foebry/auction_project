@@ -2,7 +2,7 @@
 
     use services\DbManager;
 
-    function validateString(string $table, string $value, string $key, array $headers, DbManager $dbm): string{
+    function validateString(string $table, string $value, string $key, array $headers, DbManager $dbm, $isPatch=false): string{
 
         $value = htmlentities(trim($value), ENT_QUOTES);
 
@@ -13,18 +13,18 @@
         $str_len = strlen($value);
 
         if( $str_len > $max_size ){
-            $dbm->getResponseHandler()->badRequest($dbm, ["$key"=>"value too long, max length is $max_size"]);
+            $dbm->getResponseHandler()->badRequest($dbm, ["$key"=>"Value too long, max length is $max_size"]);
         }
         if($not_null && $str_len == 0){
-            $dbm->getResponseHandler()->badRequest($dbm, ["$key"=>"value can not be empty"]);
+            $dbm->getResponseHandler()->badRequest($dbm, ["$key"=>"This field can not be empty"]);
         }
-        if( $unique ){
+        if( $unique && !$isPatch ){
             if( $dbm->getSQL(sprintf("SELECT $key from %s where $key = '%s'", $table, $value)) ){
                 $dbm->getResponseHandler()->unprocessableEntity($dbm, ["$key"=>"$value is already taken"]);
             }
         }
 
-        return $str_len > 0 ? $value : "";
+        return $value;
         }
 
     function validateInteger(string $value, string $key, DbManager $dbm): int{
