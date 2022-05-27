@@ -11,7 +11,6 @@ const AppProvider = ({ children }) => {
     const handleLogout = async () => {
         const { error } = await logout({});
         if (!error) {
-            console.log("ok");
             localStorage.clear();
             window.location.reload();
         }

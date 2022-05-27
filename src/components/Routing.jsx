@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Routes as views } from "../types/RouteTypes";
 import Index from "../views/Index";
-import Detailmodal from "./modals/Detailmodal";
+import Detailmodal from "./modals/DetailModal";
 import LoginModal from "./modals/LoginModal";
 import RegisterModal from "./modals/RegisterModal";
 
