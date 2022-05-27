@@ -1,4 +1,4 @@
-.userlist{
+.list{
     padding: 20px 0;
     margin: 0 auto;
     &__user{
@@ -19,11 +19,6 @@
             border-top-right-radius: 20px;
             background-color: $mediumblue;
             color: $white;
-            p{
-                &:last-child{
-                    visibility: hidden;
-                }
-            }
         }
         p, div{
             align-self: center;
@@ -50,6 +45,16 @@
             }
         }
     }
+}
+
+.listFilter{
+    border: none;
+    outline: none;
+    height: 30px;
+    width: 200px; 
+    padding: 10px;  
+    background-color: $white;
+    border-radius: 10px;
 }
 
 @media screen and (max-width: 1450px) {
