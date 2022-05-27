@@ -12,7 +12,6 @@
         margin: 0 auto;
         gap: 20px;
         &__item {
-            width: 80%;
             margin: 0 auto;
             &__icon {
                 color: $mediumdarkblue;
@@ -36,6 +35,18 @@
             }
             ::placeholder {
                 color: $lightgrey;
+            }
+            &__detail {
+                display: flex;
+                margin: 0 auto;
+                & p {
+                    font-size: 20px;
+                    width: 250px;
+                    margin: 0 auto;
+                    font-family: initial;
+                    color: $mediumdarkblue;
+                    border-bottom: 1px solid $lightmediumblue;
+                }
             }
         }
     }

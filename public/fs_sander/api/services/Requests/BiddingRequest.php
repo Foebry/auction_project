@@ -45,6 +45,7 @@
             
             $payload = $this->getPayload();
             $usr_id = getUserFromToken(implode(".", $exploded_token), $this)->getUsrId();
+            
             $payload["bid_usr_id"] = $usr_id;
 
             $payload = BaseModel::checkPostPayload("gw_bidding", $payload, $this->getDbManager());

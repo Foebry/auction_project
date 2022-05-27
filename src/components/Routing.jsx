@@ -5,6 +5,8 @@ import Admin from "../views/Admin";
 import Detailmodal from "./modals/Detailmodal";
 import LoginModal from "./modals/LoginModal";
 import RegisterModal from "./modals/RegisterModal";
+import UserModal from "./modals/UserModal";
+import EditUserModal from "./modals/EditUserModal";
 
 const Routing = () => {
     return (
@@ -13,6 +15,8 @@ const Routing = () => {
             <Route path={views.ADMIN} element={<Admin />} />
             <Route path={views.LOGIN} element={<LoginModal />} />
             <Route path={views.REGISTER} element={<RegisterModal />} />
+            <Route path={views.USER} element={<UserModal />} />
+            <Route path={views.EDIT} element={<EditUserModal />} />
             <Route path={views.DETAIL_MODAL} element={<Detailmodal />} />
         </Routes>
     );
