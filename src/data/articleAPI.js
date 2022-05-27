@@ -42,11 +42,9 @@ const articleAPI = createApi({
             invalidatesTags: ["allArticles"],
         }),
         deleteArticle: builder.mutation({
-            query: (id, csrf) => ({
-                url: `article/${id}`,
-                body: {
-                    csrf,
-                },
+            query: (id) => ({
+                url: `/article/${id}`,
+                method: "DELETE",
             }),
             invalidatesTags: ["allArticles"],
         }),

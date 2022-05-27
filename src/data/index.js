@@ -16,6 +16,15 @@ const store = configureStore({
         [categoryAPI.reducerPath]: categoryAPI.reducer,
         [userAPI.reducerPath]: userAPI.reducer,
     }),
+    middleware: (getDefaultMiddleWare) => [
+        ...getDefaultMiddleWare(),
+        userAPI.middleware,
+        auctionAPI.middleware,
+        authenticationAPI.middleware,
+        articleAPI.middleware,
+        biddingAPI.middleware,
+        categoryAPI.middleware,
+    ],
 });
 
 setupListeners(store.dispatch);
