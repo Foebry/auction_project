@@ -1,18 +1,21 @@
 import Timer from "../Timer";
 import { RiCoinLine } from "react-icons/ri";
 import BaseModal from "./baseModal";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import { useGetUserAuctionsQuery } from "../../data/userAPI.js";
 
 const UserProductblury__modal = () => {
     const { modal } = useContext(AppContext);
-    const { data, isError, isLoading } = useGetUserAuctionsQuery(modal, {
-        pollingInterval: 0,
-        refetchOnFocus: true,
-        refetchOnReconnect: true,
-    });
-    console.log({ data });
+    const [status, setStatus] = useState(undefined);
+    const { data, isError, isLoading } = useGetUserAuctionsQuery(
+        { status },
+        {
+            pollingInterval: 0,
+            refetchOnFocus: true,
+            refetchOnReconnect: true,
+        }
+    );
 
     return (
         <BaseModal>

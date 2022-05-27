@@ -18,7 +18,13 @@ const userAPI = createApi({
             query: (id) => `/user/${id}`,
         }),
         getUserAuctions: builder.query({
-            query: () => "/user/auctions",
+            query: ({ status }) => {
+                const query = status
+                    ? `/user/auctions?status=${status}`
+                    : "/user/auctions";
+
+                return query;
+            },
         }),
         getUserByIdAuctions: builder.query({
             query: (id) => `/user/${id}/auctions`,

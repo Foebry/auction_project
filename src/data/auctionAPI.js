@@ -9,8 +9,6 @@ const auctionAPI = createApi({
     endpoints: (builder) => ({
         getAuctions: builder.query({
             query: ({ categories, page }) => {
-                console.log("categories in query", categories);
-                console.log("page in query", page);
                 const query =
                     categories !== "" || page ? "/auctions?" : "/auctions";
 

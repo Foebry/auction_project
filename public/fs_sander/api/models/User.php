@@ -5,6 +5,7 @@
     use models\BaseModel;
     use services\handlers\ResponseHandler;
     use services\DbManager;
+    use services\requests\Request;
     use DateTime;
     use TypeError;
 
@@ -129,28 +130,36 @@
             return $this->usr_isAdmin;
         }
 
-        public static function fetchAuctionsWon(int $usr_id, DbManager $dbm): array {
+        public static function fetchAuctionsWon(int $usr_id, Request $request): array {
 
             $auctions_won = [];
+            $query_string = $request->getQueryString();
 
-                $now = new DateTime("now");
+            $where = "";
+            $join = "join gw_article on art_id = auc_art_id";
 
-                $data = $dbm->getSQL(
-                    sprintf("
-                    select auc_id id, auc_start started, auc_expiration ended,
-                    (select max(bid_price) from gw_bidding where bid_auc_id=id) price,
-                    art_id, art_name, art_img from gw_auction gau
-                    join gw_article gar on gau.auc_art_id = gar.art_id
-                    where auc_usr_id = %d
-                    and auc_expiration < '%s'", $usr_id, $now->format("Y-m-d H:i:s")));
-            
+            $select = "SELECT auc_id id, auc_start start, auc_expiration end,"."\n".
+                      "(select max(bid_price) from gw_bidding where bid_auc_id=id) price,
+                      art_id, art_name, art_img from gw_auction\n";
+
+            [$join, $where] = processParams("auctions", $query_string, ["gw_article"=>["art_id", "auc_art_id"]]);
+
+            $where = $where === "" ? "where auc_usr_id = $usr_id" : "$where and auc_usr_id = $usr_id";
+
+            $query = "$select $join $where";
+            $auctions = $request->getDbManager()->getSQL($query);
+
             //embed article data in auction
-            foreach($data as $auction){
+            foreach($auctions as $auction){
+                $now = new DateTime("now");
+                $auction_end_time = new DateTime($auction["end"]);
+
                 $auction["article"] = [
                     "id"=>$auction["art_id"],
                     "image"=>$auction["art_img"],
                     "name"=>$auction["art_name"],
                 ];
+                $auction["hasEnded"] = $now > $auction_end_time;
                 //verwijder overbodige keys
                 unset($auction["art_id"]);
                 unset($auction["art_img"]);

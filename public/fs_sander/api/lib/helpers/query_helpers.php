@@ -22,6 +22,9 @@
             case "auctions":
                 $allowed_sorts = ["auc_id", "-auc_id", "cat_id", "-cat_id", "auc_art_id", "-auc_art_id", "start", "end", "duration", "-start", "-end", "-duration"];
                 break;
+            case "user":
+                $allowed_sorts = ["auc_id", "-auc_id", "cat_id", "-cat_id", "auc_art_id", "-auc_art_id"];
+                break;
             default:
                 $allowed_sorts = [];
         }
@@ -34,6 +37,9 @@
         switch( $route ){
             case "auctions":
                 $allowed_filters = ["cat_id", "auc_art_id", "status"];
+                break;
+            case "user":
+                $allowed_filters = ["status"];
                 break;
             default:
                 $allowed_filters = [];
@@ -213,7 +219,7 @@
         return ["", 1, 1];
     }
 
-    function processParams(string $route, string $query_string, $default_joins): array {
+    function processParams(string $route, string $query_string, $default_joins=[]): array {
 
         $active_filters = getActiveFilters($route, $query_string);
         $active_sorts = getActiveSorts($route, $query_string);
