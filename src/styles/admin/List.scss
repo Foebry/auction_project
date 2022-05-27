@@ -1,0 +1,77 @@
+.list{
+    padding: 20px 0;
+    margin: 0 auto;
+    &__user{
+        display: flex;
+        gap: 100px;
+        justify-content: space-between;
+        align-items: center;
+        height: 50px;
+        padding: 0 20px;
+        border: 1px solid $lightblue;
+        border-top: none;
+        border-collapse: collapse;
+        &:first-child{
+            font-weight: bold;
+            font-size: 20px;
+            border-top: 1px solid $lightblue;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            background-color: $mediumblue;
+            color: $white;
+        }
+        p, div{
+            align-self: center;
+            width: 200px;
+        }
+    }
+    &__buttons {
+        display: flex;
+        gap: 20px;
+        &__button{
+            border: none;
+            background-color: $white;
+            font-size: 25px;
+            cursor: pointer;
+            color: $mediumblue;
+            &:hover{
+                color: $lightblue;
+            }
+            &:last-child{
+                color: $red;
+                &:hover{
+                    color: red;
+                }
+            }
+        }
+    }
+}
+
+.listFilter{
+    border: none;
+    outline: none;
+    height: 30px;
+    width: 200px; 
+    padding: 10px;  
+    background-color: $white;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 1450px) {
+    .userlist{
+        &__user{
+            gap: 50px;
+        }
+        &__buttons {
+        
+            &__button{
+                width: 50px;
+            }
+        }
+    
+    }
+}
+
+.icon{
+    pointer-events: none;
+}

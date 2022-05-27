@@ -83,7 +83,12 @@
                              ->getUserById($user_id, $this->getDbManager())
                              ->asAssociativeArray();
                 
-                $bidding["user"] = ["usr_id"=>$user["usr_id"]];
+                $bidding["user"] = [
+                                    "usr_id"=>$user["usr_id"],
+                                    "name"=>$user["usr_name"],
+                                    "lastname"=>$user["usr_lastname"]
+                                ];
+                unset($bidding["bid_usr_id"]);
             }
 
             $article = $this->getArticleHandler()

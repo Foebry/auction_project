@@ -9,7 +9,7 @@ const userAPI = createApi({
     endpoints: (builder) => ({
         getUsers: builder.query({
             query: () => "/users",
-            providesTags: ["allUsers"],
+            providesTags: ["ALLUSERS"],
         }),
         getCurrentUser: builder.query({
             query: () => "/user",
@@ -30,10 +30,14 @@ const userAPI = createApi({
             query: (id) => `/user/${id}/biddings`,
         }),
         patchCurrentUser: builder.mutation({
-            query: (
-                { usr_name, usr_lastname, usr_email, usr_password },
-                csrf
-            ) => ({
+            query: ({
+                usr_name,
+                usr_lastname,
+                usr_email,
+                usr_password,
+                usr_pass_verify,
+                csrf,
+            }) => ({
                 url: `/user`,
                 method: "PATCH",
                 body: {
@@ -41,10 +45,11 @@ const userAPI = createApi({
                     usr_lastname,
                     usr_email,
                     usr_password,
+                    usr_pass_verify,
                     csrf,
                 },
             }),
-            invalidatesTags: ["allUsers"],
+            invalidatesTags: ["ALLUSERS"],
         }),
         patchUserById: builder.mutation({
             query: ({
@@ -65,16 +70,14 @@ const userAPI = createApi({
                     csrf,
                 },
             }),
-            invalidatesTags: ["allUsers"],
+            invalidatesTags: ["ALLUSERS"],
         }),
         deleteUser: builder.mutation({
-            query: (id, csrf) => ({
-                url: `user/${id}`,
-                body: {
-                    csrf,
-                },
+            query: (id) => ({
+                url: `/user/${id}`,
+                method: "DELETE",
             }),
-            invalidatesTags: ["allUsers"],
+            invalidatesTags: ["ALLUSERS"],
         }),
     }),
 });

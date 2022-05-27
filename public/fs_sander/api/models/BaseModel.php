@@ -60,8 +60,8 @@
                     if( $table_headers[$key]["key"] === "PRI" ) continue;
 
                     if( $datatype === "varchar" ){
-                        $value = validateString($table, $value, $key, $table_headers[$key], $dbm);
-                        $matching_fields[$key] = $value;
+                        $value = validateString($table, $value, $key, $table_headers[$key], $dbm, true);
+                        if ($value !== "") $matching_fields[$key] = $value;
                     }
                     elseif( $datatype === "int"){
                         $value = validateInteger($value, $key, $dbm);
@@ -78,7 +78,7 @@
                 }
             }
 
-            if( count($matching_fields) === 0 ) $dbm->getResponseHandler()->badRequest($dbm, ["message"=>"No valid information was sent"]);
+            if( count($matching_fields) === 0 ) return "";
 
             foreach( $matching_fields as $key => $value ) {
                 if( $key === "usr_password" ) $value = password_hash($value, 1);

@@ -9,13 +9,14 @@
 @import "./Footer.scss";
 @import "./Categories.scss";
 @import "./Timer.scss";
-@import "./Login.scss";
+@import "./BaseModal.scss";
 @import "./LoginModal.scss";
 @import "./Auction.scss";
-@import "./AuctionDetail.scss";
 @import "./Detailmodal.scss";
 @import "./BaseModal.scss";
 @import "./Pagination.scss";
+@import "./admin/Admin.scss";
+@import "./admin/List.scss";
 
 body {
     height: 100%;
