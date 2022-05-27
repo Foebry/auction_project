@@ -3,17 +3,8 @@ import { RiCoinLine } from "react-icons/ri";
 import BaseModal from "./baseModal";
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
-import { useGetUserBiddingsQuery } from "../../data/userAPI.js";
 
-const Detailblury__modal = () => {
-    const { modal } = useContext(AppContext);
-    const { data, isError, isLoading } = useGetUserBiddingsQuery(modal, {
-        pollingInterval: 0,
-        refetchOnFocus: true,
-        refetchOnReconnect: true,
-    });
-    console.log({ modal });
-
+const UserProductblury__modal = () => {
     return (
         <BaseModal>
             <div className="modal__userTitle">
@@ -22,7 +13,7 @@ const Detailblury__modal = () => {
             <div className="modal__userHistory">
                 <p className="modal__userHistory__text">Articles</p>
                 <div className="modal__userHistory__highest">
-                    {data && data.biddings.length > 0 ? (
+                    {/* {data && data.biddings.length > 0 ? (
                         <ul>
                             {data &&
                                 data.biddings.map((bid) => (
@@ -34,11 +25,11 @@ const Detailblury__modal = () => {
                         </ul>
                     ) : (
                         <p>No biddings yet</p>
-                    )}
+                    )} */}
                 </div>
             </div>
         </BaseModal>
     );
 };
 
-export default Detailblury__modal;
+export default UserProductblury__modal;
