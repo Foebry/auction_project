@@ -5,6 +5,7 @@ import { AppContext } from "../context/AppContext";
 import LoginModal from "../components/modals/LoginModal";
 import RegisterModal from "../components/modals/RegisterModal";
 import DetailModal from "../components/modals/DetailModal";
+import UserProductsModal from "../components/modals/UserProductsModal";
 import { useGetAuctionsQuery } from "../data/auctionAPI";
 
 const Index = () => {
@@ -32,6 +33,7 @@ const Index = () => {
         <>
             {modal == "login" && <LoginModal />}
             {modal == "register" && <RegisterModal />}
+            {modal == "userproducts" && <UserProductsModal />}
 
             {typeof modal == "number" && <DetailModal />}
             <Categories onClick={handleFilterClick} />

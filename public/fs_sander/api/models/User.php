@@ -5,7 +5,9 @@
     use models\BaseModel;
     use services\handlers\ResponseHandler;
     use services\DbManager;
+    use DateTime;
     use TypeError;
+
 
     class User extends BaseModel {
 
@@ -131,12 +133,16 @@
 
             $auctions_won = [];
 
-            $data = $dbm->getSQL("
-                select auc_id id, auc_start started, auc_expiration ended,
-                (select max(bid_price) from gw_bidding where bid_auc_id=id) price,
-                art_id, art_name, art_img from gw_auction gau
-                join gw_article gar on gau.auc_art_id = gar.art_id
-                where auc_usr_id = $usr_id");
+                $now = new DateTime("now");
+
+                $data = $dbm->getSQL(
+                    sprintf("
+                    select auc_id id, auc_start started, auc_expiration ended,
+                    (select max(bid_price) from gw_bidding where bid_auc_id=id) price,
+                    art_id, art_name, art_img from gw_auction gau
+                    join gw_article gar on gau.auc_art_id = gar.art_id
+                    where auc_usr_id = %d
+                    and auc_expiration < '%s'", $usr_id, $now->format("Y-m-d H:i:s")));
             
             //embed article data in auction
             foreach($data as $auction){

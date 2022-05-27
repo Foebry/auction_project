@@ -37,7 +37,11 @@ const Header = () => {
                             <p>
                                 Welcome <span>{name}</span>
                             </p>
-                            <Link className="link" to={"#"}>
+                            <Link
+                                className="link"
+                                to={Routes.USER_PRODUCTS}
+                                onClick={() => setModal("userproducts")}
+                            >
                                 My Products
                             </Link>
                             <Link
