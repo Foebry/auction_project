@@ -5,4 +5,6 @@ export const Routes = {
     LOGIN: "/",
     REGISTER: "/",
     DETAIL_MODAL: "/",
+    USER: "/",
+    USERPRODUCTS: "/",
 };

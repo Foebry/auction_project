@@ -30,10 +30,14 @@ const userAPI = createApi({
             query: (id) => `/user/${id}/biddings`,
         }),
         patchCurrentUser: builder.mutation({
-            query: (
-                { usr_name, usr_lastname, usr_email, usr_password },
-                csrf
-            ) => ({
+            query: ({
+                usr_name,
+                usr_lastname,
+                usr_email,
+                usr_password,
+                usr_pass_verify,
+                csrf,
+            }) => ({
                 url: `/user`,
                 method: "PATCH",
                 body: {
@@ -41,6 +45,7 @@ const userAPI = createApi({
                     usr_lastname,
                     usr_email,
                     usr_password,
+                    usr_pass_verify,
                     csrf,
                 },
             }),

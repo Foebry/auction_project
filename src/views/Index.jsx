@@ -4,6 +4,9 @@ import Categories from "../components/Categories";
 import { AppContext } from "../context/AppContext";
 import LoginModal from "../components/modals/LoginModal";
 import RegisterModal from "../components/modals/RegisterModal";
+import UserModal from "../components/modals/UserModal";
+import UserProductsModal from "../components/modals/UserProductsModal";
+import EditUserModal from "../components/modals/EditUserModal";
 import DetailModal from "../components/modals/DetailModal";
 import { useGetAuctionsQuery } from "../data/auctionAPI";
 import Detailblury__modal from "../components/modals/DetailModal";
@@ -33,6 +36,9 @@ const Index = () => {
         <>
             {modal == "login" && <LoginModal />}
             {modal == "register" && <RegisterModal />}
+            {modal == "user" && <UserModal />}
+            {modal == "edit" && <EditUserModal />}
+            {modal == "userproducts" && <UserProductsModal />}
 
             {typeof modal === "number" && <Detailblury__modal />}
             <Categories onClick={handleFilterClick} />
