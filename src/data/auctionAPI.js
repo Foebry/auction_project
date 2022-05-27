@@ -8,7 +8,21 @@ const auctionAPI = createApi({
     }),
     endpoints: (builder) => ({
         getAuctions: builder.query({
-            query: () => "/auctions",
+            query: ({ categories, page }) => {
+                console.log("categories in query", categories);
+                console.log("page in query", page);
+                const query =
+                    categories !== "" || page ? "/auctions?" : "/auctions";
+
+                let params = [];
+
+                if (categories) params = [...params, `cat_id=${categories}`];
+                if (page) params = [...params, `page=${page}`];
+
+                params = params.join("&");
+
+                return `${query}${params}`;
+            },
             providesTags: ["allAuctions"],
         }),
         getAuctionById: builder.query({

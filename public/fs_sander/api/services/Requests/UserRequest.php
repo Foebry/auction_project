@@ -17,6 +17,7 @@
 
             $uri = $this->getUri();
 
+
             if( $uri ==="/api/users" ) $this->getAllUsers( AdminRoute( $this ) );
 
             if( $uri === "/api/user" ) $this->resolveUser( ProtectedRoute( $this ));
