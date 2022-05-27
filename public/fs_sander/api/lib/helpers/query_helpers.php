@@ -8,7 +8,7 @@
         foreach($list as $item){
 
             if($item === "") continue;
-
+            
             [$key, $value] = explode("=", $item);
             $params[$key] = $value;
         }
@@ -46,13 +46,15 @@
     function getActiveFilters(string $route, string $query_string): array{
 
         $params = getParamList($query_string);
-
+        
         $allowed_filters = getAllowedFilters($route);
 
         $active_filters = [];
 
         // indien param een mogelijke filter is, zet bij actieve filters.
-        foreach($params as [$key, $value]){
+        foreach($params as $key => $value){
+
+            // exit(print(json_encode(["option"=>$option, "allowed_filters" => $allowed_filters])));
             // [$key, $value] =  explode("=", $param);
 
             if( in_array($key, $allowed_filters)){
@@ -181,7 +183,7 @@
         return $join;
     }
 
-    function getPageLimit(string $query_string): string {
+    function getPageLimit(string $query_string, $limit=10): string {
 
         $params = getParamList($query_string);
 
@@ -189,7 +191,7 @@
             if( $key == "page_count") return "limit $value";
         }
 
-        return "";
+        return "limit $limit";
     }
 
     function getOffset(string $query_string, $total): array {
@@ -198,16 +200,17 @@
 
         foreach($params as $key => $value){
             if( $key == "page") {
-                $page_count = $params["page_count"];
+                $page_count = $params["page_count"] ?? 10;
 
                 $offset = min(($value -1) * $page_count, floor($total / $page_count) * $page_count);
                 $page = $offset / $page_count + 1;
+                $start = $offset + 1;
 
-                return ["offset ".$offset, $page];
+                return ["offset ".$offset, $page, $start];
             }
         }
 
-        return ["", 1];
+        return ["", 1, 1];
     }
 
     function processParams(string $route, string $query_string, $default_joins): array {

@@ -13,7 +13,7 @@ const Categories = ({ onClick }) => {
                 <button
                     className="categories__buttons__btn"
                     onClick={onClick}
-                    id="travel"
+                    id="1"
                 >
                     <MdCardTravel className="categories__buttons__btn__icon" />
                     Reizen
@@ -21,7 +21,7 @@ const Categories = ({ onClick }) => {
                 <button
                     className="categories__buttons__btn"
                     onClick={onClick}
-                    id="Restaurant"
+                    id="2"
                 >
                     <MdRestaurant className="categories__buttons__btn__icon" />
                     Restaurant
@@ -29,7 +29,7 @@ const Categories = ({ onClick }) => {
                 <button
                     className="categories__buttons__btn"
                     onClick={onClick}
-                    id="wellness"
+                    id="3"
                 >
                     <MdOutlineSpa className="categories__buttons__btn__icon" />
                     Wellness

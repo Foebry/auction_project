@@ -35,7 +35,15 @@ const Header = () => {
                     {name && (
                         <>
                             <p>
-                                Welcome <span>{name}</span>
+                                Welcome{" "}
+                                <span
+                                    className="modal__link__btnTo"
+                                    onClick={() => {
+                                        setModal("user");
+                                    }}
+                                >
+                                    {name}
+                                </span>
                             </p>
                             <Link
                                 className="link"

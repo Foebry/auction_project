@@ -8,7 +8,6 @@
     class UserRequest extends Request{
 
         public function __construct(){
-            // session_start();
             
             parent::__construct();
             $this->resolveEndpoint();
@@ -17,6 +16,7 @@
         private function resolveEndpoint(){
 
             $uri = $this->getUri();
+
 
             if( $uri ==="/api/users" ) $this->getAllUsers( AdminRoute( $this ) );
 
@@ -174,15 +174,23 @@
 
             $payload = $this->getPayload();
 
+            if (in_array("usr_pass_verify", array_keys($payload)) && !password_verify($payload["usr_pass_verify"], $user->getUsrPassword())){
+                $this->getResponseHandler()->badRequest(null, ["message"=>"Invalid password"]);
+            }
+
             // gebruiker mag zichzelf geen admin maken. 
             // indien toch aanwezig in payload, filter uit.
             if( !$user->IsAdmin() && in_array("usr_is_admin", array_keys($payload)) ) unset($payload["usr_is_admin"]);
 
             $update = BaseModel::checkPatchPayload("gw_user", $payload, $this->getDbManager());
 
-            $this->getDbManager()->getSQL("UPDATE gw_user SET $update where usr_id=$usr_id");
+            if( in_array("usr_email", array_keys($payload)) ) $user->setUsrEmail($payload["usr_email"]);
 
-            $user = $this->getUserHandler()->getUserById($usr_id, $this->getDbManager());
+            if( $update !== "" ){
+                $this->getDbManager()->getSQL("UPDATE gw_user SET $update where usr_id=$usr_id");
+
+                $user = $this->getUserHandler()->getUserById($usr_id, $this->getDbManager());
+            }
 
             $this->respond($user->asAssociativeArray());
         }

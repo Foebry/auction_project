@@ -98,7 +98,7 @@
             }
             else{
                 $rh = new ResponseHandler();
-                $rh->badRequest(new DbManager($rh), ["usr_email"=>"Wrong format"]);
+                $rh->badRequest(new DbManager($rh), ["usr_email"=>"This is not a valid email"]);
             }
         }
 
@@ -204,10 +204,16 @@
 
             $user = new User($payload);
 
+            $now = new DateTime("now");
+
             $usr_id = $dbm->insertSQL(
                 sprintf(
-                    "INSERT into gw_user (usr_name, usr_lastname, usr_email, usr_password) values('%s', '%s', '%s', '%s')",
-                    $user->getUsrName(), $user->getLastName(), $user->getUsrEmail(), $user->getUsrPassword()
+                    "INSERT into gw_user (usr_name, usr_lastname, usr_email, usr_password, usr_created_at) values('%s', '%s', '%s', '%s', '%s');",
+                    $user->getUsrName(),
+                    $user->getLastName(),
+                    $user->getUsrEmail(),
+                    $user->getUsrPassword(),
+                    $now->format("Y-m-d H:i:s")
                 )
             );
 
