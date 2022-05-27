@@ -24,8 +24,8 @@
             }
         }
 
-        return $value;
-    }
+        return $str_len > 0 ? $value : "";
+        }
 
     function validateInteger(string $value, string $key, DbManager $dbm): int{
 
