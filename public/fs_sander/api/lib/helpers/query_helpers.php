@@ -20,7 +20,7 @@
 
         switch ($route){
             case "auctions":
-                $allowed_sorts = ["auc_id", "-auc_id", "cat_id", "-cat_id", "auc_art_id", "-auc_art_id", "start", "end", "duration", "-start", "-end", "-duration"];
+                $allowed_sorts = ["auc_id", "-auc_id", "cat_id", "-cat_id", "auc_art_id", "-auc_art_id", "start", "end", "duration", "-start", "-end", "-duration", "bid", "-bid"];
                 break;
             default:
                 $allowed_sorts = [];
@@ -85,14 +85,15 @@
         return $active_sorts;
     }
 
-    function getJoinsNeeded(string $route, string $query_string, $default_joins=[]): array {
-
-        $joins = $default_joins;
+    function getJoinsNeeded(string $route, string $query_string, $joins=[]): array {
 
         $filters = getActiveFilters($route, $query_string);
         $sorts = getActiveSorts($route, $query_string);
         switch( $route ){
             case "auctions":
+                if( in_array("bid", $sorts) || in_array("-bid", $sorts) ){
+                    if( !in_array("gw_bidding", array_keys($joins)) ) $joins["gw_bidding"] = ["bid_auc_id", "auc_id"];
+                }
                 if( in_array("cat_id", array_keys($filters))){
                     if( !in_array("gw_article", array_keys($joins)) ) $joins["gw_article"] = ["auc_art_id", "art_id"];
                     if( !in_array("gw_category", array_keys($joins)) ) $joins["gw_category"] = ["art_cat_id", "cat_id"];

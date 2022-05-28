@@ -1,15 +1,36 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { MdDelete, MdModeEdit } from "react-icons/md";
-import { useGetUsersQuery, useDeleteUserMutation } from "../data/userAPI";
+import { useGetUsersQuery, useDeleteUserMutation } from "../../data/userAPI";
+import ConfirmationModal from "../../components/modals/messageModals/ConfirmationModal";
 
-const UserList = () => {
+const Users = () => {
     const [nameFilter, setNameFilter] = useState("");
+    const [confirm, setConfirm] = useState(false);
+    const [userToDelete, setUserToDelete] = useState();
+    const [deleteUser] = useDeleteUserMutation();
 
     const { data, isError, isLoading } = useGetUsersQuery(undefined, {
         pollingInterval: 0,
         refetchOnFocus: true,
         refetchOnReconnect: true,
     });
+
+    const confirmDelete = (e) => {
+        const id = e.target.dataset.id;
+        const user = data?.filter((el) => el.id == id)[0].name;
+        console.log("deleting", user, "?");
+    };
+
+    const handleDelete = async () => {
+        const { data, error } = await deleteUser(userToDelete);
+
+        if (error) {
+            console.log(error);
+        } else if (data) {
+            setConfirm(false);
+            setUserToDelete(undefined);
+        }
+    };
 
     const memoData = useMemo(() => {
         return data
@@ -25,12 +46,16 @@ const UserList = () => {
                             {isAdmin ? "Admin" : "User"}
                         </p>
                         <div className="list__buttons">
-                            <button className="list__buttons__button">
+                            <button
+                                className="list__buttons__button"
+                                onClick={confirmDelete}
+                            >
                                 <MdModeEdit />
                             </button>
                             <button
                                 className="list__buttons__button"
-                                onClick={() => deleteUser(id)}
+                                onClick={confirmDelete}
+                                data-id={id}
                             >
                                 <MdDelete className="icon" />
                             </button>
@@ -39,8 +64,6 @@ const UserList = () => {
                 );
             });
     }, [data, nameFilter]);
-
-    const [deleteUser] = useDeleteUserMutation();
 
     return (
         <>
@@ -61,8 +84,22 @@ const UserList = () => {
                 {isLoading && <p>loading..</p>}
                 {memoData}
             </ul>
+            <ConfirmationModal
+                isShown={confirm}
+                primaryAction="Delete"
+                secondaryAction="Cancel"
+                message={"Delete User"}
+                onPrimaryAction={handleDelete}
+                onSecondaryAction={() => setConfirm(false)}
+                onCancel={() => setConfirm(false)}
+            >
+                <p>
+                    You are about to delete user{" "}
+                    {data?.filter((el) => el.id === userToDelete)[0]?.name}{" "}
+                </p>
+            </ConfirmationModal>
         </>
     );
 };
 
-export default UserList;
+export default Users;

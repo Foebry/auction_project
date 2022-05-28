@@ -123,7 +123,7 @@
         private function postAuction(array $payload): void{
 
             BaseModel::checkPostPayload("gw_auction", $payload, $this->getDbManager());
-            
+
             $auction = Auction::create($payload, $this);
             
             $this->respond($auction->asAssociativeArray(), 201);

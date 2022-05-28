@@ -1,7 +1,29 @@
-.list{
+.content__create {
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 20px 0 10px;
+    button {
+        height: 30px;
+        background-color: $mediumblue;
+        border: none;
+        border-radius: 5px;
+        color: $white;
+        font-size: 16px;
+        .icon {
+            font-size: 16px;
+            margin-right: 10px;
+            line-height: 30px;
+        }
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+.list {
     padding: 20px 0;
     margin: 0 auto;
-    &__user, &__article{
+    &__user,
+    &__article {
         display: flex;
         gap: 100px;
         justify-content: space-between;
@@ -11,7 +33,7 @@
         border: 1px solid $lightblue;
         border-top: none;
         border-collapse: collapse;
-        &:first-child{
+        &:first-child {
             font-weight: bold;
             font-size: 20px;
             border-top: 1px solid $lightblue;
@@ -20,7 +42,8 @@
             background-color: $mediumblue;
             color: $white;
         }
-        p, div{
+        p,
+        div {
             align-self: center;
             width: 200px;
         }
@@ -28,18 +51,18 @@
     &__buttons {
         display: flex;
         gap: 20px;
-        &__button{
+        &__button {
             border: none;
             background-color: $white;
             font-size: 25px;
             cursor: pointer;
             color: $mediumblue;
-            &:hover{
+            &:hover {
                 color: $lightblue;
             }
-            &:last-child{
+            &:last-child {
                 color: $red;
-                &:hover{
+                &:hover {
                     color: red;
                 }
             }
@@ -47,31 +70,29 @@
     }
 }
 
-.listFilter{
+.listFilter {
     border: none;
     outline: none;
     height: 30px;
-    width: 200px; 
-    padding: 10px;  
+    width: 200px;
+    padding: 10px;
     background-color: $white;
     border-radius: 10px;
 }
 
 @media screen and (max-width: 1450px) {
-    .userlist{
-        &__user{
+    .userlist {
+        &__user {
             gap: 50px;
         }
         &__buttons {
-        
-            &__button{
+            &__button {
                 width: 50px;
             }
         }
-    
     }
 }
 
-.icon{
+.icon {
     pointer-events: none;
 }
