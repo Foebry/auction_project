@@ -169,7 +169,7 @@
             ]);
         }
 
-        private function updateAuction(int $auc_id, array $payload, $batch=false): mixed{
+        private function updateAuction(int $auc_id, array $payload, $batch=false): Auction{
 
             $update = BaseModel::checkPatchPayload("gw_auction", $payload, $this->getDbManager());
 
@@ -204,7 +204,7 @@
                 $auc_id = $auction->getAucId();
                 $payload = ["auc_expiration" => $time];
 
-                $auctions[] = $this->updateAuction($auc_id, $payload);
+                $auctions[] = $this->updateAuction($auc_id, $payload, true);
 
             }
 

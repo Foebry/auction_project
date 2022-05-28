@@ -54,9 +54,6 @@
         // indien param een mogelijke filter is, zet bij actieve filters.
         foreach($params as $key => $value){
 
-            // exit(print(json_encode(["option"=>$option, "allowed_filters" => $allowed_filters])));
-            // [$key, $value] =  explode("=", $param);
-
             if( in_array($key, $allowed_filters)){
                 $active_filters[$key] = $value;
             }

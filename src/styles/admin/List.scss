@@ -1,6 +1,6 @@
 .content__create {
     display: flex;
-    flex-direction: row-reverse;
+    justify-content: space-between;
     margin: 20px 0 10px;
     button {
         height: 30px;
@@ -13,6 +13,10 @@
             font-size: 16px;
             margin-right: 10px;
             line-height: 30px;
+        }
+        .icon,
+        span {
+            pointer-events: none;
         }
         &:hover {
             cursor: pointer;
@@ -53,7 +57,7 @@
         gap: 20px;
         &__button {
             border: none;
-            background-color: $white;
+            background-color: transparent;
             font-size: 25px;
             cursor: pointer;
             color: $mediumblue;
@@ -62,9 +66,13 @@
             }
             &:last-child {
                 color: $red;
-                &:hover {
-                    color: red;
+                &[disabled] {
+                    color: gray;
+                    cursor: not-allowed;
                 }
+                // &:hover {
+                //     color: red;
+                // }
             }
         }
     }

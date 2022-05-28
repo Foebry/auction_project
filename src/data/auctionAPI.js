@@ -8,16 +8,18 @@ const auctionAPI = createApi({
     }),
     endpoints: (builder) => ({
         getAuctions: builder.query({
-            query: ({ categories, page }) => {
-                console.log("categories in query", categories);
-                console.log("page in query", page);
+            query: ({ categories, page, page_count }) => {
                 const query =
-                    categories !== "" || page ? "/auctions?" : "/auctions";
+                    (categories && categories !== "") || page || page_count
+                        ? "/auctions?"
+                        : "/auctions";
 
                 let params = [];
 
                 if (categories) params = [...params, `cat_id=${categories}`];
                 if (page) params = [...params, `page=${page}`];
+                if (page_count)
+                    params = [...params, `page_count=${page_count}`];
 
                 params = params.join("&");
 
@@ -43,6 +45,24 @@ const auctionAPI = createApi({
             }),
             invalidatesTags: ["allAuctions"],
         }),
+        updateAuction: builder.mutation({
+            query: ({ id, auc_expiration, csrf }) => ({
+                url: `/auction/${id}`,
+                method: "PATCH",
+                body: {
+                    auc_expiration,
+                    csrf,
+                },
+                invalidatesTags: ["allAuctions"],
+            }),
+        }),
+        updateAllAuctions: builder.mutation({
+            query: (body) => ({
+                url: "/auctions",
+                method: "PATCH",
+                body,
+            }),
+        }),
     }),
 });
 
@@ -52,4 +72,6 @@ export const {
     useGetAuctionByIdQuery,
     useGetAuctionBiddingsByIdQuery,
     usePostAuctionMutation,
+    useUpdateAuctionMutation,
+    useUpdateAllAuctionsMutation,
 } = auctionAPI;

@@ -18,7 +18,6 @@ const Users = () => {
     const confirmDelete = (e) => {
         const id = e.target.dataset.id;
         const user = data?.filter((el) => el.id == id)[0].name;
-        console.log("deleting", user, "?");
     };
 
     const handleDelete = async () => {

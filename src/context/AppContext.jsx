@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useLogoutMutation } from "../data/authenticationAPI";
 import { INDEX } from "../types/RouteTypes";
 
