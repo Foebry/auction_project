@@ -20,7 +20,25 @@ const UserProductblury__modal = () => {
     return (
         <BaseModal>
             <div className="modal__userTitle">
-                <h2>My Biddings</h2>
+                <h2>Mijn Biedingen</h2>
+            </div>
+            <div className="modal__userSelect">
+                <button
+                    className="modal__userSelect__btn1"
+                    onClick={() => {
+                        setStatus({ status: 0 });
+                    }}
+                >
+                    Actief
+                </button>
+                <button
+                    className="modal__userSelect__btn2"
+                    onClick={() => {
+                        setStatus();
+                    }}
+                >
+                    Gewonnen
+                </button>
             </div>
             <div className="modal__userHistory">
                 <p className="modal__userHistory__text">Articles</p>
