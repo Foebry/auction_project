@@ -17,6 +17,14 @@ const UserProductblury__modal = () => {
         }
     );
 
+    const handleClick = (e) => {
+        if (status && status == e.target.dataset.status) {
+            setStatus(undefined);
+        } else {
+            setStatus(e.target.dataset.status);
+        }
+    };
+
     return (
         <BaseModal>
             <div className="modal__userTitle">
@@ -24,18 +32,20 @@ const UserProductblury__modal = () => {
             </div>
             <div className="modal__userSelect">
                 <button
-                    className="modal__userSelect__btn1"
-                    onClick={() => {
-                        setStatus({ status: 0 });
-                    }}
+                    className={`modal__userSelect__btn1 ${
+                        status == "0" ? "isActive" : ""
+                    }`}
+                    onClick={handleClick}
+                    data-status="0"
                 >
-                    Actief
+                    Lopend
                 </button>
                 <button
-                    className="modal__userSelect__btn2"
-                    onClick={() => {
-                        setStatus();
-                    }}
+                    className={`modal__userSelect__btn2 ${
+                        status == "-1" ? "isActive" : ""
+                    }`}
+                    onClick={handleClick}
+                    data-status="-1"
                 >
                     Gewonnen
                 </button>

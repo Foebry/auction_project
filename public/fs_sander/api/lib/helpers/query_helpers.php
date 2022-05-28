@@ -126,10 +126,10 @@
             }
             switch( $value ){
                 case "0":
-                    $filters[] = "auc_start > now() + interval 1 hour";
+                    $filters[] = "auc_start < now() + interval 1 hour and auc_expiration > now() + interval 1 hour";
                     break;
                 case "1":
-                    $filters[] = "auc_start < now() + interval 1 hour and auc_expiration > now() + interval 1 hour";
+                    $filters[] = "auc_start > now() + interval 1 hour";
                     break;
                 case "-1":
                     $filters[] = 'auc_expiration < now() + interval 1 hour';
