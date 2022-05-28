@@ -8,14 +8,14 @@ const AdminAuctionblury__modal = () => {
 
     const [formErrors, setFormErrors] = useState({
         auc_art_id: "",
-        auc_start: "",
-        auc_expiration: "",
+        auc_start: null,
+        auc_expiration: null,
     });
 
     const [inputs, setInputs] = useState({
         auc_art_id: "",
-        auc_start: "",
-        auc_expiration: "",
+        auc_start: null,
+        auc_expiration: null,
     });
     const [addAuction] = usePostAuctionMutation();
 
