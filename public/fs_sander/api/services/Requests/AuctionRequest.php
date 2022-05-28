@@ -15,6 +15,7 @@
         }
 
         private function resolveEndpoint(): void {
+
             $uri = $this->getUri();
             if( preg_match("|api/auctions\??.*|", $uri) ) $this->resolveAuctions();
 
@@ -49,7 +50,7 @@
         private function resolveAuction(): void{
 
             $method = $this->getMethod();
-            $auction_id = explode("/", $this->getUri())[3];
+            $auction_id = explode("auction/", $this->getUri())[1];
             $payload = $this->getPayload();
 
             if( $method === "GET" ) $this->getAuctionDetail($auction_id);
