@@ -1,0 +1,222 @@
+main {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+main section {
+  background-color: #fafafa;
+  padding: 5px 20px;
+}
+main section h1 {
+  font-weight: bold;
+  line-height: 35px;
+  font-size: 20px;
+  border-bottom: 1px solid black;
+}
+main section ul {
+  list-style: none;
+  padding: 0;
+}
+main section ul li {
+  min-height: 50px;
+  border: 1px solid;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  padding: 0 5px;
+  position: relative;
+}
+main section ul li .info {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  position: relative;
+}
+main section ul li .info button.expand, main section ul li .info button.collapse {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  height: 40px;
+  width: 40px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+main section ul li .info button.expand.expand:after, main section ul li .info button.collapse.expand:after {
+  content: "v";
+  font-size: 20px;
+}
+main section ul li .info button.expand.collapse:after, main section ul li .info button.collapse.collapse:after {
+  content: "^";
+  font-size: 20px;
+}
+main section ul li .info button.method {
+  display: block;
+  height: 40px;
+  width: 80px;
+  color: white;
+  text-transform: uppercase;
+  border-radius: 5px;
+  border: none;
+}
+main section ul li .info p {
+  margin: 0 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+main section ul li .info span {
+  font-size: 14px;
+}
+main section ul li .extra {
+  padding: 0 5px;
+}
+main section ul li .extra .coming-soon {
+  color: gray;
+}
+main section ul li .extra .coming-soon h2:after {
+  content: ": coming soon";
+  margin-left: 15px;
+}
+main section ul li .extra table {
+  border-spacing: 10px;
+  border-collapse: collapse;
+}
+main section ul li .extra table tr {
+  border: 1px solid gray;
+}
+main section ul li .extra table tr.coming-soon {
+  position: relative;
+}
+main section ul li .extra table tr.coming-soon td:first-of-type:after {
+  content: "coming soon";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: gray;
+}
+main section ul li .extra table tr th:nth-of-type(1), main section ul li .extra table tr th:nth-of-type(2) {
+  width: 100px;
+}
+main section ul li .extra table tr td:nth-of-type(1), main section ul li .extra table tr td:nth-of-type(2) {
+  width: 100px;
+}
+main section ul li .extra table tr td p.required,
+main section ul li .extra table tr td p.optional {
+  position: relative;
+}
+main section ul li .extra table tr td p.required:after,
+main section ul li .extra table tr td p.optional:after {
+  position: absolute;
+  bottom: -15px;
+  left: 0px;
+}
+main section ul li .extra table tr td p.required:after {
+  content: "required";
+  color: red;
+}
+main section ul li .extra table tr td p.optional:after {
+  content: "optional";
+  color: orange;
+}
+main section ul li .extra h2 {
+  background-color: #fff;
+}
+main section ul li .extra .responses .head,
+main section ul li .extra .responses .response {
+  display: flex;
+  gap: 150px;
+}
+main section ul li .extra .responses .head p.response,
+main section ul li .extra .responses .response p.response {
+  background-color: black;
+  opacity: 0.8;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  word-wrap: break-word;
+}
+main section ul li .extra .responses .head .code,
+main section ul li .extra .responses .head .desc,
+main section ul li .extra .responses .response .code,
+main section ul li .extra .responses .response .desc {
+  font-weight: bold;
+}
+main section ul li .extra .responses .head {
+  border-bottom: 1px solid gray;
+}
+main section ul li .extra--hidden {
+  display: none;
+}
+main section ul li.get {
+  background-color: lightblue;
+  border-color: blue;
+}
+main section ul li.get button.method {
+  background-color: blue;
+}
+main section ul li.get button.method:after {
+  content: "GET";
+}
+main section ul li.post, main section ul li.patch {
+  background-color: lightgreen;
+  border-color: green;
+}
+main section ul li.post button.method {
+  background-color: green;
+}
+main section ul li.post button.method:after {
+  content: "POST";
+}
+main section ul li.patch button.method {
+  background-color: limegreen;
+}
+main section ul li.patch button.method:after {
+  content: "PATCH";
+}
+main section ul li.put {
+  background-color: darkkhaki;
+  border-color: orange;
+}
+main section ul li.put button.method {
+  background-color: orange;
+}
+main section ul li.put button.method:after {
+  content: "PUT";
+}
+main section ul li.delete {
+  background-color: rgb(143, 50, 50);
+  border-color: darkred;
+}
+main section ul li.delete button.method {
+  background-color: darkred;
+}
+main section ul li.delete button.method:after {
+  content: "DELETE";
+}
+main section ul li:before, main section ul li:after {
+  padding: 5px;
+  color: white;
+  position: absolute;
+  top: 5px;
+  width: 75px;
+  height: 30px;
+  border-radius: 5px;
+  line-height: 30px;
+  text-align: center;
+}
+main section ul li.updated:before {
+  content: "Updated";
+  background-color: rgb(152, 56, 163);
+  right: 50px;
+}
+main section ul li.new:after {
+  content: "New";
+  background-color: rgb(26, 202, 143);
+  right: 150px;
+}
+main section ul li.soon:before {
+  content: "Upcoming";
+  background-color: brown;
+  right: 50px;
+}
+
+/*# sourceMappingURL=style.css.map */
