@@ -1,0 +1,239 @@
+main {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    section {
+        background-color: #fafafa;
+        padding: 5px 20px;
+        h1 {
+            font-weight: bold;
+            line-height: 35px;
+            font-size: 20px;
+            border-bottom: 1px solid black;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            li {
+                min-height: 50px;
+                border: 1px solid;
+                border-radius: 5px;
+                margin-bottom: 5px;
+                padding: 0 5px;
+                position: relative;
+                .info {
+                    display: flex;
+                    align-items: center;
+                    padding: 5px 0;
+                    position: relative;
+                    button {
+                        &.expand,
+                        &.collapse {
+                            position: absolute;
+                            right: 5px;
+                            top: 5px;
+                            height: 40px;
+                            width: 40px;
+                            background-color: transparent;
+                            border: none;
+                            cursor: pointer;
+                            &.expand:after {
+                                content: "v";
+                                font-size: 20px;
+                            }
+                            &.collapse:after {
+                                content: "^";
+                                font-size: 20px;
+                            }
+                        }
+                        &.method {
+                            display: block;
+                            height: 40px;
+                            width: 80px;
+                            color: white;
+                            text-transform: uppercase;
+                            border-radius: 5px;
+                            border: none;
+                        }
+                    }
+                    p {
+                        margin: 0 10px;
+                        font-size: 18px;
+                        font-weight: bold;
+                    }
+                    span {
+                        font-size: 14px;
+                    }
+                }
+                .extra {
+                    padding: 0 5px;
+                    .coming-soon {
+                        color: gray;
+                        h2:after {
+                            content: ": coming soon";
+                            margin-left: 15px;
+                        }
+                    }
+                    table {
+                        border-spacing: 10px;
+                        border-collapse: collapse;
+                        tr {
+                            border: 1px solid gray;
+                            &.coming-soon {
+                                position: relative;
+                                td:first-of-type:after {
+                                    content: "coming soon";
+                                    position: absolute;
+                                    bottom: 0;
+                                    left: 0;
+                                    color: gray;
+                                }
+                            }
+                            th {
+                                &:nth-of-type(1),
+                                &:nth-of-type(2) {
+                                    width: 100px;
+                                }
+                            }
+                            td {
+                                &:nth-of-type(1),
+                                &:nth-of-type(2) {
+                                    width: 100px;
+                                }
+                                p.required,
+                                p.optional {
+                                    position: relative;
+                                    &:after {
+                                        position: absolute;
+                                        bottom: -15px;
+                                        left: 0px;
+                                    }
+                                }
+                                p.required:after {
+                                    content: "required";
+                                    color: red;
+                                }
+                                p.optional:after {
+                                    content: "optional";
+                                    color: orange;
+                                }
+                            }
+                        }
+                    }
+                    h2 {
+                        background-color: #fff;
+                    }
+                    .responses {
+                        .head,
+                        .response {
+                            display: flex;
+                            gap: 150px;
+                            p.response {
+                                background-color: black;
+                                opacity: 0.8;
+                                padding: 10px;
+                                border-radius: 5px;
+                                color: white;
+                                word-wrap: break-word;
+                            }
+                            .code,
+                            .desc {
+                                font-weight: bold;
+                            }
+                        }
+                        .head {
+                            border-bottom: 1px solid gray;
+                        }
+                    }
+                    &--hidden {
+                        display: none;
+                    }
+                }
+                &.get {
+                    background-color: lightblue;
+                    border-color: blue;
+                    button.method {
+                        background-color: blue;
+                        &:after {
+                            content: "GET";
+                        }
+                    }
+                }
+                &.post,
+                &.patch {
+                    background-color: lightgreen;
+                    border-color: green;
+                }
+                &.post {
+                    button.method {
+                        background-color: green;
+                        &:after {
+                            content: "POST";
+                        }
+                    }
+                }
+                &.patch {
+                    button.method {
+                        background-color: limegreen;
+                        &:after {
+                            content: "PATCH";
+                        }
+                    }
+                }
+                &.put {
+                    background-color: darkkhaki;
+                    border-color: orange;
+                    button.method {
+                        background-color: orange;
+                        &:after {
+                            content: "PUT";
+                        }
+                    }
+                }
+                &.delete {
+                    background-color: rgb(143, 50, 50);
+                    border-color: darkred;
+                    button.method {
+                        background-color: darkred;
+                        &:after {
+                            content: "DELETE";
+                        }
+                    }
+                }
+                &:before,
+                &:after {
+                    padding: 5px;
+                    color: white;
+                    position: absolute;
+                    top: 5px;
+                    width: 75px;
+                    height: 30px;
+                    border-radius: 5px;
+                    line-height: 30px;
+                    text-align: center;
+                }
+                &.updated {
+                    &:before {
+                        content: "Updated";
+                        background-color: rgb(152, 56, 163);
+                        right: 50px;
+                    }
+                }
+                &.new {
+                    &:after {
+                        content: "New";
+                        background-color: rgb(26, 202, 143);
+                        right: 150px;
+                    }
+                }
+                &.soon {
+                    &:before {
+                        content: "Upcoming";
+                        background-color: brown;
+                        right: 50px;
+                    }
+                }
+            }
+        }
+    }
+}
