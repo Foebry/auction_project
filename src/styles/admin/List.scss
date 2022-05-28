@@ -76,6 +76,15 @@
             }
         }
     }
+    li:first-of-type button {
+        color: $white;
+        background-color: transparent;
+        font-size: 20px;
+        border: none;
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }
 
 .listFilter {

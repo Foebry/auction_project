@@ -76,6 +76,8 @@
         // indien param een mogelijke filter is, zet bij actieve filters.
         foreach($sorts as $sort){
             if( in_array($sort, $allowed_sorts)){
+                if( $route === "auctions" && $sort === "bid") $sort="highest_bid";
+                elseif( $route === "auctions" && $sort === "-bid" ) $sort="-highest_bid";
                 $active_sorts[] = $sort;
             }
         }
