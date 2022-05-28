@@ -23,7 +23,7 @@ const auctionAPI = createApi({
                 if (page) params = [...params, `page=${page}`];
                 if (page_count)
                     params = [...params, `page_count=${page_count}`];
-                if (sort.length > 0)
+                if (sort?.length > 0)
                     params = [...params, `sort=${sort.join(",")}`];
 
                 params = params.join("&");
