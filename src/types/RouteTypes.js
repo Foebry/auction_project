@@ -9,4 +9,5 @@ export const Routes = {
     USER: "/",
     EDIT: "/",
     USER_PRODUCTS: "/",
+    ADMIN_ARTICLES: "/",
 };

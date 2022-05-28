@@ -47,8 +47,8 @@ const Header = () => {
                             </p>
                             <Link
                                 className="link"
-                                to={Routes.USER_PRODUCTS}
-                                onClick={() => setModal("userproducts")}
+                                to={Routes.ADMIN_ARTICLES}
+                                onClick={() => setModal("auctions")}
                             >
                                 My Products
                             </Link>

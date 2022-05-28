@@ -26,4 +26,5 @@ export const {
     USER_ARTICLES,
     REGISTER,
     LOGIN,
+    ADMIN_ARTICLES,
 } = endpointTypes;

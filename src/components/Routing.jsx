@@ -8,6 +8,8 @@ import RegisterModal from "./modals/RegisterModal";
 import UserProductsModal from "./modals/UserProductsModal";
 import UserModal from "./modals/UserModal";
 import EditUserModal from "./modals/EditUserModal";
+import AdminArticleModal from "./modals/AdminArticleModal";
+import AdminAuctionModal from "./modals/AdminAuctionModal";
 
 const Routing = () => {
     return (
@@ -20,6 +22,14 @@ const Routing = () => {
             <Route path={views.EDIT} element={<EditUserModal />} />
             <Route path={views.DETAIL_MODAL} element={<Detailmodal />} />
             <Route path={views.USER_PRODUCTS} element={<UserProductsModal />} />
+            <Route
+                path={views.ADMIN_ARTICLES}
+                element={<AdminArticleModal />}
+            />
+            <Route
+                path={views.ADMIN_AUCTIONS}
+                element={<AdminAuctionModal />}
+            />
         </Routes>
     );
 };

@@ -1,0 +1,81 @@
+.modal {
+    &__adminTitle {
+        margin: 0 auto;
+        font-size: 40px;
+        color: $mediumdarkblue;
+    }
+
+    &__adminInput {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        margin: 0 auto;
+        gap: 20px;
+        &__item {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            & p:first-of-type {
+                width: 87px;
+                font-size: 20px;
+                color: $mediumdarkblue;
+                font-family: initial;
+                margin-left: 30px;
+            }
+            &__inputfield {
+                font-size: 20px;
+                width: 240px;
+                margin-right: 20px;
+                border: none;
+                outline: none;
+                border-bottom: 1px solid $lightmediumblue;
+                font-family: initial;
+                color: $mediumdarkblue;
+            }
+            ::placeholder {
+                color: $lightgrey;
+            }
+            &__timefield {
+                font-size: 20px;
+                width: 160px;
+                outline: none;
+                border: 1px solid $lightmediumblue;
+                font-family: initial;
+                color: $mediumdarkblue;
+            }
+            ::placeholder {
+                color: $lightgrey;
+            }
+            &__detail {
+                display: flex;
+                margin: 0 auto;
+                & p {
+                    font-size: 20px;
+                    width: 250px;
+                    margin: 0 auto;
+                    font-family: initial;
+                    color: $mediumdarkblue;
+                    border-bottom: 1px solid $lightmediumblue;
+                }
+            }
+        }
+        &__btn {
+            margin: 0 auto;
+            width: 150px;
+            height: 40px;
+            color: $white;
+            background-color: $mediumblue;
+            font-family: initial;
+            outline: none;
+            border: none;
+            border-radius: 15px;
+            margin-bottom: 100px;
+            &:hover {
+                font-weight: bold;
+                background-color: $lightmediumblue;
+                cursor: pointer;
+            }
+        }
+    }
+}
