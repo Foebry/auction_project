@@ -23,6 +23,18 @@
                 font-family: initial;
                 margin-left: 30px;
             }
+            &__numberfield {
+                font-size: 20px;
+                width: 160px;
+                border: none;
+                outline: none;
+                border: 1px solid $lightmediumblue;
+                font-family: initial;
+                color: $mediumdarkblue;
+            }
+            ::placeholder {
+                color: $lightgrey;
+            }
             &__inputfield {
                 font-size: 20px;
                 width: 240px;

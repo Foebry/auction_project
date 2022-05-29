@@ -50,10 +50,10 @@ const AdminAuctionblury__modal = () => {
                 <div className="modal__adminInput__item">
                     <p>auc_art_id: </p>
                     <input
-                        className="modal__adminInput__item__inputfield"
-                        type="text"
+                        className="modal__adminInput__item__numberfield"
+                        type="number"
                         value={inputs.auc_art_id}
-                        placeholder="Article ID"
+                        placeholder="Article"
                         name="auc_art_id"
                         onChange={handleInputChange}
                         required
