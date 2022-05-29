@@ -15,6 +15,7 @@
         }
 
         private function resolveEndpoint(): void {
+
             $uri = $this->getUri();
             if( preg_match("|api/auctions\??.*|", $uri) ) $this->resolveAuctions();
 
@@ -49,7 +50,7 @@
         private function resolveAuction(): void{
 
             $method = $this->getMethod();
-            $auction_id = explode("/", $this->getUri())[3];
+            $auction_id = explode("auction/", $this->getUri())[1];
             $payload = $this->getPayload();
 
             if( $method === "GET" ) $this->getAuctionDetail($auction_id);
@@ -122,53 +123,34 @@
         private function postAuction(array $payload): void{
 
             BaseModel::checkPostPayload("gw_auction", $payload, $this->getDbManager());
-            
+
             $auction = Auction::create($payload, $this);
             
             $this->respond($auction->asAssociativeArray(), 201);
         }
         
         private function getAuctions(): void{
-            $where = $sort = "";
-            $join = "join gw_article on art_id = auc_art_id";
             
-            $select = "SELECT auc_id id, art_name name, auc_expiration expiration,"."\n". 
+            $baseQuery = "SELECT auc_id id, art_name name, auc_expiration expiration,"."\n". 
             "(select max(bid_price) from gw_bidding where bid_auc_id = auc_id) as highest_bid, art_img image
                 FROM gw_auction\n";
 
-            $params = getParamList($this->getQueryString());
-
-            [$join, $where, $sort] = processParams("auctions", $this->getQueryString(), ["gw_article"=>["art_id", "auc_art_id"]]);
-
-            $total = $this->getDbManager()->getSQL("select count(*) total from ($select $join $where $sort) as temp")[0]["total"];
-            $total_pages = intval(ceil(intval($total) / ($params["page_count"] ?? 10)));
-
-            $limit = getPageLimit($this->getQueryString());
-
-            [$offset, $page, $start] = getOffset($this->getQueryString(), $total);
-            $page_count = $params["page_count"] ?? 10;
-
-            $next_page = $page < $total_pages ? $page + 1 : null;
-            $prev_page = $page > 1 ? $page -1 : null;
-            
-
-            $query = "$select $join $where $sort $limit $offset";
+            [$query, $total, $total_pages, $page, $next_page, $prev_page, $page_count, $start, $end] = createQuery($baseQuery, $this, "auctions", ["gw_article"=>["art_id", "auc_art_id"]], 10);
 
             $auctions = $this->getDbManager()->getSQL($query);
 
-            // $this->respond($data);
             $this->respond([
                 "page"=>$page,
                 "total"=>$total,
                 "nextPage"=>$next_page,
                 "prevPage"=>$prev_page,
-                "start"=>min($total, $start),
-                "end"=>min($page_count * $page, $total),
+                "start"=>$start,
+                "end"=>$end,
                 "auctions"=>$auctions
             ]);
         }
 
-        private function updateAuction(int $auc_id, array $payload, $batch=false): mixed{
+        private function updateAuction(int $auc_id, array $payload, $batch=false): Auction{
 
             $update = BaseModel::checkPatchPayload("gw_auction", $payload, $this->getDbManager());
 
@@ -203,7 +185,7 @@
                 $auc_id = $auction->getAucId();
                 $payload = ["auc_expiration" => $time];
 
-                $auctions[] = $this->updateAuction($auc_id, $payload);
+                $auctions[] = $this->updateAuction($auc_id, $payload, true);
 
             }
 

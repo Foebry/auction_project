@@ -16,7 +16,7 @@
 
             $uri = $this->getUri();
             
-            if( $uri === "/api/articles" ) $this->resolveArticles( AdminRoute( $this ) );
+            if( preg_match("|api/articles\??.*|", $uri) ) $this->resolveArticles( AdminRoute( $this ) );
 
             elseif( preg_match("|api/article/[0-9]+$|", $uri)) {
                 $art_id = explode("/", $uri)[3];
@@ -51,11 +51,27 @@
 
         private function getArticles(){
 
-            $data = $this->getDbManager()->getSQL(
-                "SELECT * from gw_article"
-            );
+            $baseQuery = "Select * from gw_article\n";
 
-            $this->respond($data);
+            [$query, $total, $total_pages, $page, $next_page, $prev_page, $page_count, $start, $end] = createQuery($baseQuery, $this, "articles", [], 20);
+
+            $articles = $this->getDbManager()->getSQL($query);
+
+            $this->respond([
+                "page"=>$page,
+                "total"=>$total,
+                "nextPage"=>$next_page,
+                "prevPage"=>$prev_page,
+                "start"=>$start,
+                "end"=>$end,
+                "articles"=>$articles
+            ]);
+
+            // $data = $this->getDbManager()->getSQL(
+            //     "SELECT * from gw_article"
+            // );
+
+            // $this->respond($data);
         }
 
         private function postArticle(array $payload){

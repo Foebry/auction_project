@@ -1,18 +1,45 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { MdDelete, MdModeEdit } from "react-icons/md";
-import { useGetUsersQuery, useDeleteUserMutation } from "../data/userAPI";
+import { useGetUsersQuery, useDeleteUserMutation } from "../../data/userAPI";
+import ConfirmationModal from "../../components/modals/messageModals/ConfirmationModal";
+import Pagination from "../../components/Pagination";
 
-const UserList = () => {
+const Users = () => {
     const [nameFilter, setNameFilter] = useState("");
+    const [confirm, setConfirm] = useState(false);
+    const [userToDelete, setUserToDelete] = useState();
+    const [deleteUser] = useDeleteUserMutation();
+    const [page, setPage] = useState(1);
+    const [options, setOptions] = useState({ page, page_count: 20 });
 
-    const { data, isError, isLoading } = useGetUsersQuery(undefined, {
+    const { data, isError, isLoading } = useGetUsersQuery(options, {
         pollingInterval: 0,
         refetchOnFocus: true,
         refetchOnReconnect: true,
     });
 
+    useEffect(() => {
+        setOptions({ ...options, page });
+    }, [page]);
+
+    const confirmationHandler = (e) => {
+        setUserToDelete(e.target.dataset.id);
+        setConfirm(true);
+    };
+
+    const handleDelete = async () => {
+        const { error } = await deleteUser(userToDelete);
+
+        if (error) {
+            console.log(error);
+        } else {
+            setConfirm(false);
+            setUserToDelete(undefined);
+        }
+    };
+
     const memoData = useMemo(() => {
-        return data
+        return data?.users
             ?.filter((el) =>
                 el.name.toLowerCase().includes(nameFilter.toLowerCase())
             )
@@ -30,7 +57,8 @@ const UserList = () => {
                             </button>
                             <button
                                 className="list__buttons__button"
-                                onClick={() => deleteUser(id)}
+                                onClick={confirmationHandler}
+                                data-id={id}
                             >
                                 <MdDelete className="icon" />
                             </button>
@@ -40,10 +68,8 @@ const UserList = () => {
             });
     }, [data, nameFilter]);
 
-    const [deleteUser] = useDeleteUserMutation();
-
     return (
-        <>
+        <section className="content" style={{ margin: "0 auto" }}>
             <ul className="list">
                 <li className="list__user">
                     <p>Naam</p>
@@ -61,8 +87,20 @@ const UserList = () => {
                 {isLoading && <p>loading..</p>}
                 {memoData}
             </ul>
-        </>
+            <Pagination {...{ ...data, setPage }} />
+            {confirm && (
+                <ConfirmationModal
+                    onPrimaryAction={handleDelete}
+                    onSecondaryAction={() => setConfirm(false)}
+                    onClose={() => setConfirm(false)}
+                    message={`<p>You are about to delete '<span class="item">${
+                        data?.users.filter((el) => el.id == userToDelete)[0]
+                            ?.name
+                    }</span>'.</p><br /><p>Are you sure?</p>`}
+                ></ConfirmationModal>
+            )}
+        </section>
     );
 };
 
-export default UserList;
+export default Users;

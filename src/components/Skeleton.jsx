@@ -2,6 +2,7 @@ import { useContext } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { AppContext } from "../context/AppContext";
+import Modal from "./modals/Modal";
 
 const Skeleton = ({ children }) => {
     const { modal, onClose } = useContext(AppContext);
@@ -14,6 +15,7 @@ const Skeleton = ({ children }) => {
                 {children}
             </main>
             <Footer />
+            <Modal />
         </>
     );
 };

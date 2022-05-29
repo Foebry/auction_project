@@ -1,10 +1,13 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router";
 import { MdLockOutline, MdOutlineAlternateEmail } from "react-icons/md";
 import BaseModal from "./baseModal";
 import { AppContext } from "../../context/AppContext";
 import { useLoginMutation } from "../../data/authenticationAPI";
+import { ADMIN } from "../../types/RouteTypes";
 
 const Loginblury__modal = () => {
+    const navigate = useNavigate();
     const { setModal } = useContext(AppContext);
     const [inputs, setInputs] = useState({
         usr_email: "",
@@ -35,8 +38,10 @@ const Loginblury__modal = () => {
             localStorage.setItem("usr_name", data.usr_name);
             localStorage.setItem("usr_id", data.usr_id);
             localStorage.setItem("csrf", data.csrf);
+            localStorage.setItem("usr_isAdmin", data.usr_isAdmin);
             setInputs({});
             setModal(null);
+            data.usr_isAdmin && navigate(ADMIN);
         } else if (error) {
             setFormErrors({ ...formErrors, ...error.data });
         }
