@@ -59,6 +59,13 @@ const articleAPI = createApi({
             }),
             invalidatesTags: ["allArticles"],
         }),
+        uploadImage: builder.mutation({
+            query: (formData) => ({
+                url: "/upload",
+                method: "POST",
+                body: formData,
+            }),
+        }),
     }),
 });
 
@@ -69,4 +76,5 @@ export const {
     usePostArticleMutation,
     usePatchArticleByIdMutation,
     useDeleteArticleMutation,
+    useUploadImageMutation,
 } = articleAPI;

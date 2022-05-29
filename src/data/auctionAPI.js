@@ -39,11 +39,12 @@ const auctionAPI = createApi({
             query: (id) => `/auction/${id}/biddings`,
         }),
         postAuction: builder.mutation({
-            query: ({ auc_art_id, auc_expiration, csrf }) => ({
+            query: ({ auc_art_id, auc_expiration, auc_start, csrf }) => ({
                 url: `/auctions`,
                 method: "POST",
                 body: {
                     auc_art_id,
+                    auc_start,
                     auc_expiration,
                     csrf,
                 },

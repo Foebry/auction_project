@@ -22,6 +22,8 @@
                 $art_id = explode("/", $uri)[3];
                 $this->resolveArticle($art_id, AdminRoute( $this ));
             }
+            elseif( $uri === "/api/upload") $this->uploadFile( AdminRoute( $this ) );
+
             else $this->getResponseHandler()->notFound($this->getDbManager());
 
             
@@ -75,12 +77,12 @@
         }
 
         private function postArticle(array $payload){
-
+            
             $payload = BaseModel::checkPostPayload("gw_article", $payload, $this->getDbManager());
 
             $article = Article::create($payload, $this);
 
-            $this->respond($article->asAssociativeArray(), 201);
+            $this->respond($article->asAssociativeArray(), 201, false, "http://localhost:3000/admin/articles");
         }
 
         private function getArticle(int $art_id){
@@ -119,5 +121,30 @@
             $this->getDbManager()->getSQL("DELETE from gw_article where art_id = $art_id");
 
             $this->respond([], 204);
-        }  
+        }
+
+        private function uploadFile() {
+
+            if( $this->getMethod() !== "POST" ) $this->getResponseHandler()->notAllowed();
+
+            $type = $_FILES["image"]["type"];
+            $file_name = $_FILES["image"]["name"];
+            $file_tmp_name = $_FILES["image"]["tmp_name"];
+
+            if( !in_array($type, ["image/png", "image/jpg", "image/jpeg"])) $this->getResponseHandler()->badRequest(null, ["art_img"=>"File upload only supports png, jpg, jpeg"]);
+
+            //upload locally
+            move_uploaded_file($file_tmp_name, env("FILE_UPLOAD")."/$file_name");
+
+            //upload filezilla
+            // $ftp_connection = ftp_connect(env("FTPHOST")) or $this->getResponseHandler()->internalServerError($this->getDbManager(), ["message"=>"failed to connect to ftp server"], false, "http://localhost:3000/admin/articles");
+            // ftp_login($ftp_connection, env("FTPUSER"), env("FTPPASSWORD")) or $this->getResponseHandler()->internalServerError($this->getDbManager(), ["message"=>"failed to login to ftp server"], false, "http://localhost:3000/admin/articles");
+
+            // $files_on_server = ftp_nlist($ftp_connection, env("FTPDIR"));
+
+            // move_uploaded_file($file_tmp_name, env("FILEFOLDER")."/$file_name") or $this->getResponseHandler()->internalServerError($this->getDbManager(), ["message"=>"File not found"], false, "http://localhost:3000/admin/articles");
+
+            // if(in_array($file_name, $files_on_server)) $this->getResponseHandler()->internalServerError($this->getDbManager(), ["art_name"=>"Filename already exists"], false, "http://localhost:3000/admin/articles");
+            // if(!ftp_put($ftp_connection, env("FTPDIR")."/$file_name", env("FILEFOLDER")."/$file_name")) $this->getResponseHandler()->internalServerError($this->getDbManager(), ["message"=>"Failed to upload file"], false, "http://localhost:3000/admin/articles");
+        }
     }

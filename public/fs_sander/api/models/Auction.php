@@ -31,8 +31,8 @@
             try{
                 $this->setAucId($data["auc_id"] ?? null);
                 $this->setAucArtId($data["auc_art_id"]);
-                $this->setAucExpiration($data["auc_expiration"] ?? "", !in_array("auc_expiration", array_keys($data)));
-                $this->setAucStart($data["auc_start"] ?? "", !in_array("auc_start", array_keys($data)));
+                $this->setAucExpiration($data["auc_expiration"] ?? "", $data["auc_expiration"] === "" );
+                $this->setAucStart($data["auc_start"] ?? "", $data["auc_start"] === "");
                 $this->setAucUsrId($data["auc_usr_id"] ?? -1);
             }
             catch(TypeError $error){

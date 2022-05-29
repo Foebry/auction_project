@@ -10,8 +10,8 @@
         $content = explode("$var=", $content)[1];
 
         $value = explode("\n", $content)[0];
+
+        if(strpos($value, "ROOT") !== false) $value = str_replace("ROOT", $root, $value);
+
         return $value;
-        
-        
-        
     }

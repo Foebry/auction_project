@@ -37,7 +37,7 @@ const Categories = ({ onClick }) => {
                 <button
                     className="categories__buttons__btn"
                     onClick={onClick}
-                    id="articles"
+                    id="4"
                 >
                     <MdOutlineCardGiftcard className="categories__buttons__btn__icon" />
                     Artikelen

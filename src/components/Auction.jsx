@@ -12,7 +12,7 @@ const Auction = ({ id, name, expiration, highest_bid, image }) => {
                 {(image && (
                     <img
                         className="article__imgholder__img"
-                        src={image}
+                        src={import.meta.env.VITE_IMAGES + image}
                         alt="#"
                     ></img>
                 )) || (

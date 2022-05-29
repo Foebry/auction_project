@@ -104,12 +104,6 @@ use PDO;
 
       if( $mode === "error" ) $logfile = env("LOGFILE_ERROR");
 
-      if(strpos($logfile, "ROOT") !== false){
-        $logfile = str_replace("ROOT", $_SERVER["DOCUMENT_ROOT"], $logfile);
-      }
-
-      // exit(print($logfile));
-
       $fs = fopen($logfile, "a");
       fwrite($fs, "$time - $msg \n");
       fclose($fs);

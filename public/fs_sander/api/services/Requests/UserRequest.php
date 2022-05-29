@@ -22,9 +22,9 @@
 
             if( $uri === "/api/user" ) $this->resolveUser( ProtectedRoute( $this ));
 
-            elseif( $uri === "/api/user/auctions") $this->getOwnAuctions( ProtectedRoute( $this ));
+            elseif( preg_match("|api/user/auctions\??.*|", $uri) ) $this->getOwnAuctions( ProtectedRoute( $this ));
 
-            elseif( $uri === "/api/user/biddings") $this->getOwnBiddings( ProtectedRoute( $this ));
+            elseif( preg_match("|api/user/biddings\??.*|", $uri) ) $this->getOwnBiddings( ProtectedRoute( $this ));
 
             elseif( preg_match("|api/user/[0-9]+$|", $uri) ) {
                 $usr_id = explode("/", $uri)[3];
@@ -88,7 +88,7 @@
             $user = getUserFromToken(implode(".", $exploded_token), $this);
             $usr_id = $user->getUsrId();
 
-            $auctions_won = User::fetchAuctionsWon($usr_id, $this->getDbManager());
+            $auctions_won = User::fetchAuctionsWon($usr_id, $this);
 
             $this->respond($auctions_won);
 
@@ -132,7 +132,7 @@
 
             $user = $this->getUserHandler()->getUserById($usr_id, $this->getDbManager());
 
-            $auctions = User::fetchAuctionsWon( $usr_id, $this->getDbManager() );
+            $auctions = User::fetchAuctionsWon( $usr_id, $this );
 
             $data = [
                 "user"=>[
