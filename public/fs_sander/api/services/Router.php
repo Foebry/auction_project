@@ -34,7 +34,7 @@
                     new AuctionRequest();
                     break;
                 
-                case in_array($route, ["articles", "article"]):
+                case in_array($route, ["articles", "article", "upload"]):
                     new ArticleRequest();
                     break;
                 
