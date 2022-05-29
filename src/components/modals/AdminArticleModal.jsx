@@ -46,7 +46,12 @@ const AdminArticleblury__modal = () => {
     return (
         <BaseModal>
             <h1 className="modal__adminTitle">Add Article</h1>
-            <form className="modal__adminInput" onSubmit={submitHandler}>
+            <form
+                className="modal__adminInput"
+                method="POST"
+                action={`${import.meta.env.VITE_API}/articles`}
+                encType="multipart/form-data"
+            >
                 <div className="modal__adminInput__item">
                     <p>art_name: </p>
                     <input
@@ -66,7 +71,7 @@ const AdminArticleblury__modal = () => {
                     <p>art_img:</p>
                     <input
                         className="modal__adminInput__item__inputfield"
-                        type="text"
+                        type="file"
                         value={inputs.art_img}
                         placeholder="image"
                         name="art_img"

@@ -59,6 +59,22 @@
         }
 
         private function postArticle(array $payload){
+            // exit(print(json_encode(["file" => $_FILES, "payload"=>$payload, "post"=>$_POST])));
+            // move_uploaded_file($_FILES["art_img"]["tmp_name"], "c://users/rain_/desktop/test.png");
+            // exit();
+            $type = $_FILES["art_img"]["type"];
+            $file_name = $_FILES["art_img"]["name"];
+            $file_tmp_name = $_FILES["art_img"]["tmp_name"];
+
+            $payload = [
+                "art_name"=>$_POST["art_name"],
+                "art_cat_id"=>$_POST["art_cat_id"],
+                "art_img"=>$_FILES["art_img"]["name"]
+            ];
+
+            if( !in_array($type, ["image/png", "image/jpg", "image.jpeg"])) $this->getResponseHandler()->badRequest(null, ["art_img"=>"File upload only supports png, jpg, jpeg"]);
+            
+            move_uploaded_file($file_tmp_name, env("FILE_UPLOAD")."/$file_name");
 
             $payload = BaseModel::checkPostPayload("gw_article", $payload, $this->getDbManager());
 

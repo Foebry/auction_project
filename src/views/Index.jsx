@@ -19,22 +19,20 @@ const Index = () => {
     const [categories, setCategories] = useState([]);
     const [page, setPage] = useState(1);
 
-    const { data, isError, isLoading } = useGetAuctionsQuery(
-        { categories: categories.join(","), page },
-        {
-            pollingInterval: 1000,
-            refetchOnFocus: true,
-            refetchOnReconnect: true,
-        }
-    );
-
     const options = useMemo(
         () => ({
             page,
             categories: categories.join(""),
+            status: 0,
         }),
-        [data, page, categories]
+        [page, categories]
     );
+
+    const { data, isError, isLoading } = useGetAuctionsQuery(options, {
+        pollingInterval: 1000,
+        refetchOnFocus: true,
+        refetchOnReconnect: true,
+    });
 
     const handleFilterClick = (e) => {
         const id = e.target.id;
