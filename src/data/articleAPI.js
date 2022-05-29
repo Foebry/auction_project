@@ -8,7 +8,18 @@ const articleAPI = createApi({
     }),
     endpoints: (builder) => ({
         getArticles: builder.query({
-            query: () => "/articles",
+            query: ({ page, page_count }) => {
+                const query = page || page_count ? "/articles?" : "/articles";
+                let params = [];
+
+                if (page) params = [...params, `page=${page}`];
+                if (page_count)
+                    params = [...params, `page_count=${page_count}`];
+
+                params = params.join("&");
+
+                return `${query}${params}`;
+            },
             providesTags: ["allArticles"],
         }),
         getArticleById: builder.query({

@@ -1,38 +1,45 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import { useGetUsersQuery, useDeleteUserMutation } from "../../data/userAPI";
 import ConfirmationModal from "../../components/modals/messageModals/ConfirmationModal";
+import Pagination from "../../components/Pagination";
 
 const Users = () => {
     const [nameFilter, setNameFilter] = useState("");
     const [confirm, setConfirm] = useState(false);
     const [userToDelete, setUserToDelete] = useState();
     const [deleteUser] = useDeleteUserMutation();
+    const [page, setPage] = useState(1);
+    const [options, setOptions] = useState({ page, page_count: 20 });
 
-    const { data, isError, isLoading } = useGetUsersQuery(undefined, {
+    const { data, isError, isLoading } = useGetUsersQuery(options, {
         pollingInterval: 0,
         refetchOnFocus: true,
         refetchOnReconnect: true,
     });
 
-    const confirmDelete = (e) => {
-        const id = e.target.dataset.id;
-        const user = data?.filter((el) => el.id == id)[0].name;
+    useEffect(() => {
+        setOptions({ ...options, page });
+    }, [page]);
+
+    const confirmationHandler = (e) => {
+        setUserToDelete(e.target.dataset.id);
+        setConfirm(true);
     };
 
     const handleDelete = async () => {
-        const { data, error } = await deleteUser(userToDelete);
+        const { error } = await deleteUser(userToDelete);
 
         if (error) {
             console.log(error);
-        } else if (data) {
+        } else {
             setConfirm(false);
             setUserToDelete(undefined);
         }
     };
 
     const memoData = useMemo(() => {
-        return data
+        return data?.users
             ?.filter((el) =>
                 el.name.toLowerCase().includes(nameFilter.toLowerCase())
             )
@@ -45,15 +52,12 @@ const Users = () => {
                             {isAdmin ? "Admin" : "User"}
                         </p>
                         <div className="list__buttons">
-                            <button
-                                className="list__buttons__button"
-                                onClick={confirmDelete}
-                            >
+                            <button className="list__buttons__button">
                                 <MdModeEdit />
                             </button>
                             <button
                                 className="list__buttons__button"
-                                onClick={confirmDelete}
+                                onClick={confirmationHandler}
                                 data-id={id}
                             >
                                 <MdDelete className="icon" />
@@ -65,7 +69,7 @@ const Users = () => {
     }, [data, nameFilter]);
 
     return (
-        <>
+        <section className="content" style={{ margin: "0 auto" }}>
             <ul className="list">
                 <li className="list__user">
                     <p>Naam</p>
@@ -83,21 +87,19 @@ const Users = () => {
                 {isLoading && <p>loading..</p>}
                 {memoData}
             </ul>
-            <ConfirmationModal
-                isShown={confirm}
-                primaryAction="Delete"
-                secondaryAction="Cancel"
-                message={"Delete User"}
-                onPrimaryAction={handleDelete}
-                onSecondaryAction={() => setConfirm(false)}
-                onCancel={() => setConfirm(false)}
-            >
-                <p>
-                    You are about to delete user{" "}
-                    {data?.filter((el) => el.id === userToDelete)[0]?.name}{" "}
-                </p>
-            </ConfirmationModal>
-        </>
+            <Pagination {...{ ...data, setPage }} />
+            {confirm && (
+                <ConfirmationModal
+                    onPrimaryAction={handleDelete}
+                    onSecondaryAction={() => setConfirm(false)}
+                    onClose={() => setConfirm(false)}
+                    message={`<p>You are about to delete '<span class="item">${
+                        data?.users.filter((el) => el.id == userToDelete)[0]
+                            ?.name
+                    }</span>'.</p><br /><p>Are you sure?</p>`}
+                ></ConfirmationModal>
+            )}
+        </section>
     );
 };
 

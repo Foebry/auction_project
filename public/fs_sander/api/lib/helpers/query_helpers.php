@@ -1,5 +1,7 @@
 <?php
 
+    use services\requests\Request;
+
     function getParamList(string $query_string): array {
 
         $list = explode("&", $query_string);
@@ -21,6 +23,9 @@
         switch ($route){
             case "auctions":
                 $allowed_sorts = ["auc_id", "-auc_id", "cat_id", "-cat_id", "auc_art_id", "-auc_art_id", "start", "end", "duration", "-start", "-end", "-duration", "bid", "-bid"];
+                break;
+            case "users":
+                $allowed_sorts = ["usr_name", "usr_email", "isAdmin"];
                 break;
             default:
                 $allowed_sorts = [];
@@ -224,5 +229,32 @@
         $join = translateJoins($join_tables);
 
         return[$join, $where, $sort];
+    }
+
+    function createQuery(string $baseQuery, Request $req, string $route, array $base_joins, int $count): array {
+        $where = $sort = "";
+        $join = "join gw_article on art_id = auc_art_id";
+
+        $params = getParamList($req->getQueryString());
+
+        [$join, $where, $sort] = processParams($route, $req->getQueryString(), $base_joins);
+
+        $total = $req->getDbManager()->getSQL("select count(*) total from ($baseQuery $join $where $sort) as temp")[0]["total"];
+        $total_pages = intval(ceil(intval($total) / ($params["page_count"] ?? $count)));
+
+        $limit = getPageLimit($req->getQueryString());
+
+        [$offset, $page, $start] = getOffset($req->getQueryString(), $total);
+        $page_count = $params["page_count"] ?? $count;
+
+        $start = min($total, $start);
+        $end = min($page_count * $page, $total);
+
+        $next_page = $page < $total_pages ? $page + 1 : null;
+        $prev_page = $page > 1 ? $page -1 : null;
+
+        $query = "$baseQuery $join $where $sort $limit $offset";
+
+        return [$query, $total, $total_pages, $page, $next_page, $prev_page, $page_count, $start, $end];
     }
 
