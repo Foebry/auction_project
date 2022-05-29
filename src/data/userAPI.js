@@ -8,7 +8,19 @@ const userAPI = createApi({
     }),
     endpoints: (builder) => ({
         getUsers: builder.query({
-            query: () => "/users",
+            query: ({ page, page_count }) => {
+                const query = page || page_count ? "/users?" : "/users";
+
+                let params = [];
+
+                if (page) params = [...params, `page=${page}`];
+                if (page_count)
+                    params = [...params, `page_count=${page_count}`];
+
+                params = params.join("&");
+
+                return `${query}${params}`;
+            },
             providesTags: ["ALLUSERS"],
         }),
         getCurrentUser: builder.query({

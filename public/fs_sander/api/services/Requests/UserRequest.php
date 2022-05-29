@@ -18,7 +18,7 @@
             $uri = $this->getUri();
 
 
-            if( $uri ==="/api/users" ) $this->getAllUsers( AdminRoute( $this ) );
+            if( preg_match("|api/users\??.*|", $uri) ) $this->getAllUsers( AdminRoute( $this ) );
 
             if( $uri === "/api/user" ) $this->resolveUser( ProtectedRoute( $this ));
 
@@ -47,12 +47,21 @@
          */
         private function getAllUsers(){
 
-            if( $this->getMethod() !== "GET" ) $this->getResponseHandler()->notAllowed();
-            
-            $query = "SELECT usr_id id, concat(usr_name,' ', usr_lastname) name, usr_email email, usr_is_admin isAdmin, usr_created_at joinDate from gw_user";
-            $data = $this->getDbManager()->getSQL($query);
+            $baseQuery = "SELECT usr_id id, concat(usr_name, ' ', usr_lastname) name, usr_email email, usr_is_admin isAdmin, usr_created_at joinDate from gw_user";
 
-            $this->respond($data);
+            [$query, $total, $total_pages, $page, $next_page, $prev_page, $page_count, $start, $end] = createQuery($baseQuery, $this, "users", [], 20);
+
+            $users = $this->getDbManager()->getSQL($query);
+
+            $this->respond([
+                "page"=>$page,
+                "total"=>$total,
+                "nextPage"=>$next_page,
+                "prevPage"=>$prev_page,
+                "start"=>$start,
+                "end"=>$end,
+                "users"=>$users
+            ]);
         }
         /**
          * @Route("/api/user", methods=["GET", "PATCH"])

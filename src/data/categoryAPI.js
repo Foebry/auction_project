@@ -38,7 +38,7 @@ const categoryAPI = createApi({
         }),
         deleteCategory: builder.mutation({
             query: ({ id }) => ({
-                url: `category/${id}`,
+                url: `/category/${id}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["allCategories"],

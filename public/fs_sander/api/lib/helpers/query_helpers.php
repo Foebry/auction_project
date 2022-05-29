@@ -1,5 +1,7 @@
 <?php
 
+    use services\requests\Request;
+
     function getParamList(string $query_string): array {
 
         $list = explode("&", $query_string);
@@ -20,7 +22,10 @@
 
         switch ($route){
             case "auctions":
-                $allowed_sorts = ["auc_id", "-auc_id", "cat_id", "-cat_id", "auc_art_id", "-auc_art_id", "start", "end", "duration", "-start", "-end", "-duration"];
+                $allowed_sorts = ["auc_id", "-auc_id", "cat_id", "-cat_id", "auc_art_id", "-auc_art_id", "start", "end", "duration", "-start", "-end", "-duration", "bid", "-bid"];
+                break;
+            case "users":
+                $allowed_sorts = ["usr_name", "usr_email", "isAdmin"];
                 break;
             case "user":
                 $allowed_sorts = ["auc_id", "-auc_id", "cat_id", "-cat_id", "auc_art_id", "-auc_art_id"];
@@ -60,9 +65,6 @@
         // indien param een mogelijke filter is, zet bij actieve filters.
         foreach($params as $key => $value){
 
-            // exit(print(json_encode(["option"=>$option, "allowed_filters" => $allowed_filters])));
-            // [$key, $value] =  explode("=", $param);
-
             if( in_array($key, $allowed_filters)){
                 $active_filters[$key] = $value;
             }
@@ -85,20 +87,23 @@
         // indien param een mogelijke filter is, zet bij actieve filters.
         foreach($sorts as $sort){
             if( in_array($sort, $allowed_sorts)){
+                if( $route === "auctions" && $sort === "bid") $sort="highest_bid";
+                elseif( $route === "auctions" && $sort === "-bid" ) $sort="-highest_bid";
                 $active_sorts[] = $sort;
             }
         }
         return $active_sorts;
     }
 
-    function getJoinsNeeded(string $route, string $query_string, $default_joins=[]): array {
-
-        $joins = $default_joins;
+    function getJoinsNeeded(string $route, string $query_string, $joins=[]): array {
 
         $filters = getActiveFilters($route, $query_string);
         $sorts = getActiveSorts($route, $query_string);
         switch( $route ){
             case "auctions":
+                if( in_array("bid", $sorts) || in_array("-bid", $sorts) ){
+                    if( !in_array("gw_bidding", array_keys($joins)) ) $joins["gw_bidding"] = ["bid_auc_id", "auc_id"];
+                }
                 if( in_array("cat_id", array_keys($filters))){
                     if( !in_array("gw_article", array_keys($joins)) ) $joins["gw_article"] = ["auc_art_id", "art_id"];
                     if( !in_array("gw_category", array_keys($joins)) ) $joins["gw_category"] = ["art_cat_id", "cat_id"];
@@ -230,5 +235,32 @@
         $join = translateJoins($join_tables);
 
         return[$join, $where, $sort];
+    }
+
+    function createQuery(string $baseQuery, Request $req, string $route, array $base_joins, int $count): array {
+        $where = $sort = "";
+        $join = "join gw_article on art_id = auc_art_id";
+
+        $params = getParamList($req->getQueryString());
+
+        [$join, $where, $sort] = processParams($route, $req->getQueryString(), $base_joins);
+
+        $total = $req->getDbManager()->getSQL("select count(*) total from ($baseQuery $join $where $sort) as temp")[0]["total"];
+        $total_pages = intval(ceil(intval($total) / ($params["page_count"] ?? $count)));
+
+        $limit = getPageLimit($req->getQueryString());
+
+        [$offset, $page, $start] = getOffset($req->getQueryString(), $total);
+        $page_count = $params["page_count"] ?? $count;
+
+        $start = min($total, $start);
+        $end = min($page_count * $page, $total);
+
+        $next_page = $page < $total_pages ? $page + 1 : null;
+        $prev_page = $page > 1 ? $page -1 : null;
+
+        $query = "$baseQuery $join $where $sort $limit $offset";
+
+        return [$query, $total, $total_pages, $page, $next_page, $prev_page, $page_count, $start, $end];
     }
 

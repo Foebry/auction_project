@@ -12,12 +12,40 @@
 
     class Router {
 
+        private $uri;
+        private $route;
+
         public function __construct()
         {   
-            $this->uri = explode("fs_sander", $_SERVER["REQUEST_URI"])[1];
-            $this->route = explode("?", explode("/", $this->getUri())[2])[0];
+            $this->setUri();
+            $this->setRoute();
             
             $this->resolveRoute();
+        }
+
+        private function setUri(): void {
+
+            $this->uri = explode("fs_sander", $_SERVER["REQUEST_URI"])[1];
+
+        }
+
+        private function setRoute(): void {
+
+            $uri = $this->getUri();
+            if( strpos( $uri, "?" ) !== false ){
+
+                $uri = explode("?", $uri)[0];
+
+            }
+
+            $split = explode("api/", $uri);
+
+            $route = count( $split ) === 1 ? "" : $split[1];
+
+            $route = explode("/", $route)[0];
+
+            $this->route = $route;
+
         }
 
         private function resolveRoute(): void{

@@ -1,7 +1,5 @@
-import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
-import { Routes } from "../types/RouteTypes";
 
 const Header = () => {
     const { setModal, handleLogout } = useContext(AppContext);
@@ -16,20 +14,18 @@ const Header = () => {
                 <div className="header__items__links">
                     {!name && (
                         <>
-                            <Link
+                            <button
                                 className="link"
-                                to={Routes.LOGIN}
                                 onClick={() => setModal("login")}
                             >
                                 Login
-                            </Link>
-                            <Link
+                            </button>
+                            <button
                                 className="link"
-                                to={Routes.REGISTER}
                                 onClick={() => setModal("register")}
                             >
                                 Register
-                            </Link>
+                            </button>
                         </>
                     )}
                     {name && (
@@ -45,20 +41,15 @@ const Header = () => {
                                     {name}
                                 </span>
                             </p>
-                            <Link
+                            <button
                                 className="link"
-                                to={Routes.USER_PRODUCTS}
-                                onClick={() => setModal("articles")}
+                                onClick={() => setModal("userproducts")}
                             >
                                 My Products
-                            </Link>
-                            <Link
-                                className="link"
-                                to={"#"}
-                                onClick={handleLogout}
-                            >
+                            </button>
+                            <button className="link" onClick={handleLogout}>
                                 Logout
-                            </Link>
+                            </button>
                         </>
                     )}
                 </div>
