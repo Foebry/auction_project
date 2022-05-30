@@ -8,12 +8,13 @@ const auctionAPI = createApi({
     }),
     endpoints: (builder) => ({
         getAuctions: builder.query({
-            query: ({ categories, page, page_count, sort }) => {
+            query: ({ categories, page, page_count, sort, status }) => {
                 const query =
                     (categories && categories !== "") ||
                     page ||
                     page_count ||
-                    (sort && sort !== [])
+                    (sort && sort !== []) ||
+                    status
                         ? "/auctions?"
                         : "/auctions";
 
@@ -25,6 +26,8 @@ const auctionAPI = createApi({
                     params = [...params, `page_count=${page_count}`];
                 if (sort?.length > 0)
                     params = [...params, `sort=${sort.join(",")}`];
+                if (status !== undefined)
+                    params = [...params, `status=${status}`];
 
                 params = params.join("&");
 

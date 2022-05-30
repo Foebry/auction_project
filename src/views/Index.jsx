@@ -7,12 +7,14 @@ import Pagination from "../components/Pagination";
 const Index = () => {
     const [categories, setCategories] = useState([]);
     const [page, setPage] = useState(1);
+    const [sort, setSort] = useState(["end, -bid"]);
 
     const options = useMemo(
         () => ({
             page,
             categories: categories.join(""),
             status: 0,
+            sort,
         }),
         [page, categories]
     );
