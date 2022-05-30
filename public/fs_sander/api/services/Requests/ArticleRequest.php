@@ -96,7 +96,7 @@
         private function updateArticle(int $art_id) {
 
             $payload = $this->getPayload();
-            $update = BaseModel::checkPatchPayload("gw_article", $payload, $this->getDbManager());
+            $update = BaseModel::checkPatchPayload("gw_article", $payload, $this);
 
             // nagaan of article met art_id bestaat.
             $article = $this->getArticleHandler()->getArticleById($art_id, $this->getDbManager());

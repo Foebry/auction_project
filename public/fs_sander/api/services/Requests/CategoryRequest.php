@@ -77,7 +77,7 @@
         private function updateCategory(int $cat_id): void {
 
             $payload = $this->getPayload();
-            $update = BaseModel::checkPatchPayload("gw_category", $payload, $this->getDbManager());
+            $update = BaseModel::checkPatchPayload("gw_category", $payload, $this);
 
             $category = $this->getCategoryHandler()->getCategoryById($cat_id, $this->getDbManager());
 

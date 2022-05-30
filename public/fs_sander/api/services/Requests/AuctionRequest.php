@@ -139,6 +139,10 @@
 
             $auctions = $this->getDbManager()->getSQL($query);
 
+            foreach($auctions as &$auction){
+               if( !$auction["highest_bid"] ) $auction["highest_bid"] = 0;
+            }
+
             $this->respond([
                 "page"=>$page,
                 "total"=>$total,
@@ -152,7 +156,7 @@
 
         private function updateAuction(int $auc_id, array $payload, $batch=false): Auction{
 
-            $update = BaseModel::checkPatchPayload("gw_auction", $payload, $this->getDbManager());
+            $update = BaseModel::checkPatchPayload("gw_auction", $payload, $this);
 
             $this->getAuctionHandler()->getAuctionById($auc_id, $this->getDbManager());
 

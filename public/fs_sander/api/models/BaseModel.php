@@ -2,6 +2,7 @@
 
     namespace models;
     use services\DbManager;
+    use services\requests\Request;
 
     class BaseModel{
         
@@ -47,8 +48,9 @@
             return $payload;
         }
 
-        public static function checkPatchPayload($table, array $payload, DbManager $dbm){
-
+        public static function checkPatchPayload($table, array $payload, Request $request){
+            
+            $dbm = $request->getDbManager();
             $table_headers = $dbm->getTableHeaders($table);
             $matching_fields = [];
             
@@ -73,12 +75,12 @@
                     }
                     elseif( $datatype === "timestamp"){
                         $value = validateTimestamp($value, $key, $dbm);
-                        $matching_fields[$key] = $value;
+                        if ($value !== "") $matching_fields[$key] = $value;
                     }
                 }
             }
 
-            if( count($matching_fields) === 0 ) return "";
+            if( count($matching_fields) === 0 ) $request->getResponseHandler()->badRequest($dbm, ["message"=>"No valid data supplied"]);
 
             foreach( $matching_fields as $key => $value ) {
                 if( $key === "usr_password" ) $value = password_hash($value, 1);

@@ -5,9 +5,14 @@ import RegisterModal from "./RegisterModal";
 import UserModal from "./UserModal";
 import EditUserModal from "./EditUserModal";
 import Detailblury__modal from "./DetailModal";
+import UserProductsModal from "./UserProductsModal";
+import AdminArticleModal from "./AdminArticleModal";
+import AdminAuctionModal from "./AdminAuctionModal";
 
 const Modal = () => {
     const { modal } = useContext(AppContext);
+
+    if (typeof modal === "number") return <Detailblury__modal />;
 
     switch (modal) {
         case "login":
@@ -20,8 +25,10 @@ const Modal = () => {
             return <EditUserModal />;
         case "userproducts":
             return <UserProductsModal />;
-        case typeof modal === "number":
-            return <Detailblury__modal />;
+        case "adminArticle":
+            return <AdminArticleModal />;
+        case "adminAuction":
+            return <AdminAuctionModal />;
     }
 };
 

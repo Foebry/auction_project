@@ -7,11 +7,11 @@ import { useGetAuctionByIdQuery } from "../../data/auctionAPI.js";
 import { usePostBiddingsMutation } from "../../data/biddingAPI";
 
 const Detailblury__modal = () => {
-    const { modal, handleLogout, setModal } = useContext(AppContext);
+    const { modal, handleLogout, onClose } = useContext(AppContext);
 
     const [bid, setBid] = useState("");
-    const { data, isError, isLoading } = useGetAuctionByIdQuery(modal, {
-        pollingInterval: 0,
+    const { data } = useGetAuctionByIdQuery(modal, {
+        pollingInterval: 1000,
         refetchOnFocus: true,
         refetchOnReconnect: true,
     });
@@ -21,7 +21,8 @@ const Detailblury__modal = () => {
     const handleFastBid = (e) => {
         const amount = parseInt(e.currentTarget.dataset.bid);
         const maxBid = Math.max(
-            ...data?.biddings.map((bidding) => bidding.bid)
+            ...data?.biddings.map((bidding) => bidding.bid),
+            0
         );
 
         setBid(maxBid + amount);
@@ -42,7 +43,7 @@ const Detailblury__modal = () => {
     };
 
     return (
-        <BaseModal>
+        <BaseModal onClose={onClose}>
             <div className="modal__title">{data && <h2>{data.name}</h2>}</div>
             <Timer rest={data && data.expiration} />
             <div className="modal__bidding">

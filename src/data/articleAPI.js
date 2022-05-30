@@ -45,7 +45,7 @@ const articleAPI = createApi({
                 method: "PATCH",
                 body: {
                     art_name,
-                    art_img,
+                    art_img: art_img ?? "",
                     art_cat_id,
                     csrf,
                 },

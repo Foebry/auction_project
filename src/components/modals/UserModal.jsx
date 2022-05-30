@@ -1,22 +1,18 @@
 import { useContext } from "react";
-import {
-    MdLockOutline,
-    MdOutlineAlternateEmail,
-    MdPersonOutline,
-} from "react-icons/md";
+import { MdOutlineAlternateEmail, MdPersonOutline } from "react-icons/md";
 import BaseModal from "./baseModal";
 import { AppContext } from "../../context/AppContext";
 import { useGetCurrentUserQuery } from "../../data/userAPI";
 
 const Userblury__modal = () => {
-    const { setModal } = useContext(AppContext);
-    const { data, isError, isLoading } = useGetCurrentUserQuery(undefined, {
+    const { setModal, onClose, setUpdateUser } = useContext(AppContext);
+    const { data } = useGetCurrentUserQuery(undefined, {
         pollingInterval: 0,
         refetchOnFocus: true,
         refetchOnReconnect: true,
     });
     return (
-        <BaseModal>
+        <BaseModal onClose={onClose}>
             <h1 className="modal__title">My Details</h1>
             <div className="modal__input">
                 <div className="modal__input__item">
@@ -41,6 +37,7 @@ const Userblury__modal = () => {
             <button
                 className="modal__btn"
                 onClick={() => {
+                    setUpdateUser(null);
                     setModal("edit");
                 }}
             >

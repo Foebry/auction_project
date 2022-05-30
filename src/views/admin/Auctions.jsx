@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useContext } from "react";
 import { MdTimer, MdModeEdit, MdAdd } from "react-icons/md";
 import {
     TiArrowUnsorted,
@@ -13,6 +13,7 @@ import {
 import Timer from "../../components/Timer";
 import moment from "moment";
 import Pagination from "../../components/Pagination";
+import { AppContext } from "../../context/AppContext";
 
 const Auctions = () => {
     const [updateAuction] = useUpdateAuctionMutation();
@@ -20,6 +21,11 @@ const Auctions = () => {
     const [page, setPage] = useState(1);
     const [sort, setSort] = useState([]);
     const [options, setOptions] = useState({ page_count: 20, sort, page });
+    const {
+        setModal,
+        setUpdateAuction,
+        updateAuction: auctionToUpdate,
+    } = useContext(AppContext);
 
     useEffect(() => {
         setOptions({ ...options, sort, page });
@@ -68,9 +74,6 @@ const Auctions = () => {
                     </span>
                     <p className="list__user__role">{highest_bid ?? 0}</p>
                     <div className="list__buttons">
-                        <button className="list__buttons__button">
-                            <MdModeEdit className="icon" />
-                        </button>
                         <button
                             className="list__buttons__button"
                             data-id={id}
@@ -98,7 +101,7 @@ const Auctions = () => {
                     <MdTimer className="icon" />
                     <span>Reset depleted</span>
                 </button>
-                <button>
+                <button onClick={() => setModal("adminAuction")}>
                     <div>
                         <MdAdd className="icon" />
                         <span>Toevoegen</span>

@@ -7,6 +7,9 @@ export const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
     const navigate = useNavigate();
+    const [updateAuction, setUpdateAuction] = useState(null);
+    const [updateArticle, setUpdateArticle] = useState(null);
+    const [updateUser, setUpdateUser] = useState(null);
 
     const [logout] = useLogoutMutation();
     const [activeUser, setActiveUser] = useState();
@@ -30,6 +33,12 @@ const AppProvider = ({ children }) => {
                 setModal,
                 onClose,
                 handleLogout,
+                updateArticle,
+                setUpdateArticle,
+                updateAuction,
+                setUpdateAuction,
+                updateUser,
+                setUpdateUser,
             }}
         >
             {children}

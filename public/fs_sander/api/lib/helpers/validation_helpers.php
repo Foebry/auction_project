@@ -49,6 +49,8 @@
 
     function validateTimestamp(string $value, string $key, DbManager $dbm): string {
 
+        if( $value === "" ) return $value;
+
         try{
             $datetime = new DateTime($value);
             

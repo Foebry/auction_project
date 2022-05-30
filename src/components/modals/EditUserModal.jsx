@@ -9,10 +9,12 @@ import { AppContext } from "../../context/AppContext";
 import {
     usePatchCurrentUserMutation,
     useGetCurrentUserQuery,
+    usePatchUserByIdMutation,
 } from "../../data/userAPI";
 
 const EditUserblury__modal = () => {
-    const { setModal } = useContext(AppContext);
+    const { setModal, onClose, updateUser, setUpdateUser } =
+        useContext(AppContext);
 
     const { data: fetchData } = useGetCurrentUserQuery(undefined, {
         refetchOnFocus: true,
@@ -37,6 +39,7 @@ const EditUserblury__modal = () => {
         usr_pass_verify: "",
     });
     const [update] = usePatchCurrentUserMutation();
+    const [updateSpecificUser] = usePatchUserByIdMutation();
 
     const handleInputChange = (e) => {
         setInputs({
@@ -70,20 +73,29 @@ const EditUserblury__modal = () => {
             if (value !== "") newData = { ...newData, [key]: value };
         }
 
-        const { data: updateData, error } = await update(newData);
+        const { data: updateData, error } = updateUser
+            ? await updateSpecificUser({
+                  ...newData,
+                  usr_id: updateUser.usr_id,
+              })
+            : await update(newData);
 
         if (updateData) {
-            localStorage.setItem("usr_name", updateData.usr_name);
+            !updateUser &&
+                localStorage.setItem("usr_name", updateData.usr_name);
             setInputs({});
             setModal(null);
+            setUpdateUser(null);
         } else if (error) {
             setFormErrors({ ...formErrors, ...error.data });
         }
     }
 
     return (
-        <BaseModal>
-            <h1 className="modal__title">Change my Details</h1>
+        <BaseModal onClose={onClose}>
+            <h1 className="modal__title">{`Change ${
+                updateUser ? "user" : "my"
+            } Details`}</h1>
             <form className="modal__input" onSubmit={submitHandler}>
                 <div className="modal__input__item">
                     <MdPersonOutline className="modal__input__item__icon" />
@@ -91,7 +103,10 @@ const EditUserblury__modal = () => {
                         className="modal__input__item__inputfield"
                         type="text"
                         value={inputs.usr_name}
-                        placeholder={userData.usr_name}
+                        placeholder={
+                            updateUser?.usr_name.split(" ")[0] ??
+                            userData?.usr_name
+                        }
                         onChange={handleInputChange}
                         name="usr_name"
                     />
@@ -103,7 +118,10 @@ const EditUserblury__modal = () => {
                         className="modal__input__item__inputfield"
                         type="text"
                         value={inputs.usr_lastname}
-                        placeholder={userData.usr_lastname}
+                        placeholder={
+                            updateUser?.usr_name.split(" ")[1] ??
+                            userData?.usr_lastname
+                        }
                         onChange={handleInputChange}
                         name="usr_lastname"
                     />
@@ -115,35 +133,41 @@ const EditUserblury__modal = () => {
                         className="modal__input__item__inputfield"
                         type="text"
                         value={inputs.usr_email}
-                        placeholder={userData?.usr_email ?? "email"}
+                        placeholder={
+                            updateUser?.usr_email ?? userData?.usr_email
+                        }
                         onChange={handleInputChange}
                         name="usr_email"
                     />
                     <p>{formErrors.usr_email}</p>
                 </div>
-                <div className="modal__input__item">
-                    <MdLockOutline className="modal__input__item__icon" />
-                    <input
-                        className="modal__input__item__inputfield"
-                        type="password"
-                        name="usr_password"
-                        value={inputs.usr_password}
-                        placeholder="new password"
-                        onChange={handleInputChange}
-                    />
-                    <p>{formErrors.usr_password}</p>
-                </div>
-                <div className="modal__input__item">
-                    <MdLockOutline className="modal__input__item__icon" />
-                    <input
-                        className="modal__input__item__inputfield"
-                        type="password"
-                        name="usr_pass_verify"
-                        value={inputs.usr_password_verify}
-                        placeholder="old password"
-                        onChange={handleInputChange}
-                    />
-                </div>
+                {!updateUser && (
+                    <div className="modal__input__item">
+                        <MdLockOutline className="modal__input__item__icon" />
+                        <input
+                            className="modal__input__item__inputfield"
+                            type="password"
+                            name="usr_password"
+                            value={inputs.usr_password}
+                            placeholder="new password"
+                            onChange={handleInputChange}
+                        />
+                        <p>{formErrors.usr_password}</p>
+                    </div>
+                )}
+                {!updateUser && (
+                    <div className="modal__input__item">
+                        <MdLockOutline className="modal__input__item__icon" />
+                        <input
+                            className="modal__input__item__inputfield"
+                            type="password"
+                            name="usr_pass_verify"
+                            value={inputs.usr_password_verify}
+                            placeholder="old password"
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                )}
                 <p>{formErrors.usr_pass_verify}</p>
                 <button className="modal__btn">Edit</button>
             </form>

@@ -1,14 +1,12 @@
-import Timer from "../Timer";
-import { RiCoinLine } from "react-icons/ri";
 import BaseModal from "./baseModal";
 import { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import { useGetUserAuctionsQuery } from "../../data/userAPI.js";
 
 const UserProductblury__modal = () => {
-    const { modal } = useContext(AppContext);
+    const { onClose } = useContext(AppContext);
     const [status, setStatus] = useState(undefined);
-    const { data, isError, isLoading } = useGetUserAuctionsQuery(
+    const { data } = useGetUserAuctionsQuery(
         { status },
         {
             pollingInterval: 0,
@@ -26,7 +24,7 @@ const UserProductblury__modal = () => {
     };
 
     return (
-        <BaseModal>
+        <BaseModal onClose={onClose}>
             <div className="modal__userTitle">
                 <h2>Mijn Biedingen</h2>
             </div>

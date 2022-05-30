@@ -52,21 +52,26 @@ const auctionAPI = createApi({
             invalidatesTags: ["allAuctions"],
         }),
         updateAuction: builder.mutation({
-            query: ({ id, auc_expiration, csrf }) => ({
+            query: ({ id, auc_expiration, auc_start, auc_art_id, csrf }) => ({
                 url: `/auction/${id}`,
                 method: "PATCH",
                 body: {
                     auc_expiration,
+                    auc_start,
+                    auc_art_id,
                     csrf,
                 },
                 invalidatesTags: ["allAuctions"],
             }),
         }),
         updateAllAuctions: builder.mutation({
-            query: (body) => ({
+            query: ({ auc_expiration, csrf }) => ({
                 url: "/auctions",
                 method: "PATCH",
-                body,
+                body: {
+                    auc_expiration,
+                    csrf,
+                },
             }),
             invalidatesTags: ["allAuctions"],
         }),

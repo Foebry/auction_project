@@ -8,7 +8,7 @@ import { ADMIN } from "../../types/RouteTypes";
 
 const Loginblury__modal = () => {
     const navigate = useNavigate();
-    const { setModal } = useContext(AppContext);
+    const { setModal, onClose } = useContext(AppContext);
     const [inputs, setInputs] = useState({
         usr_email: "",
         usr_password: "",
@@ -47,7 +47,7 @@ const Loginblury__modal = () => {
         }
     }
     return (
-        <BaseModal>
+        <BaseModal onClose={onClose}>
             <h1 className="modal__title">Login</h1>
             <form onSubmit={submitHandler} className="modal__input">
                 <div className="modal__input__item">

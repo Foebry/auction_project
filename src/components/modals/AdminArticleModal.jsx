@@ -1,13 +1,16 @@
 import { useContext, useState } from "react";
 import BaseModal from "./baseModal";
 import { AppContext } from "../../context/AppContext";
+import ApiDropdown from "../../components/ApiDropdown";
 import {
     usePostArticleMutation,
     useUploadImageMutation,
+    usePatchArticleByIdMutation,
 } from "../../data/articleAPI";
 
 const AdminArticleblury__modal = () => {
-    const { setModal } = useContext(AppContext);
+    const { setModal, onClose, updateArticle, setUpdateArticle } =
+        useContext(AppContext);
     const [image, setImage] = useState({});
 
     const [formErrors, setFormErrors] = useState({
@@ -17,11 +20,12 @@ const AdminArticleblury__modal = () => {
     });
 
     const [inputs, setInputs] = useState({
-        art_name: "",
+        art_name: updateArticle?.art_name ?? "",
         art_img: null,
-        art_cat_id: "",
+        art_cat_id: updateArticle?.art_cat_id ?? "",
     });
     const [addArticle] = usePostArticleMutation();
+    const [patchArticle] = usePatchArticleByIdMutation();
     const [uploadImage] = useUploadImageMutation();
 
     const handleInputChange = (e) => {
@@ -46,25 +50,32 @@ const AdminArticleblury__modal = () => {
         const formData = new FormData();
         formData.append("image", image);
 
-        const { error: uploadError } = await uploadImage(formData);
+        const { error: uploadError } =
+            Object.keys(image).length === 0 ? {} : await uploadImage(formData);
 
         if (uploadError) {
             setFormErrors({ ...formErrors, ...formErrors.data });
         } else {
-            const { data: artData, error: artError } = await addArticle(inputs);
+            const { data: artData, error: artError } = updateArticle
+                ? await patchArticle({
+                      ...inputs,
+                      ...{ art_id: updateArticle.art_id },
+                  })
+                : await addArticle(inputs);
 
             if (artError) {
                 setFormErrors({ ...formErrors, ...formErrors.data });
             } else if (artData) {
                 setImage({});
                 setInputs({});
+                setUpdateArticle(null);
                 setModal(null);
             }
         }
     }
 
     return (
-        <BaseModal>
+        <BaseModal onClose={onClose}>
             <h1 className="modal__adminTitle">Add Article</h1>
             <form className="modal__adminInput" onSubmit={submitHandler}>
                 <div className="modal__adminInput__item">
@@ -76,7 +87,6 @@ const AdminArticleblury__modal = () => {
                         placeholder="name"
                         name="art_name"
                         onChange={handleInputChange}
-                        required
                     />
                     <p className="modal__adminInput__item__error">
                         {formErrors.art_name}
@@ -90,7 +100,6 @@ const AdminArticleblury__modal = () => {
                         placeholder="image"
                         name="art_img"
                         onChange={handleFileChange}
-                        required
                     />
                     <p className="modal__adminInput__item__error">
                         {formErrors.art_img}
@@ -98,15 +107,20 @@ const AdminArticleblury__modal = () => {
                 </div>
                 <div className="modal__adminInput__item">
                     <p>art_cat_id: </p>
-                    <input
+                    <ApiDropdown
+                        type="categories"
+                        onChange={handleInputChange}
+                        name="art_cat_id"
+                        className="modal__adminInput__item__inputfield"
+                    />
+                    {/* <input
                         className="modal__adminInput__item__inputfield"
                         type="text"
                         value={inputs.art_cat_id}
                         placeholder="category ID"
                         name="art_cat_id"
                         onChange={handleInputChange}
-                        required
-                    />
+                    /> */}
                     <p className="modal__adminInput__item__error">
                         {formErrors.art_cat_id}
                     </p>

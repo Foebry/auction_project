@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import { useGetUsersQuery, useDeleteUserMutation } from "../../data/userAPI";
 import ConfirmationModal from "../../components/modals/messageModals/ConfirmationModal";
 import Pagination from "../../components/Pagination";
+import { AppContext } from "../../context/AppContext";
 
 const Users = () => {
     const [nameFilter, setNameFilter] = useState("");
@@ -11,8 +12,14 @@ const Users = () => {
     const [deleteUser] = useDeleteUserMutation();
     const [page, setPage] = useState(1);
     const [options, setOptions] = useState({ page, page_count: 20 });
+    const { setModal, setUpdateUser } = useContext(AppContext);
 
-    const { data, isError, isLoading } = useGetUsersQuery(options, {
+    const {
+        data,
+        isError,
+        isLoading,
+        error: usersError,
+    } = useGetUsersQuery(options, {
         pollingInterval: 0,
         refetchOnFocus: true,
         refetchOnReconnect: true,
@@ -52,7 +59,17 @@ const Users = () => {
                             {isAdmin ? "Admin" : "User"}
                         </p>
                         <div className="list__buttons">
-                            <button className="list__buttons__button">
+                            <button
+                                className="list__buttons__button"
+                                onClick={() => {
+                                    setUpdateUser({
+                                        usr_id: id,
+                                        usr_name: name,
+                                        usr_email: email,
+                                    });
+                                    setModal("edit");
+                                }}
+                            >
                                 <MdModeEdit />
                             </button>
                             <button

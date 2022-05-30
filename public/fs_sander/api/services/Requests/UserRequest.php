@@ -191,7 +191,7 @@
             // indien toch aanwezig in payload, filter uit.
             if( !$user->IsAdmin() && in_array("usr_is_admin", array_keys($payload)) ) unset($payload["usr_is_admin"]);
 
-            $update = BaseModel::checkPatchPayload("gw_user", $payload, $this->getDbManager());
+            $update = BaseModel::checkPatchPayload("gw_user", $payload, $this);
 
             if( in_array("usr_email", array_keys($payload)) ) $user->setUsrEmail($payload["usr_email"]);
 
@@ -217,7 +217,7 @@
             $this->getUserHandler()->getUserById($usr_id, $this->getDbManager());
             
             $payload = $this->getPayload();
-            $update = BaseModel::checkPatchPayload("gw_user", $payload, $this->getDbManager());
+            $update = BaseModel::checkPatchPayload("gw_user", $payload, $this);
 
             $this->getDbManager()->getSQL("UPDATE gw_user set $update where usr_id=$usr_id");
 

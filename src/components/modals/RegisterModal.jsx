@@ -9,7 +9,7 @@ import { AppContext } from "../../context/AppContext";
 import { useRegisterMutation } from "../../data/authenticationAPI";
 
 const Registerblury__modal = () => {
-    const { setModal, setActiveUser } = useContext(AppContext);
+    const { setModal, onClose } = useContext(AppContext);
 
     const [formErrors, setFormErrors] = useState({
         usr_name: "",
@@ -66,7 +66,7 @@ const Registerblury__modal = () => {
     }
 
     return (
-        <BaseModal>
+        <BaseModal onClose={onClose}>
             <h1 className="modal__title">Register</h1>
             <form className="modal__input" onSubmit={submitHandler}>
                 <div className="modal__input__item">

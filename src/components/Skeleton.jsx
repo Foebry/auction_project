@@ -5,8 +5,19 @@ import { AppContext } from "../context/AppContext";
 import Modal from "./modals/Modal";
 
 const Skeleton = ({ children }) => {
-    const { modal, onClose } = useContext(AppContext);
-    const isBlur = (e) => e.target.className == "blur" && onClose();
+    const {
+        modal,
+        onClose,
+        setUpdateUser,
+        setUpdateArticle,
+        setUpdateAuction,
+    } = useContext(AppContext);
+    const isBlur = (e) => {
+        e.target.className == "blur" && onClose();
+        // setUpdateArticle(null);
+        // setUpdateAuction(null);
+        // setUpdateUser(null);
+    };
 
     return (
         <>

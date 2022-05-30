@@ -1,13 +1,8 @@
-import React, { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
-
-const BaseModal = ({ children, onCancel, onClose }) => {
-    const { onBlur } = useContext(AppContext);
-
+const BaseModal = ({ children, onClose }) => {
     return (
         <div className="modal">
             <div className="modal__closeBtn">
-                <button onClick={onCancel || onClose || onBlur}>X</button>
+                <button onClick={onClose}>X</button>
             </div>
             {children}
         </div>

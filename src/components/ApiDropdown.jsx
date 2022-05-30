@@ -1,29 +1,39 @@
 import { useGetCategoriesQuery } from "../data/categoryAPI";
 import { useGetArticlesQuery } from "../data/articleAPI";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
-const ApiDropdown = ({ type, onChange }) => {
-    const { data: artData, error: artError } = useGetArticlesQuery();
-    const { data: catData, error: catError } = useGetCategoriesQuery();
-
-    type === "artices" && console.log("artData", artData);
-    type === "categories" && console.log("catData", catData);
+const ApiDropdown = ({ type, onChange, name }) => {
+    const { data: artData } = useGetArticlesQuery({});
+    const { data: catData } = useGetCategoriesQuery();
+    const { updateArticle, updateAuction } = useContext(AppContext);
 
     return (
-        <select onChange={onChange}>
+        <select onChange={onChange} name={name}>
             {type === "articles" ? (
                 <>
                     <option>Select an article</option>
-                    {artData?.map(({ art_id: id, art_name: name }) => (
-                        <option key={id} value={id}>
-                            {name}
-                        </option>
-                    ))}
+                    {artData?.articles?.map(
+                        ({ art_id: id, art_name: name }) => (
+                            <option
+                                key={id}
+                                value={id}
+                                selected={updateAuction?.auc_art_id == id}
+                            >
+                                {name}
+                            </option>
+                        )
+                    )}
                 </>
             ) : type === "categories" ? (
                 <>
                     <option>Select a category</option>
                     {catData?.map(({ cat_id: id, cat_name: name }) => (
-                        <option key={id} value={id}>
+                        <option
+                            key={id}
+                            value={id}
+                            selected={updateArticle?.art_cat_id == id}
+                        >
                             {name}
                         </option>
                     ))}

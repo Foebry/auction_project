@@ -16,6 +16,7 @@ const Articles = () => {
     const [confirm, setConfirm] = useState(false);
     const [deleteArticle] = useDeleteArticleMutation();
     const [articleToDelete, setArticleToDelete] = useState(undefined);
+    const { setModal, setUpdateArticle } = useContext(AppContext);
 
     const { data, isError, isLoading } = useGetArticlesQuery(options, {
         pollingInterval: 0,
@@ -67,7 +68,17 @@ const Articles = () => {
                             }
                         </p>
                         <div className="list__buttons">
-                            <button className="list__buttons__button">
+                            <button
+                                className="list__buttons__button"
+                                onClick={() => {
+                                    setUpdateArticle({
+                                        art_id,
+                                        art_name,
+                                        art_cat_id,
+                                    });
+                                    setModal("adminArticle");
+                                }}
+                            >
                                 <MdModeEdit />
                             </button>
                             <button
@@ -86,7 +97,12 @@ const Articles = () => {
     return (
         <section className="content" style={{ margin: "0 auto" }}>
             <div className="content__create">
-                <button>
+                <button
+                    onClick={() => {
+                        setUpdateArticle(null);
+                        setModal("adminArticle");
+                    }}
+                >
                     <div>
                         <MdAdd className="icon" />
                         <span>Toevoegen</span>
