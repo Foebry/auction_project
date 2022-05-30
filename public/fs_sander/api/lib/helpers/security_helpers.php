@@ -5,7 +5,7 @@
 
 function generateCSRF(): string {
 
-    return hash_hmac("sha256", session_id(), "BOO");
+    return hash_hmac("sha256", session_id(), env("SECRETKEY"));
 }
 
 function validateJWT(Request $request){
@@ -70,4 +70,14 @@ function getUserFromToken(string $token, Request $request): User {
     $usr_id = $user_data["usr_id"];
 
     return $request->getUserHandler()->getUserById($usr_id, $request->getDbManager());
+}
+
+function validateCsrf(array $payload, Request $request): void {
+    
+    if( !isset($_SESSION) ) session_start();
+
+    $invalid_csrf = !in_array("csrf", array_keys($payload)) || $payload["csrf"] !== $_SESSION["csrf"];
+    
+    if ( $invalid_csrf )
+        $request->getResponseHandler()->badRequest(null, ["message"=>"Invalid CSRF"]);
 }

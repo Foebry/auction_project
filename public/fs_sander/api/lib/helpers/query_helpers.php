@@ -74,11 +74,14 @@
 
     function getActiveSorts( string $route, string $query_string ): array{
 
+        if( strpos($query_string, "sort=") === false ) return [];
+
         // verkrijg waarde na sort= tot aan de volgende parameter?
         // ...&sort=-id&page=1... => ["-id"]
-        $split = explode("sort=", $query_string);
-        if( count($split) === 1) return [];
-        $sorts = explode(",", $split[1]);
+        $split = explode("sort=", $query_string)[1];
+        if( strpos($split, "&") !== false ) $split = explode("&", $split)[0];
+
+        $sorts = explode(",", $split);
 
         $allowed_sorts = getAllowedSorts($route);
 
@@ -99,6 +102,7 @@
 
         $filters = getActiveFilters($route, $query_string);
         $sorts = getActiveSorts($route, $query_string);
+
         switch( $route ){
             case "auctions":
                 if( in_array("bid", $sorts) || in_array("-bid", $sorts) ){

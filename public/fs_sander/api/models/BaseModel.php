@@ -62,8 +62,8 @@
                     if( $table_headers[$key]["key"] === "PRI" ) continue;
 
                     if( $datatype === "varchar" ){
-                        $value = validateString($table, $value, $key, $table_headers[$key], $dbm, true);
-                        if ($value !== "") $matching_fields[$key] = $value;
+                        if( $value !== "" )
+                            $matching_fields[$key] = validateString($table, $value, $key, $table_headers[$key], $dbm, true);
                     }
                     elseif( $datatype === "int"){
                         $value = validateInteger($value, $key, $dbm);

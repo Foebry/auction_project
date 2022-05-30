@@ -177,6 +177,10 @@
         }
 
         private function updateUserSelf(array $exploded_token): void {
+
+            $payload = $this->getPayload();
+
+            validateCsrf($payload, $this);
             
             $user = getUserFromToken(implode(".", $exploded_token), $this);
             $usr_id = $user->getUsrId();
@@ -213,6 +217,10 @@
 
         private function updateSpecificUser( int $usr_id ): void {
 
+            $payload = $this->getPayload();
+
+            validateCsrf($payload, $this);
+
             //check of User met usr_id bestaat
             $this->getUserHandler()->getUserById($usr_id, $this->getDbManager());
             
@@ -229,6 +237,10 @@
         }
 
         private function deleteSpecificUser( int $usr_id ): void {
+
+            $payload = $this->getPayload();
+
+            validateCsrf($payload, $this);
 
             //check of User met usr_id bestaat
             $this->getUserHandler()->getUserById($usr_id, $this->getDbManager());

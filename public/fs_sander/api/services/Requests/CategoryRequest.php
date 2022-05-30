@@ -60,6 +60,8 @@
 
         private function postCategory(array $payload): void {
 
+            validateCsrf($payload, $this);
+
             $payload = BaseModel::checkPostPayload("gw_category", $payload, $this->getDbManager());
 
             $category = Category::create($payload, $this);
@@ -77,6 +79,9 @@
         private function updateCategory(int $cat_id): void {
 
             $payload = $this->getPayload();
+
+            validateCsrf($payload, $this);
+
             $update = BaseModel::checkPatchPayload("gw_category", $payload, $this);
 
             $category = $this->getCategoryHandler()->getCategoryById($cat_id, $this->getDbManager());
@@ -90,6 +95,10 @@
         }
 
         private function deleteCategory(int $cat_id): void {
+
+            $payload = $this->getPayload();
+
+            validateCsrf($payload, $this);
 
             $this->getCategoryHandler()->getCategoryById($cat_id, $this->getDbManager());
             $this->getDbManager()->getSQL("DELETE from gw_category where cat_id = $cat_id");

@@ -68,15 +68,11 @@
                 "end"=>$end,
                 "articles"=>$articles
             ]);
-
-            // $data = $this->getDbManager()->getSQL(
-            //     "SELECT * from gw_article"
-            // );
-
-            // $this->respond($data);
         }
 
         private function postArticle(array $payload){
+
+            validateCsrf($payload, $this);
             
             $payload = BaseModel::checkPostPayload("gw_article", $payload, $this->getDbManager());
 
@@ -96,6 +92,9 @@
         private function updateArticle(int $art_id) {
 
             $payload = $this->getPayload();
+
+            validateCsrf($payload, $this);
+
             $update = BaseModel::checkPatchPayload("gw_article", $payload, $this);
 
             // nagaan of article met art_id bestaat.
@@ -116,6 +115,8 @@
         }
 
         private function deleteArticle(int $art_id) {
+
+            validateCsrf($this->getPayload(), $this);
             
             $this->getArticleHandler()->getArticleById($art_id, $this->getDbManager());
             $this->getDbManager()->getSQL("DELETE from gw_article where art_id = $art_id");
@@ -124,6 +125,8 @@
         }
 
         private function uploadFile() {
+
+            validateCsrf($this->getPayload(), $this);
 
             if( $this->getMethod() !== "POST" ) $this->getResponseHandler()->notAllowed();
 

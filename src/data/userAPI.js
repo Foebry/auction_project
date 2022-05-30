@@ -54,7 +54,6 @@ const userAPI = createApi({
                 usr_email,
                 usr_password,
                 usr_pass_verify,
-                csrf,
             }) => ({
                 url: `/user`,
                 method: "PATCH",
@@ -64,7 +63,7 @@ const userAPI = createApi({
                     usr_email,
                     usr_password,
                     usr_pass_verify,
-                    csrf,
+                    csrf: localStorage.getItem("csrf"),
                 },
             }),
             invalidatesTags: ["ALLUSERS"],
@@ -76,7 +75,6 @@ const userAPI = createApi({
                 usr_lastname,
                 usr_email,
                 usr_password,
-                csrf,
             }) => ({
                 url: `/user/${usr_id}`,
                 method: "PATCH",
@@ -85,7 +83,7 @@ const userAPI = createApi({
                     usr_lastname,
                     usr_email,
                     usr_password,
-                    csrf,
+                    csrf: localStorage.getItem("csrf"),
                 },
             }),
             invalidatesTags: ["ALLUSERS"],
@@ -94,6 +92,9 @@ const userAPI = createApi({
             query: (id) => ({
                 url: `/user/${id}`,
                 method: "DELETE",
+                body: {
+                    csrf: localStorage.getItem("csrf"),
+                },
             }),
             invalidatesTags: ["ALLUSERS"],
         }),

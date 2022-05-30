@@ -42,38 +42,38 @@ const auctionAPI = createApi({
             query: (id) => `/auction/${id}/biddings`,
         }),
         postAuction: builder.mutation({
-            query: ({ auc_art_id, auc_expiration, auc_start, csrf }) => ({
+            query: ({ auc_art_id, auc_expiration, auc_start }) => ({
                 url: `/auctions`,
                 method: "POST",
                 body: {
                     auc_art_id,
                     auc_start,
                     auc_expiration,
-                    csrf,
+                    csrf: localStorage.getItem("csrf"),
                 },
             }),
             invalidatesTags: ["allAuctions"],
         }),
         updateAuction: builder.mutation({
-            query: ({ id, auc_expiration, auc_start, auc_art_id, csrf }) => ({
+            query: ({ id, auc_expiration, auc_start, auc_art_id }) => ({
                 url: `/auction/${id}`,
                 method: "PATCH",
                 body: {
                     auc_expiration,
                     auc_start,
                     auc_art_id,
-                    csrf,
+                    csrf: localStorage.getItem("csrf"),
                 },
                 invalidatesTags: ["allAuctions"],
             }),
         }),
         updateAllAuctions: builder.mutation({
-            query: ({ auc_expiration, csrf }) => ({
+            query: ({ auc_expiration }) => ({
                 url: "/auctions",
                 method: "PATCH",
                 body: {
                     auc_expiration,
-                    csrf,
+                    csrf: localStorage.getItem("csrf"),
                 },
             }),
             invalidatesTags: ["allAuctions"],

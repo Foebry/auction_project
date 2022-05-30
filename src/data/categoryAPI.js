@@ -15,23 +15,23 @@ const categoryAPI = createApi({
             query: (id) => `/category/${id}`,
         }),
         postCategory: builder.mutation({
-            query: ({ cat_name, csrf }) => ({
+            query: ({ cat_name }) => ({
                 url: `/categories`,
                 method: "POST",
                 body: {
                     cat_name,
-                    csrf,
+                    csrf: localStorage.getItem("csrf"),
                 },
             }),
             invalidatesTags: ["allCategories"],
         }),
         patchCategoryById: builder.mutation({
-            query: ({ cat_id, cat_name, csrf }) => ({
+            query: ({ cat_id, cat_name }) => ({
                 url: `/category/${cat_id}`,
                 method: "PATCH",
                 body: {
                     cat_name,
-                    csrf,
+                    csrf: localStorage.getItem("csrf"),
                 },
             }),
             invalidatesTags: ["allCategories"],
@@ -40,6 +40,7 @@ const categoryAPI = createApi({
             query: ({ id }) => ({
                 url: `/category/${id}`,
                 method: "DELETE",
+                body: { csrf: localStorage.getItem("csrf") },
             }),
             invalidatesTags: ["allCategories"],
         }),

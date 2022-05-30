@@ -20,7 +20,7 @@ const AdminArticleblury__modal = () => {
     });
 
     const [inputs, setInputs] = useState({
-        art_name: updateArticle?.art_name ?? "",
+        art_name: "",
         art_img: null,
         art_cat_id: updateArticle?.art_cat_id ?? "",
     });
@@ -76,7 +76,9 @@ const AdminArticleblury__modal = () => {
 
     return (
         <BaseModal onClose={onClose}>
-            <h1 className="modal__adminTitle">Add Article</h1>
+            <h1 className="modal__adminTitle">{`${
+                updateArticle ? "Update" : "Add"
+            } Article`}</h1>
             <form className="modal__adminInput" onSubmit={submitHandler}>
                 <div className="modal__adminInput__item">
                     <p>art_name: </p>
@@ -84,7 +86,7 @@ const AdminArticleblury__modal = () => {
                         className="modal__adminInput__item__inputfield"
                         type="text"
                         value={inputs.art_name}
-                        placeholder="name"
+                        placeholder={updateArticle?.art_name ?? "name"}
                         name="art_name"
                         onChange={handleInputChange}
                     />
@@ -113,14 +115,6 @@ const AdminArticleblury__modal = () => {
                         name="art_cat_id"
                         className="modal__adminInput__item__inputfield"
                     />
-                    {/* <input
-                        className="modal__adminInput__item__inputfield"
-                        type="text"
-                        value={inputs.art_cat_id}
-                        placeholder="category ID"
-                        name="art_cat_id"
-                        onChange={handleInputChange}
-                    /> */}
                     <p className="modal__adminInput__item__error">
                         {formErrors.art_cat_id}
                     </p>

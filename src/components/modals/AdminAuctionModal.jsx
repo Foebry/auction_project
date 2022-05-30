@@ -5,7 +5,7 @@ import { usePostAuctionMutation } from "../../data/auctionAPI";
 import { useUpdateAuctionMutation } from "../../data/auctionAPI";
 import ApiDropdown from "../ApiDropdown";
 
-const AdminAuctionblury__modal = ({ method }) => {
+const AdminAuctionblury__modal = () => {
     const { setModal, onClose, updateAuction, setUpdateAuction } =
         useContext(AppContext);
 
@@ -38,12 +38,9 @@ const AdminAuctionblury__modal = ({ method }) => {
     async function submitHandler(e) {
         e.preventDefault();
 
-        const { data, error } =
-            method === "POST"
-                ? await addAuction(inputs)
-                : method === "PATCH"
-                ? await patchAuction(inputs)
-                : null;
+        const { data, error } = !updateAuction
+            ? await addAuction(inputs)
+            : await patchAuction(inputs);
 
         if (data) {
             setInputs({});
@@ -56,7 +53,9 @@ const AdminAuctionblury__modal = ({ method }) => {
 
     return (
         <BaseModal onClose={onClose}>
-            <h1 className="modal__adminTitle">Add Auction</h1>
+            <h1 className="modal__adminTitle">{`${
+                updateAuction ? "Update" : "Add"
+            } Auction`}</h1>
             <form className="modal__adminInput" onSubmit={submitHandler}>
                 <div className="modal__adminInput__item">
                     <p>auc_art_id: </p>
@@ -66,15 +65,6 @@ const AdminAuctionblury__modal = ({ method }) => {
                         type="articles"
                         value={updateAuction}
                     />
-                    {/* <input
-                        className="modal__adminInput__item__numberfield"
-                        type="number"
-                        value={inputs.auc_art_id}
-                        placeholder="Article"
-                        name="auc_art_id"
-                        onChange={handleInputChange}
-                        required
-                    /> */}
                     <p className="modal__adminInput__item__error">
                         {formErrors.auc_art_id}
                     </p>

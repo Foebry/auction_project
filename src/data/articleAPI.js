@@ -26,7 +26,7 @@ const articleAPI = createApi({
             query: (id) => `/article/${id}`,
         }),
         postArticle: builder.mutation({
-            query: ({ art_id, art_name, art_img, art_cat_id, csrf }) => ({
+            query: ({ art_id, art_name, art_img, art_cat_id }) => ({
                 url: `/articles`,
                 method: "POST",
                 body: {
@@ -34,20 +34,20 @@ const articleAPI = createApi({
                     art_name,
                     art_img,
                     art_cat_id,
-                    csrf,
+                    csrf: localStorage.getItem("csrf"),
                 },
             }),
             invalidatesTags: ["allArticles"],
         }),
         patchArticleById: builder.mutation({
-            query: ({ art_id, art_name, art_img, art_cat_id, csrf }) => ({
+            query: ({ art_id, art_name, art_img, art_cat_id }) => ({
                 url: `/article/${art_id}`,
                 method: "PATCH",
                 body: {
                     art_name,
                     art_img: art_img ?? "",
                     art_cat_id,
-                    csrf,
+                    csrf: localStorage.getItem("csrf"),
                 },
             }),
             invalidatesTags: ["allArticles"],
@@ -56,6 +56,9 @@ const articleAPI = createApi({
             query: (id) => ({
                 url: `/article/${id}`,
                 method: "DELETE",
+                body: {
+                    csrf: localStorage.getItem("csrf"),
+                },
             }),
             invalidatesTags: ["allArticles"],
         }),
@@ -63,7 +66,7 @@ const articleAPI = createApi({
             query: (formData) => ({
                 url: "/upload",
                 method: "POST",
-                body: formData,
+                body: { ...formData, csrf: localStorage.getItem("csrf") },
             }),
         }),
     }),

@@ -44,6 +44,9 @@
         private function postBidding(array $exploded_token): void {
             
             $payload = $this->getPayload();
+
+            validateCsrf($payload, $this);
+
             $usr_id = getUserFromToken(implode(".", $exploded_token), $this)->getUsrId();
             
             $payload["bid_usr_id"] = $usr_id;

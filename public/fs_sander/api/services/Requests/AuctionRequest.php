@@ -122,6 +122,8 @@
         
         private function postAuction(array $payload): void{
 
+            validateCsrf($payload, $this);
+
             BaseModel::checkPostPayload("gw_auction", $payload, $this->getDbManager());
 
             $auction = Auction::create($payload, $this);
@@ -156,6 +158,8 @@
 
         private function updateAuction(int $auc_id, array $payload, $batch=false): Auction{
 
+            validateCsrf($payload, $this);
+
             $update = BaseModel::checkPatchPayload("gw_auction", $payload, $this);
 
             $this->getAuctionHandler()->getAuctionById($auc_id, $this->getDbManager());
@@ -177,6 +181,11 @@
         }
 
         private function updateAuctions(): void {
+
+            $payload = $this->getPayload();
+
+            validateCsrf($payload, $this);
+
             $expired_auctions_not_sold = Auction::getAllExpiredNotSold($this->getDbManager());
 
             $auctions = [];
