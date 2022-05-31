@@ -80,7 +80,7 @@ const Detailblury__modal = () => {
                     />
                     <button className="modal__bidding__input__btn">
                         <RiCoinLine className="modal__bidding__input__btn__icon" />
-                        <p className="modal__bidding__input__btn__text">Bet</p>
+                        <p className="modal__bidding__input__btn__text">Bid</p>
                     </button>
                 </form>
             </div>
