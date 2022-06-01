@@ -66,7 +66,7 @@ const articleAPI = createApi({
             query: (formData) => ({
                 url: "/upload",
                 method: "POST",
-                body: { ...formData, csrf: localStorage.getItem("csrf") },
+                body: formData,
             }),
         }),
     }),
