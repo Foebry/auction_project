@@ -11,7 +11,7 @@ import {
 const AdminArticleblury__modal = () => {
     const { setModal, onClose, updateArticle, setUpdateArticle } =
         useContext(AppContext);
-    const [image, setImage] = useState({});
+    const [image, setImage] = useState(null);
 
     const [formErrors, setFormErrors] = useState({
         art_name: "",
@@ -49,9 +49,8 @@ const AdminArticleblury__modal = () => {
 
         const formData = new FormData();
         formData.append("image", image);
-
         const { error: uploadError } =
-            Object.keys(image).length === 0 ? {} : await uploadImage(formData);
+            image === null ? {} : await uploadImage(formData);
 
         if (uploadError) {
             setFormErrors({ ...formErrors, ...formErrors.data });
