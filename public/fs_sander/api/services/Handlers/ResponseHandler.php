@@ -21,7 +21,7 @@
         function unauthorized(DbManager $dbm, $msg=[]){
             $dbm->closeConnection();
             print(json_encode(array_merge(["message"=>"Unauthorized"], $msg)));
-            header("HTTP/1.1 403");
+            header("HTTP/1.1 401");
             exit();
         }
 

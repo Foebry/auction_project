@@ -37,7 +37,7 @@ const Auction = ({ id, name, expiration, highest_bid, image }) => {
                         className="article__content__bid__btn"
                     >
                         <RiCoinLine className="article__content__bid__btn__icon" />
-                        <p className="article__content__bid__btn__text">Bet</p>
+                        <p className="article__content__bid__btn__text">Bid</p>
                     </button>
                 </div>
             </div>

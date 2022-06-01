@@ -85,3 +85,100 @@
         }
     }
 }
+
+@media screen and (max-width: 700px) {
+    .article {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        width: 90%;
+        height: 420px;
+        background-color: $white;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 1px 1px 2px 2px $lightmediumblue;
+        &__heading {
+            display: flex;
+            justify-content: space-between;
+            gap: 50px;
+            &__content {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        &__imgholder {
+            width: 100%;
+            height: 275px;
+            background-color: grey;
+            border-radius: 0px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            &__img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: fill;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+            }
+        }
+        &__content {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            position: relative;
+            justify-content: space-evenly;
+            padding: 10px 20px;
+            margin: 0 auto;
+            &__title {
+                width: 100%;
+                font-weight: bold;
+                text-decoration: underline;
+                font-size: 25px;
+                text-align: center;
+                margin: 10px;
+            }
+            &__desc {
+                font-size: 15px;
+            }
+            &__highest {
+                font-size: 30px;
+                color: $darkblue;
+                font-weight: bold;
+                text-align: end;
+            }
+            &__bid {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                width: 100%;
+                justify-content: space-between;
+                margin: 10px;
+                & p {
+                    font-size: 20px;
+                }
+                &__btn {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    height: 40px;
+                    width: 70px;
+                    color: $white;
+                    background-color: $mediumblue;
+                    outline: none;
+                    border: none;
+                    border-radius: 5px;
+                    &__icon {
+                        font-size: 20px;
+                        pointer-events: none;
+                    }
+                    &__text {
+                        font-size: 20px;
+                    }
+                }
+            }
+        }
+    }
+}

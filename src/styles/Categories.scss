@@ -34,3 +34,39 @@
         }
     }
 }
+
+@media screen and (max-width: 700px) {
+    .categories {
+        width: 100%;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        &__buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            &__btn {
+                display: inline-block;
+                flex-direction: column;
+                align-items: center;
+                background-color: $white;
+                height: 40px;
+                width: 70px;
+                outline: none;
+                border: none;
+                color: $mediumblue;
+                &__icon {
+                    font-size: 20px;
+                    pointer-events: none;
+                }
+                &--active {
+                    font-weight: bold;
+                    color: $darkblue;
+                    transform: scale(1.05);
+                }
+                &:active {
+                    background-color: $mediumblue;
+                }
+            }
+        }
+    }
+}

@@ -1,10 +1,13 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router";
 import { MdOutlineAlternateEmail, MdPersonOutline } from "react-icons/md";
 import BaseModal from "./baseModal";
 import { AppContext } from "../../context/AppContext";
 import { useGetCurrentUserQuery } from "../../data/userAPI";
+import { ADMIN } from "../../types/RouteTypes";
 
 const Userblury__modal = () => {
+    const navigate = useNavigate();
     const { setModal, onClose, setUpdateUser } = useContext(AppContext);
     const { data } = useGetCurrentUserQuery(undefined, {
         pollingInterval: 0,
@@ -43,6 +46,17 @@ const Userblury__modal = () => {
             >
                 Change
             </button>
+            {localStorage.getItem("usr_isAdmin") === "1" && (
+                <button
+                    className="modal__btn"
+                    onClick={() => {
+                        navigate(ADMIN);
+                        setModal(null);
+                    }}
+                >
+                    Admin
+                </button>
+            )}
             <p className="modal__link"></p>
         </BaseModal>
     );
