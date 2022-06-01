@@ -21,16 +21,12 @@
                             <button class="expand"></button>
                         </div>
                         <div class="extra extra--hidden">
-                            <div class="coming-soon">
+                            <div>
                                 <h2>Parameters</h2>
-                            <p>
-                                Can be sent to enlarge and create a more
-                                specific query string
-                            </p>
                             <p>
                                 example:
                                 <span
-                                    >/auctions?sort=-id,-duration&filter[cat_id]=1,2,3&page=1&page_count=2</span
+                                    >/auctions?sort=-id,-duration&cat_id=1,2,3&page=1&page_count=2</span
                                 >
                             </p>
                                 <table>
@@ -47,8 +43,8 @@
                                             "-id" to retrieve data ordered by id
                                             descending
                                             <p>
-                                                Possible sorts: id, cat_id, start,
-                                                end, duration
+                                                Possible sorts: id, cat_id, auc_art_id, start,
+                                                end
                                             </p>
                                         </td>
                                     </tr>
@@ -60,7 +56,7 @@
                                             data based on your filtered values.
                                             <p>
                                                 Possible filters: cat_id, status
-                                                (upcoming, active, expired)
+                                                (0:active, 1:upcoming, -1:expired)
                                             </p>
                                         </td>
                                     </tr>
@@ -86,21 +82,29 @@
                                 </div>
                                 <div class="response">
                                     <p>200</p>
-                                    <p class="response">[<br />&ensp;
-                                        {<br />&ensp;
-                                        &ensp;"id": 1,<br />&ensp;
-                                        &ensp;"name": "Sofa",<br />&ensp;
-                                        &ensp;"expiration": 1752383738000,<br />&ensp;
-                                        &ensp;"highest_bid": 5,</br />&ensp;
-                                        &ensp;"image": "sofa.jpg"<br />&ensp;
-                                    },<br/>
-                                    &ensp;{<br />&ensp;
-                                    &ensp;"id": 2,<br />&ensp;
-                                    &ensp;"name": "Boekenkast",<br />&ensp;
-                                    &ensp;"expiration": 1752383738000,<br />&ensp;
-                                    &ensp;"highest_bid": 5,<br />&ensp;
-                                    &ensp;"image": "boekenkast.jpg"<br />&ensp;},<br />
-                                    ]</p>
+                                    <p class="response">{<br />&ensp;
+                                        "page": 1,<br />
+                                        &ensp;"total": 21,<br />
+                                        &ensp;"nextPage": 2,<br />
+                                        &ensp;"prevPage": null,<br />
+                                        &ensp;"start": 1,<br />
+                                        &ensp;"end": 2<br />
+                                        &ensp;"auctions":[<br />
+                                        &ensp;&ensp;{<br />&ensp;
+                                        &ensp;&ensp;"id": 1,<br />&ensp;
+                                        &ensp;&ensp;"name": "Sofa",<br />&ensp;
+                                        &ensp;&ensp;"expiration": 1752383738000,<br />&ensp;
+                                        &ensp;&ensp;"highest_bid": 5,</br />&ensp;
+                                        &ensp;&ensp;"image": "sofa.jpg"<br />&ensp;
+                                        &ensp;},<br/>
+                                        &ensp;&ensp;{<br />&ensp;
+                                            &ensp;&ensp;"id": 2,<br />&ensp;
+                                            &ensp;&ensp;"name": "Boekenkast",<br />&ensp;
+                                            &ensp;&ensp;"expiration": 1752383738000,<br />&ensp;
+                                            &ensp;&ensp;"highest_bid": 5,<br />&ensp;
+                                            &ensp;&ensp;"image": "boekenkast.jpg"<br />&ensp;&ensp;},<br />
+                                            &ensp;]<br />
+                                    }</p>
                                 </div>
                                 <div class="response">
                                     <p>400</p>
@@ -133,14 +137,14 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><p class="required">auc_expiration</p></td>
+                                        <td><p class="optional">auc_expiration</p></td>
                                         <td>int</td>
                                         <td>
                                             <p>Timestamp of expiration datetime</p>
                                         </td>
                                     </tr>
-                                    <tr class="coming-soon">
-                                        <td><p class="coming-soon">auc_start</p></td>
+                                    <tr>
+                                        <td><p class="optional">auc_start</p></td>
                                         <td>int</td>
                                         <td>
                                             <p>Timestamp of start datetime</p>
@@ -276,7 +280,7 @@
             <section>
                 <h1>Articles</h1>
                 <ul>
-                    <li class="get updated">
+                    <li class="get">
                         <div class="info">
                             <button class="method"></button>
                             <p>/articles</p>
@@ -314,7 +318,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="post updated">
+                    <li class="post">
                         <div class="info">
                             <button class="method"></button>
                             <p>/articles</p>
@@ -350,7 +354,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="get updated">
+                    <li class="get">
                         <div class="info">
                             <button class="method"></button>
                             <p>/article/{id}</p>
@@ -386,7 +390,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="patch updated">
+                    <li class="patch">
                         <div class="info">
                             <button class="method"></button>
                             <p>/article/{id}</p>
@@ -462,7 +466,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="delete new">
+                    <li class="delete">
                         <div class="info">
                             <button class="method"></button>
                             <p>/article/{id}</p>
@@ -505,7 +509,7 @@
             <section>
                 <h1>Biddings</h1>
                 <ul>
-                    <li class="get soon">
+                    <li class="get">
                         <div class="info">
                             <button class="method"></button>
                             <p>/biddings</p>
@@ -536,7 +540,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="post updated">
+                    <li class="post">
                         <div class="info">
                             <button class="method"></button>
                             <p>/biddings</p>
@@ -634,7 +638,7 @@
             <section>
                 <h1>Categories</h1>
                 <ul>
-                    <li class="get updated">
+                    <li class="get">
                         <div class="info">
                             <button class="method"></button>
                             <p>/categories</p>
@@ -667,7 +671,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="post updated">
+                    <li class="post">
                         <div class="info">
                             <button class="method"></button>
                             <p>/categories</p>
@@ -727,7 +731,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="get new">
+                    <li class="get">
                         <div class="info">
                             <button class="method"></button>
                             <p>/category/{id}</p>
@@ -769,7 +773,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="patch new">
+                    <li class="patch">
                         <div class="info">
                             <button class="method"></button>
                             <p>/category/{id}</p>
@@ -837,7 +841,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="delete new">
+                    <li class="delete">
                         <div class="info">
                             <button class="method"></button>
                             <p>/category/{id}</p>
@@ -889,7 +893,7 @@
             <section>
                 <h1>Users</h1>
                 <ul>
-                    <li class="get new">
+                    <li class="get">
                         <div class="info">
                             <button class="method"></button>
                             <p>/user</p>
@@ -925,7 +929,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="patch new">
+                    <li class="patch">
                         <div class="info">
                             <button class="method"></button>
                             <p>/user</p>
@@ -1007,7 +1011,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="get updated">
+                    <li class="get">
                         <div class="info">
                             <button class="method"></button>
                             <p>/user/{id}</p>
@@ -1054,7 +1058,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="patch new">
+                    <li class="patch">
                         <div class="info">
                             <button class="method"></button>
                             <p>/user/{id}</p>
@@ -1136,7 +1140,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="delete new">
+                    <li class="delete">
                         <div class="info">
                             <button class="method"></button>
                             <p>/user/{id}</p>
@@ -1176,7 +1180,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="get new">
+                    <li class="get">
                         <div class="info">
                             <button class="method"></button>
                             <p>/user/auctions</p>
@@ -1216,7 +1220,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="get new">
+                    <li class="get">
                         <div class="info">
                             <button class="method"></button>
                             <p>/user/{id}/auctions</p>
@@ -1272,7 +1276,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="get new">
+                    <li class="get">
                         <div class="info">
                             <button class="method"></button>
                             <p>/user/biddings</p>
@@ -1304,7 +1308,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="get new">
+                    <li class="get">
                         <div class="info">
                             <button class="method"></button>
                             <p>/user/{id}/biddings</p>
@@ -1347,7 +1351,7 @@
             <section>
                 <h1>Login</h1>
                 <ul>
-                    <li class="post updated">
+                    <li class="post">
                         <div class="info">
                             <button class="method"></button>
                             <p>/login</p>
@@ -1508,7 +1512,7 @@
             <section>
                 <h1>Logout</h1>
                 <ul>
-                    <li class="delete new">
+                    <li class="delete">
                         <div class="info">
                             <button class="method"></button>
                             <p>/logout</p>
