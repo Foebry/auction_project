@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 
 const ApiDropdown = ({ type, onChange, name }) => {
-    const { data: artData } = useGetArticlesQuery({});
+    const { data: artData } = useGetArticlesQuery({ page_count: 100 });
     const { data: catData } = useGetCategoriesQuery();
     const { updateArticle, updateAuction } = useContext(AppContext);
 

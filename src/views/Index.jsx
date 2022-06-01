@@ -9,21 +9,24 @@ const Index = () => {
     const [page, setPage] = useState(1);
     const [sort, setSort] = useState(["end", "-bid"]);
 
-    const options = useMemo(
-        () => ({
-            page,
-            categories: categories.join(","),
-            status: 0,
-            sort,
-        }),
-        [page, categories]
-    );
+    // const options = useMemo(
+    //     () => ({
+    //         page,
+    //         categories: categories.join(","),
+    //         status: 0,
+    //         sort,
+    //     }),
+    //     [page, categories]
+    // );
 
-    const { data, isError, isLoading } = useGetAuctionsQuery(options, {
-        pollingInterval: 1000,
-        refetchOnFocus: true,
-        refetchOnReconnect: true,
-    });
+    const { data, isError, isLoading } = useGetAuctionsQuery(
+        { page, categories: categories.join(","), status: 0, sort },
+        {
+            pollingInterval: 1000,
+            refetchOnFocus: true,
+            refetchOnReconnect: true,
+        }
+    );
 
     const handleFilterClick = (e) => {
         const id = e.target.id;
@@ -33,7 +36,7 @@ const Index = () => {
 
         if (categories.includes(id))
             setCategories(categories.filter((el) => el != id));
-        else setCategories([...options.categories, id]);
+        else setCategories([...categories, id]);
     };
 
     return (
