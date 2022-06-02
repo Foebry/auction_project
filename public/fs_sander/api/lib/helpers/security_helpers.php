@@ -75,7 +75,6 @@ function getUserFromToken(string $token, Request $request): User {
 function validateCsrf(array $payload, Request $request): void {
     
     if( !isset($_SESSION) ) session_start();
-
     $invalid_csrf = !in_array("csrf", array_keys($payload)) || $payload["csrf"] !== $_SESSION["csrf"];
     
     if ( $invalid_csrf )

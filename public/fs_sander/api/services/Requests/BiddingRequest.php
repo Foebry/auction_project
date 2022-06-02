@@ -42,7 +42,6 @@
         }
 
         private function postBidding(array $exploded_token): void {
-            
             $payload = $this->getPayload();
 
             validateCsrf($payload, $this);
