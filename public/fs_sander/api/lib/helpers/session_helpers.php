@@ -4,7 +4,6 @@
     use services\requests\Request;
 
     function startSession(int $usr_id, Request $request): void {
-        
         session_start(["cookie_samesite"=>"None", "cookie_secure"=>true]);
         $_SESSION["csrf"] = generateCSRF();
         
